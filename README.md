@@ -31,7 +31,7 @@ cp .env.example .env
 docker compose up -d
 docker compose exec php composer install
 docker compose exec php php artisan key:generate
-docker compose exec php php artisan migrate
+docker compose exec php php artisan migrate --seed  # + админ из ADMIN_EMAIL / ADMIN_PASSWORD
 docker compose exec php php artisan test    # Pest, база rent_radar_test, сеть закрыта
 ```
 
@@ -58,6 +58,8 @@ docker compose down                         # остановить; данные
 - ключ Claude API.
 
 Все переменные будут описаны в `.env.example`.
+
+Админка: http://localhost:8080/admin, вход — `ADMIN_EMAIL` и `ADMIN_PASSWORD` из `.env`. На проде админ создаётся командой `php artisan make:filament-user`, пароль вводит владелец.
 
 ## Прод
 
