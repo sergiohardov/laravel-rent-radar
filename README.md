@@ -24,8 +24,20 @@ Laravel 13 · Filament 5 · PHP 8.4 · PostgreSQL · Pest · Nutgram · Claude A
 
 Локально всё работает в Docker, на машине нужны Docker и `git`. Полная инструкция появится после этапа «Окружение».
 
+Первый запуск:
+
 ```bash
 cp .env.example .env
+docker compose up -d
+docker compose exec php composer install
+docker compose exec php php artisan key:generate
+docker compose exec php php artisan migrate
+docker compose exec php php artisan test    # Pest, база rent_radar_test, сеть закрыта
+```
+
+Дальше:
+
+```bash
 docker compose up -d                        # php (http://localhost:8080), scheduler, postgres
 docker compose --profile tunnel up -d       # + публичный HTTPS-туннель для webhook dev-бота
 docker compose run --rm node npm run build  # сборка ассетов
