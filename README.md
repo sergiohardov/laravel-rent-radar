@@ -27,8 +27,7 @@ Laravel 13 · Filament 5 · PHP 8.4 · PostgreSQL · Pest · Nutgram · Claude A
 Для работы понадобятся:
 
 - токен Telegram-бота и id группы (для разработки — отдельный бот и тестовая группа);
-- ключ Claude API;
-- ключ DIM.RIA API (developers.ria.com).
+- ключ Claude API.
 
 Все переменные будут описаны в `.env.example`.
 
