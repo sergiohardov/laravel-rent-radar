@@ -49,7 +49,7 @@
 
 Хостинг задаёт рамки для кода:
 
-- Apache 2.4 + `.htaccess`, Docker на проде нет.
+- LiteSpeed (понимает `.htaccess` как Apache), Docker на проде нет. Проверенные факты о хостинге — в [docs/hosting.md](docs/hosting.md).
 - `memory_limit` 128M, `max_execution_time` 60 с, процессы под лимитами LVE. Объявления обрабатываются потоком, по одному. Один запуск источника укладывается в ~60 с.
 - Только короткоживущие процессы: cron раз в минуту вызывает `schedule:run`, очередь разбирается через `queue:work --stop-when-empty` из scheduler.
 - Источники читаются обычным HTTP/JSON (headless-браузера на хостинге нет).
