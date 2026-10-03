@@ -71,8 +71,8 @@
 ### Источники v1
 
 - **ЛУН** — агрегатор ~24 сайтов, аренда живёт на flatfy.ua.
-- **OLX** — напрямую или через Otodim (платформа OLX Group на тех же данных), решается на спайке.
-- **DIM.RIA** — официальный API (developers.ria.com, ключ).
+- **OLX** — напрямую через публичный JSON API сайта, только HTTP/1.1. Otodim не используем. См. [docs/sources/olx.md](docs/sources/olx.md).
+- **DIM.RIA** — внутренние эндпоинты dom.ria.com без ключа: поиск id + карточка по id. Официальный API платный, это запасной путь. См. [docs/sources/dimria.md](docs/sources/dimria.md).
 - Опрос раз в 5–10 минут с джиттером. Telegram-каналы вне v1.
 
 ### Сектор
