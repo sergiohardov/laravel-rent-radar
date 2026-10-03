@@ -2,9 +2,9 @@
 
 ## Текущая позиция
 
-- **Этап:** 2 — окружение. Пункт 05 закрыт: образ `docker/php`.
-- **Ветка:** `chore/05-dockerfile` — отправлена, ждёт PR и merge.
-- **Следующее действие:** после `pull` — пункт 06: `compose.yaml` (php, postgres + тестовая БД, scheduler на supercronic, node, cloudflared) и `.env.example`.
+- **Этап:** 2 — окружение. Пункт 06 закрыт: `compose.yaml`.
+- **Ветка:** `chore/06-compose` — отправлена, ждёт PR и merge.
+- **Следующее действие:** после `pull` — пункт 07: Laravel 13 в существующую папку (через временную папку, папка проекта не пустая), слить `.env.example` Laravel с нашим, Pest, первый зелёный тест на Postgres.
 - **Открытые вопросы:**
   - Значения настроек: точка и радиус сектора, список ЖК/улиц для whitelist. Комнаты, этажи и цена — в [REQUIREMENTS.md](REQUIREMENTS.md). До готовности админки задаются сидером.
   - Хранение Settings: `spatie/laravel-settings` или своя модель с одной строкой. Решаем в пункте 09.
@@ -27,6 +27,7 @@ Headless-браузер не нужен: все три площадки отда
 
 ## Хронология
 
+- 2026-10-04 — Пункт 06: `compose.yaml` — php, scheduler (supercronic v0.2.49 в образе php, контрольные суммы сверены с релизом), postgres 16 с базами `rent_radar` и `rent_radar_test`, node 24 (профиль `tools`), cloudflared 2026.9.3 (профиль `tunnel`, быстрый туннель — решение пользователя; адрес — `http://cloudflared:2000/quicktunnel`). `.env.example` общий для compose и Laravel.
 - 2026-10-04 — Пункт 05: dev-образ `docker/php` на `php:8.4-apache` — решение пользователя оставить Apache, хотя на проде LiteSpeed (`.htaccess` совместим). Расширения `pdo_pgsql intl zip bcmath`, `mod_rewrite`, корень сайта `public/`, composer 2, php.ini с лимитами хостинга (128M, 60 с) для веба и CLI.
 - 2026-10-04 — Итог этапа 1. Через Scrape.do украинские IP дата-центра (Hosting Ukraine) и домашние получают 200 от ЛУН и OLX — значит, хостинг блокируют по стране или сети Hetzner. Решение пользователя: хостинг nic.ua остаётся, ЛУН и OLX на проде ходят через украинский прокси дата-центра (адрес в `.env`, флаг у источника), DIM.RIA — напрямую; прокси покупаем в пункте 29. `hosting-check/` добавлен в `.gitignore`.
 - 2026-10-04 — Пункт 04: `check.php` на хостинге. Исходящий IP `95.216.242.245` (Hetzner, FI): ЛУН — 403 (Cloudflare «Just a moment…»), OLX — 403 (CloudFront) по HTTP/1.1 и HTTP/2, DIM.RIA — 200. Заодно: веб-сервер LiteSpeed, а не Apache (CLAUDE.md исправлен); PHP для сайта по умолчанию 8.3, `php` в shell — 8.3, PHP 8.4 есть по пути `/opt/alt/php84/usr/bin/php`; `exec`/`proc_open` разрешены; SSH в cPanel нет — открывает поддержка. Подробности — [hosting.md](hosting.md).
