@@ -24,7 +24,7 @@
 
 ## Этап 2 — Окружение
 
-- [ ] 05 Dockerfile `php:8.4-apache`: `mod_rewrite`, `pdo_pgsql intl zip bcmath`, composer, php.ini с лимитами прода
+- [x] 05 Dockerfile `php:8.4-apache`: `mod_rewrite`, `pdo_pgsql intl zip bcmath`, composer, php.ini с лимитами прода
 - [ ] 06 Compose: php, postgres (+ тестовая БД), scheduler (supercronic → `schedule:run`), node (одноразовый), cloudflared; `.env.example`
 - [ ] 07 Laravel 13, Pest, подключение к Postgres, первый зелёный тест
 - [ ] 08 Filament 5: панель, пользователь-админ
