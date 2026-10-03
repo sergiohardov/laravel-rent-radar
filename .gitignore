@@ -35,3 +35,6 @@ Thumbs.db
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Local one-off probes with tokens and secrets
+/hosting-check
