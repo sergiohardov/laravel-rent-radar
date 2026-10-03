@@ -38,6 +38,7 @@ Shared-хостинг nic.ua (cPanel, Apache, PHP 8.4, PostgreSQL). Cron раз 
 
 ## Документация
 
+- [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md) — требования к квартире
 - [docs/ROADMAP.md](docs/ROADMAP.md) — план развития проекта
 - [docs/LOG.md](docs/LOG.md) — журнал изменений и текущий статус
 - [CLAUDE.md](CLAUDE.md) — принятые решения и правила работы с Claude
