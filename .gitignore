@@ -10,6 +10,11 @@
 .phpunit.result.cache
 /.phpunit.cache
 .php-cs-fixer.cache
+/public/fonts-manifest.dev.json
+_ide_helper.php
+.phpactor.json
+Homestead.json
+Homestead.yaml
 
 # Environment and secrets
 .env
@@ -31,6 +36,8 @@ Thumbs.db
 /.fleet
 /.nova
 /.zed
+/.cursor
+/.codex
 *.swp
 
 # Claude Code local settings
