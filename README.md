@@ -22,7 +22,23 @@ Laravel 13 · Filament 5 · PHP 8.4 · PostgreSQL · Pest · Nutgram · Claude A
 
 ## Запуск
 
-Локально всё работает в Docker, на машине нужны Docker и `git`. Пошаговая инструкция появится после этапа «Окружение».
+Локально всё работает в Docker, на машине нужны Docker и `git`. Полная инструкция появится после этапа «Окружение».
+
+```bash
+cp .env.example .env
+docker compose up -d                        # php (http://localhost:8080), scheduler, postgres
+docker compose --profile tunnel up -d       # + публичный HTTPS-туннель для webhook dev-бота
+docker compose run --rm node npm run build  # сборка ассетов
+docker compose down                         # остановить; данные БД остаются в volume pgdata
+```
+
+| Сервис | Что делает |
+|---|---|
+| `php` | PHP 8.4 + Apache с лимитами хостинга (128M, 60 с), код монтируется из папки проекта |
+| `scheduler` | тот же образ, supercronic раз в минуту запускает `artisan schedule:run` — как cron на хостинге |
+| `postgres` | PostgreSQL 16, базы `rent_radar` и `rent_radar_test`; с хоста — порт 5433 |
+| `node` | Node 24 для сборки ассетов, запускается разово |
+| `cloudflared` | быстрый туннель без аккаунта Cloudflare; адрес меняется при каждом запуске |
 
 Для работы понадобятся:
 

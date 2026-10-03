@@ -1,0 +1,2 @@
+# Same as the hosting cron: Laravel scheduler once a minute
+* * * * * php /var/www/html/artisan schedule:run --no-interaction

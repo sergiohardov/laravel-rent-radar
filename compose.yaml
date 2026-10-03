@@ -1,0 +1,64 @@
+# Dev environment mirroring the shared hosting. Variables come from .env (see .env.example).
+#
+#   docker compose up -d                          php, scheduler, postgres
+#   docker compose --profile tunnel up -d         + public HTTPS tunnel for the dev bot webhook
+#   docker compose run --rm node npm run build    one-off asset build
+
+services:
+  php:
+    build: docker/php
+    image: rent-radar-php:dev
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  scheduler:
+    image: rent-radar-php:dev
+    command: ["supercronic", "/etc/crontab"]
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      php:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-rent_radar}
+      POSTGRES_USER: ${DB_USERNAME:-rent_radar}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+    ports:
+      - "${FORWARD_DB_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  node:
+    image: node:24-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    profiles: [tools]
+
+  # Quick tunnel without a Cloudflare account: the URL changes on every start.
+  # The current hostname is served at http://cloudflared:2000/quicktunnel inside the network.
+  cloudflared:
+    image: cloudflare/cloudflared:2026.9.3
+    command: tunnel --no-autoupdate --metrics 0.0.0.0:2000 --url http://php:80
+    depends_on:
+      - php
+    profiles: [tunnel]
+
+volumes:
+  pgdata:
