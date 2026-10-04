@@ -1,0 +1,24 @@
+<?php
+
+use App\Models\Listing;
+use App\Sources\SourceName;
+use App\Sources\SourceRegistry;
+use Tests\Fakes\FakeListingSource;
+
+it('runs a source through the pipeline and prints the report', function () {
+    app()->instance(SourceRegistry::class, new SourceRegistry([
+        FakeListingSource::withIds(12, 3, SourceName::Olx),
+    ]));
+
+    $this->artisan('sources:run olx')
+        ->expectsOutput('olx: fetched 3, seen 0, new 3, passed 3, rejected 0, stop: exhausted')
+        ->assertSuccessful();
+
+    expect(Listing::query()->where('source', SourceName::Olx)->count())->toBe(3);
+});
+
+it('refuses an unknown source name', function () {
+    $this->artisan('sources:run avito')
+        ->expectsOutput('Unknown source. Use one of: lun, olx, dimria.')
+        ->assertExitCode(2);
+});
