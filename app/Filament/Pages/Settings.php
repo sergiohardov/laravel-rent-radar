@@ -6,6 +6,7 @@ use App\Models\Setting;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -14,6 +15,7 @@ use Filament\Schemas\Components\EmbeddedSchema;
 use Filament\Schemas\Components\Form;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
@@ -75,6 +77,18 @@ class Settings extends Page
                         Toggle::make('allow_unknown_rooms')->label('Пропускать без числа комнат'),
                         Toggle::make('allow_unknown_floor')->label('Пропускать без этажа'),
                         Toggle::make('allow_unknown_generator')->label('Пропускать, если о генераторе не сказано'),
+                    ]),
+
+                Section::make('Тихие часы')
+                    ->description('В эти часы карточки и алерты приходят в группу без звука. Время — по Киеву, интервал может переходить через полночь.')
+                    ->columns(2)
+                    ->schema([
+                        Toggle::make('quiet_hours_enabled')->label('Включить тихие часы')->live()->columnSpanFull(),
+                        TimePicker::make('quiet_from')->label('С')->seconds(false)
+                            ->required(fn (Get $get) => (bool) $get('quiet_hours_enabled'))
+                            ->different('quiet_to'),
+                        TimePicker::make('quiet_to')->label('До')->seconds(false)
+                            ->required(fn (Get $get) => (bool) $get('quiet_hours_enabled')),
                     ]),
 
                 Section::make('Сектор')
