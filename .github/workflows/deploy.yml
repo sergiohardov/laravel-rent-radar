@@ -103,6 +103,12 @@ jobs:
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          # On a non-standard port known_hosts keys the server as [host]:port
+          if ! ssh-keygen -F "[$SSH_HOST]:$SSH_PORT" -f ~/.ssh/known_hosts > /dev/null; then
+            echo "::error::SSH_KNOWN_HOSTS has no key for [SSH_HOST]:SSH_PORT. Put there the output of: ssh-keyscan -p <SSH_PORT> <SSH_HOST>, with the same host as in SSH_HOST"
+            echo "Key lines in SSH_KNOWN_HOSTS: $(grep -cv '^#' ~/.ssh/known_hosts || true)"
+            exit 1
+          fi
 
       # .deployignore keeps the hosting's .env, storage and cPanel files out of reach of --delete
       - name: Upload
@@ -122,6 +128,7 @@ jobs:
           fi
           mkdir -p storage/app/private storage/app/public storage/framework/cache/data \
             storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
+          "$PHP" artisan db:ensure-schema
           "$PHP" artisan migrate --force
           "$PHP" artisan optimize
           "$PHP" artisan filament:optimize

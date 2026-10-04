@@ -56,6 +56,7 @@
 - IP общий и зарубежный (сеть Hetzner, Финляндия). ЛУН и OLX с него отвечают 403, поэтому на проде они ходят через украинский прокси дата-центра: адрес — в `.env`, у источника флаг «через прокси». DIM.RIA — напрямую. В dev прокси не нужен.
 - Поддомен с SSL: на нём Filament и Telegram webhook.
 - Деплой — GitHub Actions (`.github/workflows/deploy.yml`): тесты и Pint на PostgreSQL 10 → `composer install --no-dev -o` → rsync по SSH (порт 2345, исключения — `.deployignore`) → `migrate --force`, `optimize`, `filament:optimize`. Composer работает только в CI. Сборки ассетов нет — своих ассетов нет.
+- Таблицы на проде — в своей схеме `rentradar` (`DB_SCHEMA`, создаёт деплой командой `db:ensure-schema`): на сервере PostgreSQL 10 любой пользователь может подключиться к нашей базе и создавать таблицы в `public`. В dev и тестах — `public`.
 - В cron и деплой-скрипте PHP вызывается по полному пути выбранной версии (вида `/opt/alt/php84/usr/bin/php`): системный `php` на CloudLinux может оказаться другой версии.
 
 ### Dev повторяет прод
