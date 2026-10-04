@@ -34,10 +34,11 @@ final class OverpassClient
             QL;
 
         return $this->http
-            // The main instance answers 406 without a User-Agent and 504 when busy
+            // The main instance answers 406 without a User-Agent and 504 when busy.
+            // Two tries of the query's own 25 s fit the hosting's 60 s, also from the admin panel.
             ->withUserAgent('laravel-rent-radar (personal flat search)')
-            ->timeout(60)
-            ->retry(3, 5000, throw: false)
+            ->timeout(25)
+            ->retry(2, 2000, throw: false)
             ->asForm()
             ->post(config('services.overpass.url'), ['data' => $query])
             ->throw()
