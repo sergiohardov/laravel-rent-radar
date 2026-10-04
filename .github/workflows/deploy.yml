@@ -128,6 +128,7 @@ jobs:
           fi
           mkdir -p storage/app/private storage/app/public storage/framework/cache/data \
             storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
+          "$PHP" artisan db:ensure-schema
           "$PHP" artisan migrate --force
           "$PHP" artisan optimize
           "$PHP" artisan filament:optimize
