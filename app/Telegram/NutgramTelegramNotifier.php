@@ -22,11 +22,7 @@ final class NutgramTelegramNotifier implements TelegramNotifier
 
     public function send(Listing $listing): int
     {
-        $chatId = config('services.telegram.chat_id');
-        if (blank($chatId)) {
-            throw new RuntimeException('TELEGRAM_CHAT_ID is empty: send /ping@<bot> in the group to get it.');
-        }
-
+        $chatId = $this->chatId();
         $caption = $this->card->caption($listing);
 
         if (filled($listing->photo_url)) {
@@ -41,11 +37,31 @@ final class NutgramTelegramNotifier implements TelegramNotifier
             }
         }
 
+        return $this->message($chatId, $caption);
+    }
+
+    public function alert(string $text): int
+    {
+        return $this->message($this->chatId(), $text);
+    }
+
+    private function message(string $chatId, string $text): int
+    {
         return $this->bot->sendMessage(
-            text: $caption,
+            text: $text,
             chat_id: $chatId,
             parse_mode: ParseMode::HTML,
             link_preview_options: LinkPreviewOptions::make(is_disabled: true),
         )->message_id;
+    }
+
+    private function chatId(): string
+    {
+        $chatId = (string) config('services.telegram.chat_id');
+        if (blank($chatId)) {
+            throw new RuntimeException('TELEGRAM_CHAT_ID is empty: send /ping@<bot> in the group to get it.');
+        }
+
+        return $chatId;
     }
 }

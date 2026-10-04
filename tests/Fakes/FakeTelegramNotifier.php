@@ -14,6 +14,9 @@ final class FakeTelegramNotifier implements TelegramNotifier
     /** @var list<string> external ids */
     public array $sent = [];
 
+    /** @var list<string> alert texts */
+    public array $alerts = [];
+
     private int $nextMessageId = 100;
 
     public function __construct(
@@ -27,6 +30,17 @@ final class FakeTelegramNotifier implements TelegramNotifier
         }
 
         $this->sent[] = $listing->external_id;
+
+        return $this->nextMessageId++;
+    }
+
+    public function alert(string $text): int
+    {
+        if ($this->failWith !== null) {
+            throw $this->failWith;
+        }
+
+        $this->alerts[] = $text;
 
         return $this->nextMessageId++;
     }
