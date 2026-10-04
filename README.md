@@ -73,7 +73,15 @@ Telegram dev-бота:
 
 ## Прод
 
-Shared-хостинг nic.ua (cPanel, Apache, PHP 8.4, PostgreSQL). Cron раз в минуту запускает Laravel scheduler. Деплой — GitHub Actions: тесты и сборка в CI, на хостинг — rsync и миграции.
+Shared-хостинг nic.ua (cPanel, LiteSpeed, PHP 8.4, PostgreSQL 10). Cron раз в минуту запускает Laravel scheduler. Деплой — GitHub Actions: тесты и сборка в CI, на хостинг — rsync и миграции. Факты о хостинге — [docs/hosting.md](docs/hosting.md).
+
+Подготовка хостинга (один раз):
+
+1. **Поддомен** `rentradar.creastep.com` в cPanel → Domains, корень — `/home/<логин>/rentradar/public` (приложение лежит в `~/rentradar`, наружу смотрит только `public/`).
+2. **SSL** — cPanel → SSL/TLS Status → AutoSSL для поддомена.
+3. **PHP 8.4** — cPanel → Select PHP Version, расширения `pdo_pgsql intl zip bcmath opcache`.
+4. **База** — cPanel → PostgreSQL Databases: база и пользователь со всеми правами на неё.
+5. **`.env`** — `~/rentradar/.env` по шаблону [.env.production.example](.env.production.example): ключи и пароли только там. Бот и группа те же, что в dev, поэтому бот работает в одном месте: после запуска на проде локальный — `docker compose stop`.
 
 ## Документация
 
