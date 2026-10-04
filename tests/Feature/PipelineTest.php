@@ -106,3 +106,10 @@ it('is resolved from the container with config limits', function () {
     expect($report->stopReason)->toBe(StopReason::SeenInRow)
         ->and($report->fetched)->toBe(1);
 });
+
+it('reports how long the run took and its peak memory', function () {
+    $report = pipeline()->run(FakeListingSource::withIds(3, 3));
+
+    expect($report->seconds)->toBeGreaterThanOrEqual(0.0)
+        ->and($report->peakMemoryMb)->toBeGreaterThan(0);
+});

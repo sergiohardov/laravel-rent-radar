@@ -42,7 +42,7 @@ class RunSourceCommand extends Command
     public static function summary(SourceName $name, RunReport $report): string
     {
         return sprintf(
-            '%s: fetched %d, seen %d, new %d, passed %d, rejected %d, stop: %s',
+            '%s: fetched %d, seen %d, new %d, passed %d, rejected %d, stop: %s, %.1f s, %d MB',
             $name->value,
             $report->fetched,
             $report->seen,
@@ -50,6 +50,8 @@ class RunSourceCommand extends Command
             $report->passed,
             $report->rejected,
             $report->stopReason->value,
+            $report->seconds,
+            $report->peakMemoryMb,
         );
     }
 }
