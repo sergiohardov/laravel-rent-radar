@@ -51,6 +51,11 @@ return [
 
     'proxy_url' => env('SOURCES_PROXY_URL'),
 
+    // A scraping service in proxy mode (Scrape.do: http://TOKEN:geoCode=ua@proxy.scrape.do:8080)
+    // re-signs HTTPS with its own certificate, so proxied requests skip the
+    // certificate check. A plain datacenter proxy keeps it on.
+    'proxy_verify_tls' => (bool) env('SOURCES_PROXY_VERIFY_TLS', true),
+
     'http_timeout_seconds' => (int) env('SOURCES_HTTP_TIMEOUT_SECONDS', 15),
 
     // OLX lets a client through or not by its TLS fingerprint together with

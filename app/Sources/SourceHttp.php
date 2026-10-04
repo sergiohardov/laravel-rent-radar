@@ -35,6 +35,9 @@ final class SourceHttp
             throw new RuntimeException("Source [{$name->value}] uses a proxy, but SOURCES_PROXY_URL is empty.");
         }
 
-        return $request->withOptions(['proxy' => $proxy]);
+        return $request->withOptions([
+            'proxy' => $proxy,
+            'verify' => (bool) config('sources.proxy_verify_tls'),
+        ]);
     }
 }
