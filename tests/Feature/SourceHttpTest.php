@@ -41,7 +41,23 @@ it('goes through the proxy when the source switch is on', function () {
     config(['sources.proxy_url' => 'http://203.0.113.10:8080']);
     Source::for(SourceName::Olx)->update(['use_proxy' => true]);
 
-    expect(sentOptions(SourceName::Olx)['proxy'])->toBe('http://203.0.113.10:8080');
+    $options = sentOptions(SourceName::Olx);
+    expect($options['proxy'])->toBe('http://203.0.113.10:8080')
+        ->and($options['verify'])->toBeTrue();
+});
+
+it('skips the certificate check through a proxy that re-signs HTTPS', function () {
+    config(['sources.proxy_url' => 'http://token:geoCode=ua@proxy.scrape.do:8080', 'sources.proxy_verify_tls' => false]);
+    Source::for(SourceName::Lun)->update(['use_proxy' => true]);
+
+    expect(sentOptions(SourceName::Lun)['verify'])->toBeFalse();
+});
+
+it('keeps the certificate check on direct requests', function () {
+    config(['sources.proxy_url' => 'http://token:geoCode=ua@proxy.scrape.do:8080', 'sources.proxy_verify_tls' => false]);
+
+    expect(sentOptions(SourceName::DimRia))->not->toHaveKey('proxy')
+        ->and(sentOptions(SourceName::DimRia)['verify'] ?? true)->toBeTrue();
 });
 
 it('fails loudly when the switch is on but no proxy is configured', function () {
@@ -50,3 +66,33 @@ it('fails loudly when the switch is on but no proxy is configured', function () 
 
     app(SourceHttp::class)->for(SourceName::Lun);
 })->throws(RuntimeException::class, 'Source [lun] uses a proxy, but SOURCES_PROXY_URL is empty.');
+
+it('sends the request through the Scrape.do API when the proxy is its URL', function () {
+    config(['sources.proxy_url' => 'https://api.scrape.do/?token=t0k3n&geoCode=ua']);
+    Source::for(SourceName::Lun)->update(['use_proxy' => true]);
+    $sent = null;
+    Http::fake(function (Request $request, array $options) use (&$sent) {
+        $sent = ['url' => $request->url(), 'proxy' => $options['proxy'] ?? null];
+
+        return Http::response(['data' => []]);
+    });
+
+    app(SourceHttp::class)->for(SourceName::Lun)->get('https://flatfy.ua/api/realties', ['geo_id' => 10016589, 'page' => 2]);
+
+    expect($sent['url'])->toBe('https://api.scrape.do/?token=t0k3n&geoCode=ua&url='.rawurlencode('https://flatfy.ua/api/realties?geo_id=10016589&page=2'))
+        ->and($sent['proxy'])->toBeNull();
+});
+
+it('hides tokens and proxy credentials in error texts', function (string $message, string $redacted) {
+    expect(SourceHttp::redact($message))->toBe($redacted);
+})->with([
+    'api token' => [
+        'ConnectionException: cURL error 28 for https://api.scrape.do/?token=t0k3n&geoCode=ua&url=https%3A%2F%2Fflatfy.ua',
+        'ConnectionException: cURL error 28 for https://api.scrape.do/?token=***&geoCode=ua&url=https%3A%2F%2Fflatfy.ua',
+    ],
+    'proxy credentials' => [
+        'cURL error 7: Failed to connect via http://t0k3n:geoCode=ua@proxy.scrape.do:8080',
+        'cURL error 7: Failed to connect via http://***@proxy.scrape.do:8080',
+    ],
+    'nothing secret' => ['RequestException: HTTP request returned status code 403', 'RequestException: HTTP request returned status code 403'],
+]);

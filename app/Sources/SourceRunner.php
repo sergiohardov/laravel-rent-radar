@@ -33,7 +33,7 @@ final class SourceRunner
             $report = $this->pipeline->run($source);
         } catch (Throwable $e) {
             $state->fill([
-                'last_error' => Str::limit(class_basename($e).': '.$e->getMessage(), 1000),
+                'last_error' => Str::limit(SourceHttp::redact(class_basename($e).': '.$e->getMessage()), 1000),
                 'last_error_at' => now(),
                 'consecutive_failures' => $state->consecutive_failures + 1,
             ])->save();

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Source;
 use App\Sources\ListingSource;
+use App\Sources\SourceHttp;
 use App\Sources\SourceRegistry;
 use App\Sources\SourceRunner;
 use Illuminate\Console\Command;
@@ -31,7 +32,7 @@ class RunDueSourceCommand extends Command
             $report = $runner->run($source);
         } catch (Throwable $e) {
             report($e);
-            $this->error("{$source->name()->value}: ".class_basename($e).': '.$e->getMessage());
+            $this->error("{$source->name()->value}: ".SourceHttp::redact(class_basename($e).': '.$e->getMessage()));
 
             return self::FAILURE;
         }
