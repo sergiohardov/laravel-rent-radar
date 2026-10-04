@@ -2,10 +2,12 @@
 
 namespace App\Pipeline;
 
+use Filament\Support\Contracts\HasLabel;
+
 /**
  * Marks a stage leaves on a listing that passed; shown on the card as ❓ and similar.
  */
-enum Flag: string
+enum Flag: string implements HasLabel
 {
     case UnknownPrice = 'unknown_price';
     case UnknownRooms = 'unknown_rooms';
@@ -14,4 +16,15 @@ enum Flag: string
 
     /** Only the district matched the sector whitelist (📍?) */
     case DistrictOnly = 'district_only';
+
+    public function getLabel(): string
+    {
+        return match ($this) {
+            self::UnknownPrice => 'цена ❓',
+            self::UnknownRooms => 'комнаты ❓',
+            self::UnknownFloor => 'этаж ❓',
+            self::UnknownGenerator => 'генератор ❓',
+            self::DistrictOnly => '📍? только район',
+        };
+    }
 }
