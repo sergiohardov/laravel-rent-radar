@@ -1,9 +1,12 @@
 <?php
 
+use App\Models\Listing;
 use App\Models\Source;
+use App\Sources\SourceAlerts;
 use App\Sources\SourceName;
 use App\Sources\SourceRunner;
 use App\Telegram\SendAlert;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Queue;
 use Tests\Fakes\FailingListingSource;
 use Tests\Fakes\FakeListingSource;
@@ -68,4 +71,58 @@ it('stays quiet when a source recovers before the alert', function () {
     app(SourceRunner::class)->run(FakeListingSource::withIds(1, 1, SourceName::Lun));
 
     expect(queuedAlerts())->toBe([]);
+});
+
+it('alerts once when a source brings no new listings for a day', function () {
+    Source::for(SourceName::Lun)->update(['last_run_at' => now()->subMinutes(5)]);
+    Listing::factory()->create(['source' => SourceName::Lun, 'created_at' => now()->subHours(25)]);
+    Listing::factory()->create(['source' => SourceName::Olx, 'created_at' => now()->subHour()]);
+
+    $this->artisan('sources:check-silence')
+        ->expectsOutput('lun: no new listings, alert sent')
+        ->assertSuccessful();
+    $this->artisan('sources:check-silence')->doesntExpectOutputToContain('lun')->assertSuccessful();
+
+    expect(queuedAlerts())->toBe([
+        "🔇 <b>ЛУН</b>: нет новых объявлений 24 ч\n"
+        ."Последнее новое: 03.10 15:55\n"
+        .'Последний запуск: 04.10 16:50',
+    ]);
+});
+
+it('alerts about the next silence after new listings came', function () {
+    $state = Source::for(SourceName::Olx);
+    $state->update(['last_run_at' => now(), 'silence_alerted_at' => now()->subDays(3)]);
+    Listing::factory()->create(['source' => SourceName::Olx, 'created_at' => now()->subDays(2)]);
+
+    expect(app(SourceAlerts::class)->checkSilence($state->refresh(), now()->toImmutable()))->toBeTrue()
+        ->and($state->refresh()->silence_alerted_at->equalTo(now()))->toBeTrue();
+});
+
+it('counts the silence from the first run of a source that never brought listings', function () {
+    $state = Source::for(SourceName::DimRia);
+    $state->update(['last_run_at' => now(), 'consecutive_failures' => 7, 'last_error' => 'ConnectionException: timeout']);
+
+    $alerts = app(SourceAlerts::class);
+    expect($alerts->checkSilence($state->refresh(), now()->addHours(23)->toImmutable()))->toBeFalse()
+        ->and($alerts->checkSilence($state, now()->addHours(24)->toImmutable()))->toBeTrue()
+        ->and(queuedAlerts()[0])->toContain("Последнее новое: не было\n")
+        ->toEndWith('Ошибок подряд — 7: <code>ConnectionException: timeout</code>');
+});
+
+it('ignores disabled sources and sources that never ran', function () {
+    Source::for(SourceName::Lun)->update(['enabled' => false, 'last_run_at' => now()->subDays(3)]);
+    Source::for(SourceName::Olx);
+    $this->travel(3)->days();
+
+    $this->artisan('sources:check-silence')->assertSuccessful();
+
+    expect(queuedAlerts())->toBe([]);
+});
+
+it('checks the silence every hour', function () {
+    $event = collect(app(Schedule::class)->events())
+        ->first(fn ($event) => str_contains($event->command, 'sources:check-silence'));
+
+    expect($event?->expression)->toBe('15 * * * *');
 });

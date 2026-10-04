@@ -12,3 +12,6 @@ Schedule::command('listings:retry-failed')->hourlyAt(30)->withoutOverlapping(5);
 // Listing cards wait in the database queue; like the hosting cron, a short-lived worker
 // drains it every minute
 Schedule::command('queue:work --stop-when-empty --max-time=50')->everyMinute()->withoutOverlapping(5);
+
+// A source that runs without errors but brings nothing new is broken too
+Schedule::command('sources:check-silence')->hourlyAt(15);

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 #[Fillable([
     'name', 'enabled', 'use_proxy', 'interval_min_minutes', 'interval_max_minutes', 'next_run_at',
     'last_run_at', 'last_success_at', 'last_report',
-    'last_error', 'last_error_at', 'consecutive_failures',
+    'last_error', 'last_error_at', 'consecutive_failures', 'silence_alerted_at',
 ])]
 class Source extends Model
 {
@@ -65,6 +65,7 @@ class Source extends Model
             'last_report' => 'array',
             'last_error_at' => 'immutable_datetime',
             'consecutive_failures' => 'integer',
+            'silence_alerted_at' => 'immutable_datetime',
         ];
     }
 }

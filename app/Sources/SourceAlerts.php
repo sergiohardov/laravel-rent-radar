@@ -2,6 +2,7 @@
 
 namespace App\Sources;
 
+use App\Models\Listing;
 use App\Models\Source;
 use App\Telegram\SendAlert;
 use Carbon\CarbonImmutable;
@@ -36,6 +37,41 @@ final class SourceAlerts
             'source' => $state->name->label(),
             'failures' => $failuresBefore,
         ]);
+    }
+
+    /**
+     * Alerts when an enabled source brought no new listings for the silence
+     * window, counting from its first run when it never brought any.
+     *
+     * @return bool whether the alert went out
+     */
+    public function checkSilence(Source $state, CarbonImmutable $now): bool
+    {
+        if (! $state->enabled || $state->last_run_at === null) {
+            return false;
+        }
+
+        $lastNew = Listing::query()->where('source', $state->name)->latest()->value('created_at')?->toImmutable();
+        $silentSince = $lastNew ?? $state->created_at->toImmutable();
+        $hours = (int) config('sources.silence_alert_hours');
+
+        $silent = $silentSince->lte($now->subHours($hours));
+        $alreadyAlerted = $state->silence_alerted_at?->gte($silentSince) ?? false;
+        if (! $silent || $alreadyAlerted) {
+            return false;
+        }
+
+        $this->send('source-silent', [
+            'source' => $state->name->label(),
+            'hours' => $hours,
+            'lastNew' => $this->kyiv($lastNew),
+            'lastRun' => $this->kyiv($state->last_run_at),
+            'failures' => $state->consecutive_failures,
+            'error' => $state->last_error,
+        ]);
+        $state->update(['silence_alerted_at' => $now]);
+
+        return true;
     }
 
     /**
