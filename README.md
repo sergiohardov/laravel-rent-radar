@@ -48,7 +48,7 @@ docker compose down                         # остановить; данные
 |---|---|
 | `php` | PHP 8.4 + Apache с лимитами хостинга (128M, 60 с), код монтируется из папки проекта |
 | `scheduler` | тот же образ, supercronic раз в минуту запускает `artisan schedule:run` — как cron на хостинге: опрос площадок, повтор `failed`, проверка «сутки без новых объявлений», очередь карточек и алертов (`queue:work --stop-when-empty`) |
-| `postgres` | PostgreSQL 16, базы `rent_radar` и `rent_radar_test`; с хоста — порт 5433 |
+| `postgres` | PostgreSQL 10, как на хостинге; базы `rent_radar` и `rent_radar_test`; с хоста — порт 5433 |
 | `node` | Node 24 для сборки ассетов, запускается разово |
 | `cloudflared` | быстрый туннель без аккаунта Cloudflare; адрес меняется при каждом запуске |
 
