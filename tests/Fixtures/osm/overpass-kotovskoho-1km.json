@@ -1,0 +1,2166 @@
+{
+ "version": 0.6,
+ "generator": "Overpass API 0.7.62.11 87bfad18",
+ "osm3s": {
+  "timestamp_osm_base": "2026-10-04T10:40:51Z",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+ },
+ "elements": [
+  {
+   "type": "node",
+   "id": 337689250,
+   "tags": {
+    "katotth": "UA51100350060059983",
+    "koatuu": "5122783202",
+    "name": "Ліски",
+    "name:en": "Lisky",
+    "name:ko": "리스키",
+    "name:prefix": "селище",
+    "name:ru": "Лески",
+    "name:uk": "Ліски",
+    "place": "village",
+    "population": "543",
+    "postal_code": "67562",
+    "wikidata": "Q4259386",
+    "wikimedia_commons": "Category:Lisky (Odesa Raion)",
+    "wikipedia": "uk:Ліски (Одеський район)"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3923566285,
+   "tags": {
+    "description": "У 1958 році як розвиток сел. Кисельово було засновано селище ім. Котовського (тобто одноповерхова індівідуальна забудова). Пізніше поряд і на місті частини селища з'явився ж/м ім. Котовського",
+    "name": "Селище Котовського",
+    "name:ko": "셀리셰 코토우스코호",
+    "name:ru": "Посёлок Котовского",
+    "name:uk": "Селище Котовського",
+    "old_name": "Селище Кисельово",
+    "place": "suburb"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4081668345,
+   "tags": {
+    "name": "Мікрорайон \"ІІІ-4-1\"",
+    "name:ko": "미크로라욘",
+    "name:ru": "Микрорайон \"ІІІ-4-1\"",
+    "name:uk": "Мікрорайон \"ІІІ-4-1\"",
+    "place": "neighbourhood"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4081668346,
+   "tags": {
+    "name": "Мікрорайон \"ІІІ-4-2\"",
+    "name:ko": "미크로라욘",
+    "name:ru": "Микрорайон \"ІІІ-4-2\"",
+    "name:uk": "Мікрорайон \"ІІІ-4-2\"",
+    "place": "neighbourhood"
+   }
+  },
+  {
+   "type": "node",
+   "id": 4085781693,
+   "tags": {
+    "name": "Мікрорайон \"ІІІ-3-2\"",
+    "name:ko": "미크로라욘",
+    "name:ru": "Микрорайон \"ІІІ-3-2\"",
+    "name:uk": "Мікрорайон \"ІІІ-3-2\"",
+    "place": "neighbourhood"
+   }
+  },
+  {
+   "type": "way",
+   "id": 26545925,
+   "tags": {
+    "highway": "residential",
+    "name": "вулиця Ярослава Баіса",
+    "old_name": "вулиця Володимира Висоцького",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 26546089,
+   "tags": {
+    "highway": "tertiary",
+    "lit": "yes",
+    "name": "вулиця Академіка Сахарова",
+    "name:en": "Akademika Sakharova Street",
+    "name:ru": "Академика Сахарова улица",
+    "name:uk": "вулиця Академіка Сахарова",
+    "oneway": "no",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 26546151,
+   "tags": {
+    "highway": "tertiary",
+    "lit": "yes",
+    "name": "Марсельська вулиця",
+    "name:en": "Marselska Street",
+    "name:ru": "Марсельская улица",
+    "name:uk": "Марсельська вулиця",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 52698934,
+   "tags": {
+    "abutters": "residential",
+    "cycleway:right": "lane",
+    "highway": "primary",
+    "lanes": "3",
+    "lit": "yes",
+    "maxspeed": "50",
+    "name": "вулиця Семена Палія",
+    "old_name": "Дніпропетровська дорога",
+    "oneway": "yes",
+    "sidewalk": "right",
+    "smoothness": "good",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 56124221,
+   "tags": {
+    "cycleway": "lane",
+    "highway": "tertiary",
+    "lit": "yes",
+    "name": "вулиця Владислава Бувалкіна",
+    "old_name": "вулиця Генерала Бочарова",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 116233700,
+   "tags": {
+    "addr:housenumber": "93а",
+    "addr:street": "вулиця Семена Палія",
+    "building": "retail",
+    "building:levels": "2",
+    "height": "10",
+    "name": "Сім'я",
+    "name:en": "Simia",
+    "name:ru": "Семья",
+    "name:uk": "Сім'я",
+    "opening_hours": "08:00-23:00",
+    "shop": "mall",
+    "toilets": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 161868326,
+   "tags": {
+    "addr:housenumber": "34",
+    "addr:postcode": "65123",
+    "addr:street": "вулиця Академіка Сахарова",
+    "building": "apartments",
+    "building:levels": "16",
+    "name": "Житловий комплекс \"Одісей\"",
+    "name:uk": "Житловий комплекс \"Одісей\""
+   }
+  },
+  {
+   "type": "way",
+   "id": 170714263,
+   "tags": {
+    "addr:housenumber": "43а",
+    "addr:postcode": "65123",
+    "addr:street": "вулиця Семена Палія",
+    "amenity": "place_of_worship",
+    "building": "temple",
+    "denomination": "orthodox",
+    "name": "Храм ікони Божої Матері \"Споручниця грішних\" УПЦ МП",
+    "name:ru": "Храм иконы Божией Матери \"Споручница грешных\" УПЦ МП",
+    "name:uk": "Храм ікони Божої Матері \"Споручниця грішних\" УПЦ МП",
+    "religion": "christian"
+   }
+  },
+  {
+   "type": "way",
+   "id": 183366655,
+   "tags": {
+    "bicycle": "yes",
+    "highway": "pedestrian",
+    "lit": "yes",
+    "name": "Кримська вулиця",
+    "smoothness": "good",
+    "source": "survey",
+    "surface": "paving_stones"
+   }
+  },
+  {
+   "type": "way",
+   "id": 184160295,
+   "tags": {
+    "addr:housenumber": "26 к6",
+    "addr:street": "вулиця Академіка Заболотного",
+    "building": "hospital",
+    "building:levels": "1",
+    "name": "Міське анатомічне бюро",
+    "name:ru": "Городское анатомическое бюро",
+    "name:uk": "Міське анатомічне бюро"
+   }
+  },
+  {
+   "type": "way",
+   "id": 186634919,
+   "tags": {
+    "addr:housenumber": "30а",
+    "addr:street": "вулиця Академіка Сахарова",
+    "amenity": "doctors",
+    "building": "yes",
+    "building:levels": "1",
+    "healthcare": "doctor",
+    "name": "КП Центр реабілітації осіб з відхиленням психофізичного розвитку",
+    "name:ru": "КП Центр реабилитации лиц с отклонением психофизического развития",
+    "name:uk": "КП Центр реабілітації осіб з відхиленням психофізичного розвитку",
+    "phone": "+380 48 737 5992",
+    "website": "https://recin-centr.od.ua/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 192053006,
+   "tags": {
+    "addr:housenumber": "96/1",
+    "addr:postcode": "65069",
+    "addr:street": "вулиця Семена Палія",
+    "brand": "Таврія В",
+    "brand:en": "Tavria V",
+    "brand:ru": "Таврия В",
+    "brand:uk": "Таврія В",
+    "brand:wikidata": "Q7689159",
+    "brand:wikipedia": "uk:Таврія В",
+    "building": "supermarket",
+    "building:levels": "1",
+    "int_name": "Tavria V",
+    "name": "Таврія В",
+    "name:en": "Tavria V",
+    "name:ru": "Таврия В",
+    "name:uk": "Таврія В",
+    "opening_hours": "08:00-23:00",
+    "phone": "+380 48 716 2573",
+    "shop": "supermarket",
+    "url": "http://tavriav.org",
+    "website": "https://tavriav.ua/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 192056671,
+   "tags": {
+    "addr:housenumber": "40",
+    "addr:postcode": "65123",
+    "addr:street": "вулиця Академіка Сахарова",
+    "building": "apartments",
+    "building:levels": "10",
+    "name": "Будинок \"Саме то\"",
+    "source": "http://omr.gov.ua/ru/news/49809/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 192511090,
+   "tags": {
+    "addr:housenumber": "71 к2",
+    "addr:postcode": "65123",
+    "addr:street": "вулиця Академіка Заболотного",
+    "building": "apartments",
+    "building:levels": "10",
+    "name": "ОДСМД Гармонія",
+    "name:uk": "ОДСМД Гармонія"
+   }
+  },
+  {
+   "type": "way",
+   "id": 193120336,
+   "tags": {
+    "addr:housenumber": "42",
+    "addr:street": "Марсельська вулиця",
+    "building": "apartments",
+    "building:levels": "10",
+    "name": "Житловий комплекс \"Рожевий фламінго\"",
+    "name:uk": "Житловий комплекс \"Рожевий фламінго\""
+   }
+  },
+  {
+   "type": "way",
+   "id": 193451971,
+   "tags": {
+    "addr:housenumber": "46",
+    "addr:street": "вулиця Академіка Заболотного",
+    "building": "kindergarten",
+    "building:levels": "2",
+    "name": "ДС №287"
+   }
+  },
+  {
+   "type": "way",
+   "id": 196766934,
+   "tags": {
+    "addr:housenumber": "59а",
+    "addr:postcode": "65123",
+    "addr:street": "вулиця Академіка Заболотного",
+    "amenity": "cafe",
+    "building": "yes",
+    "building:levels": "1",
+    "cuisine": "regional",
+    "int_name": "Zabava",
+    "internet_access": "wlan",
+    "name": "Забава",
+    "name:en": "Zabava",
+    "name:ru": "Забава",
+    "name:uk": "Забава"
+   }
+  },
+  {
+   "type": "way",
+   "id": 196769041,
+   "tags": {
+    "addr:housenumber": "57/2а",
+    "addr:street": "вулиця Академіка Заболотного",
+    "amenity": "restaurant",
+    "building": "yes",
+    "building:levels": "2",
+    "cuisine": "international",
+    "name": "Сканді",
+    "name:en": "Skandi",
+    "name:uk": "Сканді",
+    "opening_hours": "Mo-Su 12:00-02:00",
+    "phone": "+380 48 711 3712",
+    "website": "https://skandi.od.ua/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 196870220,
+   "tags": {
+    "highway": "primary",
+    "maxspeed": "50",
+    "name": "вулиця Академіка Заболотного",
+    "name:pl": "ulica Akademika Zabołotnego",
+    "name:ru": "улица Академика Заболотного",
+    "name:uk": "вулиця Академіка Заболотного",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 196870225,
+   "tags": {
+    "brand": "Вина Світу",
+    "brand:wikidata": "Q122226816",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "Вина Світу",
+    "name:uk": "Вина світу",
+    "shop": "wine"
+   }
+  },
+  {
+   "type": "way",
+   "id": 196873476,
+   "tags": {
+    "highway": "residential",
+    "int_name": "Semena Paliya Street",
+    "lit": "yes",
+    "name": "вулиця Семена Палія",
+    "name:en": "Semen Paliy Street",
+    "name:pl": "ulica Semena Paleja",
+    "name:ru": "Семёна Палия улиця",
+    "name:uk": "вулиця Семена Палія",
+    "oneway": "yes",
+    "sidewalk:left": "separate",
+    "sidewalk:right": "yes",
+    "sidewalk:right:surface": "asphalt",
+    "smoothness": "good",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 196873680,
+   "tags": {
+    "addr:housenumber": "125Б",
+    "addr:postcode": "65086",
+    "addr:street": "вулиця Семена Палія",
+    "building": "yes",
+    "building:levels": "3",
+    "name": "DEPOt",
+    "name:en": "DEPOt",
+    "name:uk": "DEPOt",
+    "opening_hours": "Mo-Su 09:00-23:00",
+    "phone": "+380 48 711 0555",
+    "shop": "mall"
+   }
+  },
+  {
+   "type": "way",
+   "id": 196906373,
+   "tags": {
+    "highway": "residential",
+    "name": "Проектна вулиця",
+    "name:ru": "Проектная улица",
+    "name:uk": "Проектна вулиця",
+    "source": "digitalglobe",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 196914001,
+   "tags": {
+    "barrier": "fence",
+    "fence_type": "concrete",
+    "landuse": "residential",
+    "name": "ЖК \"Академічний\"",
+    "name:ru": "ЖК \"Академический\"",
+    "name:uk": "ЖК \"Академічний\"",
+    "phone": "+380 63 378 6036",
+    "place": "neighbourhood"
+   }
+  },
+  {
+   "type": "way",
+   "id": 196958959,
+   "tags": {
+    "landuse": "residential",
+    "name": "Житловий комплекс \"Зелений мис\"",
+    "name:ru": "Жилой комплекс \"Зелёный мыс\"",
+    "name:uk": "Житловий комплекс \"Зелений мис\"",
+    "place": "neighbourhood",
+    "residential": "urban",
+    "website": "http://odessamys.com/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 196961892,
+   "tags": {
+    "building": "retail",
+    "building:levels": "1",
+    "name": "Епіцентр",
+    "name:uk": "Епіцентр",
+    "shop": "outpost",
+    "website": "https://epicentrk.ua/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 200763047,
+   "tags": {
+    "abutters": "residential",
+    "cycleway:left": "lane",
+    "cycleway:right": "lane",
+    "highway": "primary",
+    "lanes": "4",
+    "maxspeed": "50",
+    "name": "вулиця Академіка Заболотного",
+    "name:en": "Akademika Zabolotnoho Street",
+    "name:pl": "ulica Akademika Zabołotnego",
+    "name:ru": "улица Академика Заболотного",
+    "name:uk": "вулиця Академіка Заболотного",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 200763048,
+   "tags": {
+    "highway": "primary",
+    "lanes": "3",
+    "lit": "yes",
+    "maxspeed": "50",
+    "name": "вулиця Семена Палія",
+    "old_name": "Дніпропетровська дорога",
+    "oneway": "yes",
+    "smoothness": "good",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 200763049,
+   "tags": {
+    "abutters": "residential",
+    "cycleway:right": "lane",
+    "highway": "trunk",
+    "int_name": "Semena Paliya Street",
+    "lanes": "3",
+    "lit": "yes",
+    "maxspeed": "50",
+    "name": "вулиця Семена Палія",
+    "name:en": "Semen Paliy Street",
+    "name:pl": "ulica Semena Paleja",
+    "name:ru": "Семёна Палия улиця",
+    "name:uk": "вулиця Семена Палія",
+    "old_name": "Дніпропетровська дорога",
+    "old_ref": "М-05",
+    "oneway": "yes",
+    "ref": "М-28-01",
+    "smoothness": "good",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 200763051,
+   "tags": {
+    "abutters": "residential",
+    "cycleway:right": "lane",
+    "highway": "trunk",
+    "int_name": "Semena Paliya Street",
+    "lanes": "3",
+    "lit": "yes",
+    "maxspeed": "50",
+    "name": "вулиця Семена Палія",
+    "name:en": "Semen Paliy Street",
+    "name:pl": "ulica Semena Paleja",
+    "name:ru": "Семёна Палия улиця",
+    "name:uk": "вулиця Семена Палія",
+    "old_name": "Дніпропетровська дорога",
+    "old_ref": "М-05",
+    "oneway": "yes",
+    "ref": "М-28-01",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 262336055,
+   "tags": {
+    "addr:housenumber": "32",
+    "addr:postcode": "65025",
+    "addr:street": "вулиця Давида Ойстраха",
+    "building": "retail",
+    "building:levels": "2",
+    "building:part": "yes",
+    "contact:instagram": "https://www.instagram.com/citycenter_od/",
+    "height": "10",
+    "internet_access": "wlan",
+    "name": "City Center Котовський",
+    "opening_hours": "10:00-22:00",
+    "phone": "+380 50 495 9980",
+    "shop": "mall",
+    "toilets": "yes",
+    "website": "http://city-center.od.ua/kotovsky/",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 323162532,
+   "tags": {
+    "abutters": "residential",
+    "highway": "trunk",
+    "lanes": "4",
+    "maxspeed": "50",
+    "name": "вулиця Академіка Заболотного",
+    "name:en": "Akademika Zabolotnoho Street",
+    "name:pl": "ulica Akademika Zabołotnego",
+    "name:ru": "улица Академика Заболотного",
+    "name:uk": "вулиця Академіка Заболотного",
+    "old_ref": "М-05",
+    "ref": "М-28-01"
+   }
+  },
+  {
+   "type": "way",
+   "id": 323162535,
+   "tags": {
+    "abutters": "residential",
+    "cycleway:right": "lane",
+    "highway": "primary",
+    "lanes": "3",
+    "lit": "yes",
+    "maxspeed": "50",
+    "name": "вулиця Семена Палія",
+    "old_name": "Дніпропетровська дорога",
+    "oneway": "yes",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 328867928,
+   "tags": {
+    "addr:housenumber": "50",
+    "addr:postcode": "65123",
+    "addr:street": "вулиця Владислава Бувалкіна",
+    "building": "retail",
+    "building:levels": "2",
+    "internet_access": "wlan",
+    "name": "Атріум",
+    "name:en": "Atrium",
+    "name:ru": "Атриум",
+    "name:uk": "Атріум",
+    "opening_hours": "Mo-Su 08:00-23:00",
+    "phone": "+380 63 828 8708",
+    "shop": "mall",
+    "website": "https://www.atriumodessa.com/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 328867929,
+   "tags": {
+    "addr:housenumber": "75",
+    "addr:postcode": "65086",
+    "addr:street": "вулиця Владислава Бувалкіна",
+    "building": "apartments",
+    "building:levels": "10",
+    "name": "Житловий комплекс \"Новий квартал\"",
+    "name:ru": "Жилой комплекс \"Новый квартал\"",
+    "name:uk": "Житловий комплекс \"Новий квартал\""
+   }
+  },
+  {
+   "type": "way",
+   "id": 328867933,
+   "tags": {
+    "addr:housenumber": "63/1",
+    "addr:postcode": "65123",
+    "addr:street": "вулиця Академіка Заболотного",
+    "building": "apartments",
+    "building:levels": "10",
+    "name": "Житловий комплекс \"Ідеал\"",
+    "name:ru": "Жилой комплекс \"Идеал\"",
+    "name:uk": "Житловий комплекс \"Ідеал\""
+   }
+  },
+  {
+   "type": "way",
+   "id": 329014000,
+   "tags": {
+    "addr:housenumber": "103Б",
+    "addr:street": "вулиця Семена Палія",
+    "building": "retail",
+    "building:levels": "2",
+    "name": "Екватор",
+    "name:en": "Equator",
+    "name:ru": "Экватор",
+    "name:uk": "Екватор",
+    "shop": "mall"
+   }
+  },
+  {
+   "type": "way",
+   "id": 329014001,
+   "tags": {
+    "addr:housenumber": "109а",
+    "addr:street": "вулиця Семена Палія",
+    "amenity": "police",
+    "building": "yes",
+    "name": "Суворовський відділ поліції ДУНП №5,№6",
+    "name:ru": "Суворовский отдел полиции ГУНП №5,№6",
+    "name:uk": "Суворовський відділ поліції ДУНП №5,№6"
+   }
+  },
+  {
+   "type": "way",
+   "id": 329014034,
+   "tags": {
+    "building": "yes",
+    "building:levels": "1",
+    "name": "Продукти",
+    "name:en": "Produkty",
+    "name:uk": "Продукти",
+    "shop": "convenience"
+   }
+  },
+  {
+   "type": "way",
+   "id": 329014049,
+   "tags": {
+    "addr:housenumber": "127/3",
+    "addr:street": "вулиця Семена Палія",
+    "building": "yes",
+    "building:levels": "3",
+    "contact:facebook": "tcvolna",
+    "contact:instagram": "volna_tc",
+    "name": "Волна",
+    "name:en": "TC Volna 1",
+    "name:ru": "ТЦ Волна 1",
+    "name:uk": "ТЦ Волна 1",
+    "opening_hours": "Mo-Su 10:00-20:00",
+    "phone": "+380 68 302 3604",
+    "shop": "mall",
+    "website": "https://volna-odessa.com.ua"
+   }
+  },
+  {
+   "type": "way",
+   "id": 335037461,
+   "tags": {
+    "highway": "service",
+    "name": "вулиця Владислава Бувалкіна",
+    "name:en": "Vladyslava Buvalkina Street",
+    "name:uk": "вулиця Владислава Бувалкіна",
+    "old_name": "вулиця Генерала Бочарова",
+    "old_name:en": "Henerala Bocharova Street",
+    "old_name:uk": "вулиця Генерала Бочарова",
+    "oneway": "yes",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 351959722,
+   "tags": {
+    "addr:housenumber": "21",
+    "addr:postcode": "65123",
+    "addr:street": "вулиця Семена Палія",
+    "building": "apartments",
+    "building:levels": "19",
+    "name": "ЖК Новий маяк",
+    "name:ru": "ЖК Новый маяк",
+    "name:uk": "ЖК Новий маяк"
+   }
+  },
+  {
+   "type": "way",
+   "id": 351959723,
+   "tags": {
+    "addr:housenumber": "9а",
+    "addr:street": "вулиця Ярослава Баїса",
+    "building": "retail",
+    "building:levels": "1",
+    "name": "VARUS",
+    "name:uk": "Копійка",
+    "shop": "supermarket"
+   }
+  },
+  {
+   "type": "way",
+   "id": 365707056,
+   "tags": {
+    "highway": "tertiary",
+    "lanes": "2",
+    "lit": "yes",
+    "name": "вулиця Академіка Сахарова",
+    "name:en": "Akademika Sakharova Street",
+    "name:ru": "Академика Сахарова улица",
+    "name:uk": "вулиця Академіка Сахарова",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 387004504,
+   "tags": {
+    "highway": "residential",
+    "name": "вулиця Давида Ойстраха",
+    "name:ru": "улица Давида Ойстраха",
+    "old_name": "вулиця Затонського"
+   }
+  },
+  {
+   "type": "way",
+   "id": 387826950,
+   "tags": {
+    "addr:housenumber": "43а",
+    "addr:street": "вулиця Академіка Заболотного",
+    "amenity": "cafe",
+    "building": "yes",
+    "building:levels": "1",
+    "contact:instagram": "https://www.instagram.com/kafe_ykarasia/",
+    "name": "У Карася",
+    "name:en": "U Karasia",
+    "name:ru": "У Карася",
+    "name:uk": "У Карася",
+    "opening_hours": "24/7",
+    "phone": "+380 63 533 0073;+380 67 844 1694",
+    "website": "https://y-karasya.od.ua/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 387826958,
+   "tags": {
+    "addr:housenumber": "28а",
+    "addr:street": "вулиця Академіка Заболотного",
+    "amenity": "post_office",
+    "building": "yes",
+    "building:levels": "1",
+    "internet_access": "wlan",
+    "name": "Нова Пошта № 109",
+    "name:uk": "Нова Пошта № 109",
+    "operator": "Нова Пошта",
+    "operator:wikidata": "Q12133863",
+    "website": "https://novaposhta.ua/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 388119296,
+   "tags": {
+    "bicycle": "yes",
+    "highway": "pedestrian",
+    "lit": "yes",
+    "name": "Кримська вулиця",
+    "smoothness": "good",
+    "source": "survey",
+    "surface": "paving_stones"
+   }
+  },
+  {
+   "type": "way",
+   "id": 388119297,
+   "tags": {
+    "highway": "pedestrian",
+    "name": "Кримська вулиця",
+    "name:en": "Krymska Street",
+    "name:pl": "ulica Krymska",
+    "name:ru": "Крымская улица",
+    "name:uk": "Кримська вулиця",
+    "surface": "paving_stones"
+   }
+  },
+  {
+   "type": "way",
+   "id": 388119298,
+   "tags": {
+    "highway": "pedestrian",
+    "lit": "yes",
+    "name": "Кримська вулиця",
+    "smoothness": "good",
+    "surface": "paving_stones"
+   }
+  },
+  {
+   "type": "way",
+   "id": 388577215,
+   "tags": {
+    "building": "residential",
+    "building:levels": "1",
+    "name": "Диспетчерська",
+    "name:uk": "Диспетчерська"
+   }
+  },
+  {
+   "type": "way",
+   "id": 389202322,
+   "tags": {
+    "addr:housenumber": "59",
+    "addr:postcode": "65123",
+    "addr:street": "вулиця Владислава Бувалкіна",
+    "amenity": "doctors",
+    "building": "yes",
+    "building:levels": "5",
+    "healthcare": "doctor",
+    "name": "Дитяча поліклініка №2",
+    "name:ru": "Детская поликлиника №2",
+    "name:uk": "Дитяча поліклініка №2",
+    "phone": "+380 48 711 4184;+380 48 711 4185"
+   }
+  },
+  {
+   "type": "way",
+   "id": 396100463,
+   "tags": {
+    "highway": "residential",
+    "name": "Кримська вулиця",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 405126309,
+   "tags": {
+    "landuse": "residential",
+    "name": "ЖК \"Європейський\"",
+    "name:ru": "ЖК \"Европейский\"",
+    "name:uk": "ЖК \"Європейський\"",
+    "place": "neighbourhood",
+    "residential": "apartments"
+   }
+  },
+  {
+   "type": "way",
+   "id": 405126312,
+   "tags": {
+    "landuse": "residential",
+    "name": "Житловий комплекс \"Суворівський\"",
+    "name:ru": "Жилой комплекс \"Суворовский\"",
+    "name:uk": "Житловий комплекс \"Суворівський\"",
+    "place": "neighbourhood",
+    "residential": "apartments"
+   }
+  },
+  {
+   "type": "way",
+   "id": 405126316,
+   "tags": {
+    "landuse": "residential",
+    "name": "ЖК \"Smart\"",
+    "name:uk": "ЖК \"Smart\"",
+    "place": "neighbourhood",
+    "residential": "apartments"
+   }
+  },
+  {
+   "type": "way",
+   "id": 405373870,
+   "tags": {
+    "addr:housenumber": "63",
+    "addr:postcode": "65123",
+    "addr:street": "вулиця Академіка Заболотного",
+    "building": "apartments",
+    "building:levels": "10",
+    "name": "Житловий комплекс \"Ідеал-2\"",
+    "name:ru": "Жилой комплекс \"Идеал-2\"",
+    "name:uk": "Житловий комплекс \"Ідеал-2\""
+   }
+  },
+  {
+   "type": "way",
+   "id": 405745712,
+   "tags": {
+    "alt_name": "ЖК «на вул. Академіка Заболотного, 34»",
+    "landuse": "residential",
+    "name": "Житловий комплекс \"Гулівер\"",
+    "name:ru": "Жилой комплекс \"Гулливер\"",
+    "name:uk": "Житловий комплекс \"Гулівер\"",
+    "residential": "urban"
+   }
+  },
+  {
+   "type": "way",
+   "id": 405766329,
+   "tags": {
+    "addr:housenumber": "50",
+    "addr:postcode": "65123",
+    "addr:street": "вулиця Академіка Сахарова",
+    "building": "apartments",
+    "building:levels": "16",
+    "name": "Житловий комплекс \"На Сахарова\"",
+    "name:ru": "Жилой комплекс \"На Сахарова\"",
+    "name:uk": "Житловий комплекс \"На Сахарова\""
+   }
+  },
+  {
+   "type": "way",
+   "id": 405779140,
+   "tags": {
+    "addr:housenumber": "3-А",
+    "addr:street": "вулиця Академіка Сахарова",
+    "building": "apartments",
+    "building:levels": "17",
+    "name": "20-я Жемчужина"
+   }
+  },
+  {
+   "type": "way",
+   "id": 405779143,
+   "tags": {
+    "landuse": "residential",
+    "name": "Житловий комплекс \"Чайка\"",
+    "name:ru": "Жилой комплекс \"Чайка\"",
+    "name:uk": "Житловий комплекс \"Чайка\"",
+    "place": "neighbourhood",
+    "residential": "apartments"
+   }
+  },
+  {
+   "type": "way",
+   "id": 406024294,
+   "tags": {
+    "landuse": "residential",
+    "name": "Житловий комплекс \"Молодіжне містечко\"",
+    "name:uk": "Житловий комплекс \"Молодіжне містечко\"",
+    "residential": "urban"
+   }
+  },
+  {
+   "type": "way",
+   "id": 412715202,
+   "tags": {
+    "landuse": "residential",
+    "name": "Житловий комплекс \"Купідон\"",
+    "name:uk": "Житловий комплекс \"Купідон\"",
+    "residential": "urban"
+   }
+  },
+  {
+   "type": "way",
+   "id": 412716782,
+   "tags": {
+    "landuse": "residential",
+    "name": "Житловий комплекс \"Топольки\"",
+    "name:uk": "Житловий комплекс \"Топольки\"",
+    "residential": "urban"
+   }
+  },
+  {
+   "type": "way",
+   "id": 412736843,
+   "tags": {
+    "addr:housenumber": "58",
+    "addr:postcode": "65123",
+    "addr:street": "Марсельська вулиця",
+    "building": "apartments",
+    "building:levels": "9",
+    "name": "ЖМ Острови"
+   }
+  },
+  {
+   "type": "way",
+   "id": 412742738,
+   "tags": {
+    "landuse": "residential",
+    "name": "Житловий комплекс \"Смарагдове місто\"",
+    "name:uk": "Житловий комплекс \"Смарагдове місто\"",
+    "residential": "urban"
+   }
+  },
+  {
+   "type": "way",
+   "id": 434829101,
+   "tags": {
+    "addr:housenumber": "71 к1",
+    "addr:postcode": "65123",
+    "addr:street": "вулиця Академіка Заболотного",
+    "building": "apartments",
+    "building:levels": "10",
+    "name": "ОДСМД Гармонія",
+    "name:uk": "ОДСМД Гармонія"
+   }
+  },
+  {
+   "type": "way",
+   "id": 440038155,
+   "tags": {
+    "addr:housenumber": "98",
+    "addr:street": "вулиця Семена Палія",
+    "amenity": "pharmacy",
+    "building": "retail",
+    "building:levels": "1",
+    "dispensing": "yes",
+    "healthcare": "pharmacy",
+    "name": "АКС",
+    "name:uk": "АКС",
+    "phone": "+380 48 777 7748",
+    "website": "https://aks-apteka.com.ua/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 441039827,
+   "tags": {
+    "building": "yes",
+    "building:levels": "1",
+    "name": "Магазин 24/7"
+   }
+  },
+  {
+   "type": "way",
+   "id": 445398021,
+   "tags": {
+    "abutters": "residential",
+    "cycleway:left": "lane",
+    "cycleway:right": "lane",
+    "highway": "primary",
+    "lanes": "4",
+    "maxspeed": "50",
+    "name": "вулиця Академіка Заболотного",
+    "name:en": "Akademika Zabolotnoho Street",
+    "name:pl": "ulica Akademika Zabołotnego",
+    "name:ru": "улица Академика Заболотного",
+    "name:uk": "вулиця Академіка Заболотного",
+    "smoothness": "good",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 445566631,
+   "tags": {
+    "addr:housenumber": "1б",
+    "addr:street": "вулиця Академіка Сахарова",
+    "amenity": "car_wash",
+    "automated": "no",
+    "building": "yes",
+    "building:levels": "1",
+    "name": "Clean Car",
+    "name:en": "Clean Car",
+    "name:uk": "Clean Car",
+    "self_service": "only"
+   }
+  },
+  {
+   "type": "way",
+   "id": 445566632,
+   "tags": {
+    "addr:street": "вулиця Академіка Сахарова",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "AvtoDrive-Servis",
+    "name:uk": "AvtoDrive-Servis",
+    "shop": "car_repair",
+    "website": "https://avtodrive-servis.od.ua/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 462193232,
+   "tags": {
+    "barrier": "wall",
+    "landuse": "residential",
+    "name": "ЖК \"Suncity\"",
+    "name:uk": "ЖК \"Suncity\""
+   }
+  },
+  {
+   "type": "way",
+   "id": 462194937,
+   "tags": {
+    "contact:facebook": "https://www.facebook.com/solaris.net.ua",
+    "contact:vk": "https://vk.com/solarisod",
+    "email": "s@solaris.net.ua",
+    "landuse": "residential",
+    "name": "Житловий комплекс \"Solaris\"",
+    "name:ru": "Жилой комплекс \"Solaris\"",
+    "name:uk": "Житловий комплекс \"Solaris\"",
+    "phone": "+380 48 788 1211",
+    "residential": "urban",
+    "website": "https://solaris.net.ua/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 462195777,
+   "tags": {
+    "landuse": "residential",
+    "name": "Житловий комплекс \"Eco Solaris\"",
+    "name:uk": "Житловий комплекс \"Eco Solaris\"",
+    "place": "neighbourhood",
+    "residential": "apartments"
+   }
+  },
+  {
+   "type": "way",
+   "id": 462195779,
+   "tags": {
+    "addr:housenumber": "3-Б",
+    "addr:street": "вулиця Академіка Сахарова",
+    "building": "apartments",
+    "building:levels": "23",
+    "name": "30-я Жемчужина"
+   }
+  },
+  {
+   "type": "way",
+   "id": 485649898,
+   "tags": {
+    "addr:housenumber": "2",
+    "addr:postcode": "65480",
+    "addr:street": "вулиця Академіка Сахарова",
+    "brand": "Varus",
+    "brand:wikidata": "Q114944216",
+    "building": "retail",
+    "building:levels": "1",
+    "name": "Varus",
+    "opening_hours": "Mo-Su 07:00-22:00",
+    "shop": "supermarket",
+    "website": "https://varus.ua/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 485649900,
+   "tags": {
+    "addr:housenumber": "50",
+    "addr:street": "вулиця Генерала Бочарова",
+    "amenity": "restaurant",
+    "building": "yes",
+    "building:levels": "2",
+    "contact:instagram": "https://www.instagram.com/uha.restaurant/",
+    "name": "Уха",
+    "name:uk": "Уха"
+   }
+  },
+  {
+   "type": "way",
+   "id": 485649902,
+   "tags": {
+    "addr:housenumber": "1б/3",
+    "addr:street": "вулиця Академіка Сахарова",
+    "brand": "АТБ-Маркет",
+    "brand:en": "ATB-Market",
+    "brand:uk": "АТБ-Маркет",
+    "brand:wikidata": "Q4054103",
+    "brand:wikipedia": "uk:АТБ-Маркет",
+    "building": "yes",
+    "building:levels": "2",
+    "name": "АТБ-Маркет",
+    "name:en": "ATB-Market",
+    "name:ru": "АТБ-Маркет",
+    "name:uk": "АТБ-Маркет",
+    "opening_hours": "24/7",
+    "operator": "АТБ",
+    "phone:UA": "0 800 500 415",
+    "shop": "supermarket",
+    "website": "https://www.atbmarket.com/uk"
+   }
+  },
+  {
+   "type": "way",
+   "id": 499396552,
+   "tags": {
+    "highway": "residential",
+    "lit": "yes",
+    "name": "вулиця Ярослава Баїса",
+    "old_name": "вулиця Володимира Висоцького",
+    "sidewalk": "both",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 504458301,
+   "tags": {
+    "building": "yes",
+    "building:levels": "1",
+    "frequency": "50",
+    "name": "ТП-2566",
+    "name:uk": "ТП-2566",
+    "power": "substation",
+    "substation": "minor_distribution",
+    "utility": "power",
+    "voltage": "10000;380"
+   }
+  },
+  {
+   "type": "way",
+   "id": 507075860,
+   "tags": {
+    "building": "service",
+    "building:levels": "1",
+    "frequency": "50",
+    "name": "ТП-2596",
+    "name:uk": "ТП-2596",
+    "power": "substation",
+    "substation": "minor_distribution",
+    "utility": "power",
+    "voltage": "10000;380"
+   }
+  },
+  {
+   "type": "way",
+   "id": 515011048,
+   "tags": {
+    "building": "service",
+    "building:levels": "1",
+    "frequency": "50",
+    "name": "ТП-2790",
+    "name:uk": "ТП-2790",
+    "power": "substation",
+    "substation": "minor_distribution",
+    "utility": "power",
+    "voltage": "10000;380"
+   }
+  },
+  {
+   "type": "way",
+   "id": 515011049,
+   "tags": {
+    "building": "yes",
+    "building:levels": "1",
+    "name": "Продукти",
+    "name:en": "Produkty",
+    "name:ru": "Продукты",
+    "name:uk": "Продукти",
+    "shop": "convenience"
+   }
+  },
+  {
+   "type": "way",
+   "id": 515011057,
+   "tags": {
+    "building": "yes",
+    "building:levels": "1",
+    "name": "Продукти",
+    "name:en": "Produkty",
+    "name:uk": "Продукти",
+    "shop": "convenience"
+   }
+  },
+  {
+   "type": "way",
+   "id": 515091011,
+   "tags": {
+    "building": "yes",
+    "building:levels": "1",
+    "frequency": "50",
+    "name": "ТП-2507",
+    "name:uk": "ТП-2507",
+    "power": "substation",
+    "roof:shape": "flat",
+    "substation": "minor_distribution",
+    "utility": "power",
+    "voltage": "10000;380"
+   }
+  },
+  {
+   "type": "way",
+   "id": 515091012,
+   "tags": {
+    "building": "service",
+    "building:levels": "1",
+    "frequency": "50",
+    "name": "ТП-2502",
+    "name:uk": "ТП-2502",
+    "power": "substation",
+    "ref": "2502",
+    "street_cabinet": "power",
+    "substation": "minor_distribution",
+    "voltage": "10000;380"
+   }
+  },
+  {
+   "type": "way",
+   "id": 515091018,
+   "tags": {
+    "building": "service",
+    "building:levels": "1",
+    "frequency": "50",
+    "name": "ТП-2532",
+    "name:uk": "ТП-2532",
+    "power": "substation",
+    "substation": "minor_distribution",
+    "utility": "power",
+    "voltage": "10000;380"
+   }
+  },
+  {
+   "type": "way",
+   "id": 515271646,
+   "tags": {
+    "building": "retail",
+    "building:levels": "1",
+    "name": "Продукти",
+    "name:uk": "Продукти",
+    "shop": "convenience"
+   }
+  },
+  {
+   "type": "way",
+   "id": 521087265,
+   "tags": {
+    "building": "service",
+    "building:levels": "1",
+    "frequency": "50",
+    "name": "ТП-2516",
+    "name:uk": "ТП-2516",
+    "power": "substation",
+    "substation": "minor_distribution",
+    "utility": "power",
+    "voltage": "10000;380"
+   }
+  },
+  {
+   "type": "way",
+   "id": 523456941,
+   "tags": {
+    "addr:housenumber": "38/3",
+    "addr:street": "вулиця Академіка Заболотного",
+    "building": "retail",
+    "building:levels": "1",
+    "name": "Трійця",
+    "name:ru": "Троица",
+    "name:uk": "Трійця",
+    "shop": "convenience"
+   }
+  },
+  {
+   "type": "way",
+   "id": 523846500,
+   "tags": {
+    "building": "service",
+    "building:levels": "1",
+    "frequency": "50",
+    "name": "ТП-2519",
+    "name:uk": "ТП-2519",
+    "power": "substation",
+    "substation": "minor_distribution",
+    "utility": "power",
+    "voltage": "10000;380"
+   }
+  },
+  {
+   "type": "way",
+   "id": 606154514,
+   "tags": {
+    "landuse": "residential",
+    "name": "ЖК \"Едельвейс\" (\"Мелодія\")",
+    "name:ru": "ЖК \"Эдельвейс\" (\"Мелодия\")",
+    "name:uk": "ЖК \"Едельвейс\" (\"Мелодія\")",
+    "residential": "urban"
+   }
+  },
+  {
+   "type": "way",
+   "id": 606154516,
+   "tags": {
+    "landuse": "residential",
+    "name": "Житловий комплекс \"Якорі\"",
+    "name:uk": "Житловий комплекс \"Якорі\"",
+    "place": "neighbourhood",
+    "residential": "apartments"
+   }
+  },
+  {
+   "type": "way",
+   "id": 621572951,
+   "tags": {
+    "addr:housenumber": "55а",
+    "addr:postcode": "65123",
+    "building": "apartments",
+    "building:levels": "12",
+    "check_date": "2022-04-28",
+    "name": "ЖК \"Love\"",
+    "name:uk": "ЖК \"Love\""
+   }
+  },
+  {
+   "type": "way",
+   "id": 624762733,
+   "tags": {
+    "landuse": "residential",
+    "name": "Мододіжний будинок",
+    "name:uk": "Мододіжний будинок"
+   }
+  },
+  {
+   "type": "way",
+   "id": 704642221,
+   "tags": {
+    "highway": "residential",
+    "name": "Північна вулиця",
+    "name:pl": "ulica Północna",
+    "name:ru": "Северная улица",
+    "name:uk": "Північна вулиця"
+   }
+  },
+  {
+   "type": "way",
+   "id": 704642222,
+   "tags": {
+    "highway": "residential",
+    "name": "Кипарисова вулиця",
+    "name:ru": "Кипарисовая улица",
+    "name:uk": "Кипарисова вулиця"
+   }
+  },
+  {
+   "type": "way",
+   "id": 704642223,
+   "tags": {
+    "highway": "residential",
+    "name": "1-й Хуторський проїзд",
+    "name:ru": "1-й Хуторской проезд",
+    "name:uk": "1-й Хуторський проїзд"
+   }
+  },
+  {
+   "type": "way",
+   "id": 704642224,
+   "tags": {
+    "highway": "residential",
+    "name": "2-й Хуторський проїзд",
+    "name:ru": "2-й Хуторской проезд",
+    "name:uk": "2-й Хуторський проїзд"
+   }
+  },
+  {
+   "type": "way",
+   "id": 706947388,
+   "tags": {
+    "cycleway": "lane",
+    "highway": "tertiary",
+    "lanes": "2",
+    "lit": "yes",
+    "maxspeed": "50",
+    "name": "вулиця Владислава Бувалкіна",
+    "name:ru": "улица Владислава Бувалкина",
+    "old_name": "вулиця Генерала Бочарова",
+    "oneway": "no",
+    "sidewalk": "both",
+    "sidewalk:left:surface": "asphalt",
+    "sidewalk:right:surface": "paving_stones",
+    "smoothness": "good",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 714455507,
+   "tags": {
+    "addr:housenumber": "75/1",
+    "addr:street": "вулиця Академіка Заболотного",
+    "amenity": "car_wash",
+    "building": "yes",
+    "building:levels": "1",
+    "name": "Orange",
+    "name:uk": "Orange",
+    "opening_hours": "24/7",
+    "phone": "+380 97 595 4417",
+    "self_service": "yes",
+    "website": "https://vse-sto.com.ua/avtomoyki/1818-orange/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 714455508,
+   "tags": {
+    "addr:housenumber": "3",
+    "addr:street": "вулиця Академіка Сахарова",
+    "brand": "АТБ-Маркет",
+    "brand:en": "ATB-Market",
+    "brand:uk": "АТБ-Маркет",
+    "brand:wikidata": "Q4054103",
+    "brand:wikipedia": "uk:АТБ-Маркет",
+    "building": "retail",
+    "building:levels": "1",
+    "contact:facebook": "ATB.Market.tm",
+    "contact:instagram": "atb.market.official",
+    "contact:twitter": "atb_market_tm",
+    "name": "АТБ-Маркет",
+    "name:en": "ATB-Market",
+    "name:ru": "АТБ-Маркет",
+    "name:uk": "АТБ-Маркет",
+    "opening_hours": "24/7",
+    "operator": "АТБ",
+    "phone:UA": "0 800 500 415",
+    "shop": "supermarket",
+    "website": "https://www.atbmarket.com/uk"
+   }
+  },
+  {
+   "type": "way",
+   "id": 714455509,
+   "tags": {
+    "addr:housenumber": "1а",
+    "addr:street": "вулиця Академіка Сахарова",
+    "brand": "Копійка",
+    "brand:wikidata": "Q116871080",
+    "building": "retail",
+    "building:levels": "1",
+    "name": "Копійка",
+    "name:uk": "Копійка",
+    "roof:levels": "1",
+    "shop": "supermarket"
+   }
+  },
+  {
+   "type": "way",
+   "id": 714455510,
+   "tags": {
+    "addr:housenumber": "3-В",
+    "addr:street": "вулиця Академіка Сахарова",
+    "building": "apartments",
+    "building:levels": "25",
+    "name": "47-я Жемчужина"
+   }
+  },
+  {
+   "type": "way",
+   "id": 715913752,
+   "tags": {
+    "highway": "residential",
+    "name": "3-й Хуторський проїзд",
+    "name:ru": "3-й Хуторской проезд",
+    "name:uk": "3-й Хуторський проїзд"
+   }
+  },
+  {
+   "type": "way",
+   "id": 762946096,
+   "tags": {
+    "addr:housenumber": "113д",
+    "addr:street": "вулиця Семена Палія",
+    "brand": "АТБ-Маркет",
+    "brand:en": "ATB-Market",
+    "brand:uk": "АТБ-Маркет",
+    "brand:wikidata": "Q4054103",
+    "brand:wikipedia": "uk:АТБ-Маркет",
+    "building": "retail",
+    "building:levels": "1",
+    "name": "АТБ-Маркет",
+    "name:en": "ATB-Market",
+    "name:ru": "АТБ-Маркет",
+    "name:uk": "АТБ-Маркет",
+    "opening_hours": "24/7",
+    "operator": "АТБ",
+    "phone:UA": "0 800 500 415",
+    "shop": "supermarket",
+    "website": "https://www.atbmarket.com/uk"
+   }
+  },
+  {
+   "type": "way",
+   "id": 764455065,
+   "tags": {
+    "building": "yes",
+    "building:levels": "1",
+    "name": "Точка",
+    "name:en": "Tochka",
+    "name:ru": "Точка",
+    "name:uk": "Точка",
+    "shop": "convenience"
+   }
+  },
+  {
+   "type": "way",
+   "id": 872752590,
+   "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "building:levels": "1",
+    "cuisine": "coffee_shop",
+    "indoor_seating": "no",
+    "name": "Чарівна кава",
+    "name:en": "Magic Coffee",
+    "outdoor_seating": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 883408463,
+   "tags": {
+    "landuse": "residential",
+    "name": "Житловий комплекс \"Ventum\"",
+    "name:uk": "Житловий комплекс \"Ventum\"",
+    "residential": "urban"
+   }
+  },
+  {
+   "type": "way",
+   "id": 922147053,
+   "tags": {
+    "highway": "service",
+    "name": "вулиця Владислава Бувалкіна",
+    "name:en": "Vladyslava Buvalkina Street",
+    "name:uk": "вулиця Владислава Бувалкіна",
+    "old_name": "вулиця Генерала Бочарова",
+    "old_name:en": "Henerala Bocharova Street",
+    "old_name:uk": "вулиця Генерала Бочарова",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 922147054,
+   "tags": {
+    "highway": "service",
+    "name": "вулиця Владислава Бувалкіна",
+    "name:en": "Vladyslava Buvalkina Street",
+    "name:uk": "вулиця Владислава Бувалкіна",
+    "old_name": "вулиця Генерала Бочарова",
+    "old_name:en": "Henerala Bocharova Street",
+    "old_name:uk": "вулиця Генерала Бочарова",
+    "oneway": "yes",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 922147055,
+   "tags": {
+    "highway": "service",
+    "name": "вулиця Владислава Бувалкіна",
+    "name:en": "Vladyslava Buvalkina Street",
+    "name:uk": "вулиця Владислава Бувалкіна",
+    "old_name": "вулиця Генерала Бочарова",
+    "old_name:en": "Henerala Bocharova Street",
+    "old_name:uk": "вулиця Генерала Бочарова",
+    "oneway": "yes",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 924335466,
+   "tags": {
+    "abutters": "residential",
+    "cycleway:left": "lane",
+    "cycleway:right": "lane",
+    "highway": "trunk",
+    "lanes": "4",
+    "maxspeed": "50",
+    "name": "вулиця Академіка Заболотного",
+    "name:ru": "улица Академика Заболотного",
+    "old_ref": "М-05",
+    "ref": "М-28-01"
+   }
+  },
+  {
+   "type": "way",
+   "id": 960166603,
+   "tags": {
+    "highway": "residential",
+    "name": "вулиця Академіка Сахарова",
+    "name:en": "Akademika Sakharova Street",
+    "name:ru": "Академика Сахарова улица",
+    "name:uk": "вулиця Академіка Сахарова",
+    "smoothness": "very_bad",
+    "surface": "unpaved",
+    "tracktype": "grade4"
+   }
+  },
+  {
+   "type": "way",
+   "id": 960670827,
+   "tags": {
+    "addr:housenumber": "3-Є",
+    "addr:street": "вулиця Академіка Сахарова",
+    "building": "apartments",
+    "building:levels": "25",
+    "name": "59-я Жемчужина"
+   }
+  },
+  {
+   "type": "way",
+   "id": 960670829,
+   "tags": {
+    "addr:housenumber": "3-Г",
+    "addr:street": "вулиця Академіка Сахарова",
+    "building": "apartments",
+    "building:levels": "25",
+    "name": "54-я Жемчужина"
+   }
+  },
+  {
+   "type": "way",
+   "id": 966512307,
+   "tags": {
+    "highway": "track",
+    "name": "вулиця Академіка Сахарова",
+    "name:en": "Akademika Sakharova Street",
+    "name:ru": "Академика Сахарова улица",
+    "name:uk": "вулиця Академіка Сахарова",
+    "surface": "unpaved",
+    "tracktype": "grade4"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1030389716,
+   "tags": {
+    "addr:housenumber": "57-Г",
+    "addr:postcode": "65000",
+    "addr:street": "вулиця Владислава Бувалкіна",
+    "building": "yes",
+    "name": "ТЦ Волна 2",
+    "name:en": "TC Volna 2",
+    "name:ru": "ТЦ Волна 2",
+    "name:uk": "ТЦ Волна 2",
+    "opening_hours": "24/7",
+    "payment:cash": "yes",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "phone": "+380 68 302 3604",
+    "shop": "mall",
+    "website": "https://volna-odessa.com.ua/ru/volna-2/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1041155308,
+   "tags": {
+    "addr:housenumber": "39/1",
+    "addr:street": "вулиця Академіка Заболотного",
+    "building": "retail",
+    "building:levels": "1",
+    "name": "Дрофа",
+    "name:uk": "Дрофа",
+    "shop": "alcohol",
+    "website": "https://drofabeer.com/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1041155310,
+   "tags": {
+    "addr:housenumber": "39а/1",
+    "addr:street": "вулиця Академіка Заболотного",
+    "amenity": "fast_food",
+    "building": "yes",
+    "building:levels": "1",
+    "contact:instagram": "https://www.instagram.com/doner_house24/",
+    "cuisine": "shawarma;doner;burger;hot_dog",
+    "diet:non-vegetarian": "yes",
+    "diet:vegetarian": "yes",
+    "drive_through": "no",
+    "name": "Doner House",
+    "name:uk": "Doner House",
+    "opening_hours": "24/7",
+    "phone": "+380 93 010 0122"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1041155313,
+   "tags": {
+    "building": "yes",
+    "building:levels": "1",
+    "frequency": "50",
+    "name": "ТП-2574",
+    "name:uk": "ТП-2574",
+    "power": "substation",
+    "substation": "minor_distribution",
+    "utility": "power",
+    "voltage": "10000;380"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1041155325,
+   "tags": {
+    "addr:housenumber": "40/1",
+    "addr:street": "вулиця Академіка Заболотного",
+    "brand": "Таврія В",
+    "brand:en": "Tavria V",
+    "brand:ru": "Таврия В",
+    "brand:uk": "Таврія В",
+    "brand:wikidata": "Q7689159",
+    "building": "retail",
+    "name": "Таврія В",
+    "name:en": "Tavria V",
+    "name:ru": "Таврия В",
+    "name:uk": "Таврія В",
+    "opening_hours": "Mo-Su 08:00-22:00",
+    "payment:cash": "yes",
+    "payment:mastercard": "yes",
+    "payment:visa": "yes",
+    "shop": "supermarket"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1041155335,
+   "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "building:levels": "1",
+    "name": "Магазин 24/7"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1041155336,
+   "tags": {
+    "amenity": "pharmacy",
+    "building": "yes",
+    "building:levels": "1",
+    "healthcare": "pharmacy",
+    "name": "Аптека"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1049893738,
+   "tags": {
+    "building": "retail",
+    "building:levels": "1",
+    "contact:instagram": "https://www.instagram.com/angels.decor.od/",
+    "name": "Angel's Decor",
+    "shop": "florist"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1084260871,
+   "tags": {
+    "addr:housenumber": "42А",
+    "addr:postcode": "65000",
+    "addr:street": "вулиця Владислава Бувалкіна",
+    "area": "yes",
+    "building": "bungalow",
+    "building:levels": "1",
+    "craft": "shoemaker",
+    "name": "Левша",
+    "name:ru": "Левша",
+    "name:uk": "Лiвша",
+    "opening_hours": "Mo-Fr 10:00-19:00; Sa-Su 10:00-17:00",
+    "phone": "+380487065565",
+    "roof:levels": "1",
+    "website": "https://levsha-servis.jimdo.com/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1085529116,
+   "tags": {
+    "highway": "tertiary",
+    "lanes": "2",
+    "name": "вулиця Академіка Сахарова",
+    "name:en": "Akademika Sakharova Street",
+    "name:ru": "Академика Сахарова улица",
+    "name:uk": "вулиця Академіка Сахарова",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1085529118,
+   "tags": {
+    "highway": "tertiary",
+    "lanes": "2",
+    "lit": "yes",
+    "name": "вулиця Академіка Сахарова",
+    "name:en": "Akademika Sakharova Street",
+    "name:ru": "Академика Сахарова улица",
+    "name:uk": "вулиця Академіка Сахарова",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1085681615,
+   "tags": {
+    "addr:housenumber": "93",
+    "addr:street": "вулиця Академіка Заболотного",
+    "building": "yes",
+    "building:levels": "3",
+    "name": "КБ \"Crystal House\"",
+    "name:uk": "Крістал Хаус"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1087106206,
+   "tags": {
+    "landuse": "residential",
+    "name": "ЖК Суворівський 2",
+    "name:uk": "ЖК Суворівський 2",
+    "place": "neighbourhood",
+    "residential": "apartments"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1087106211,
+   "tags": {
+    "landuse": "residential",
+    "name": "ЖК Чайка Люкс",
+    "name:uk": "ЖК Чайка Люкс"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1087106215,
+   "tags": {
+    "highway": "service",
+    "name": "вулиця Бочарова Генерала",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1087285967,
+   "tags": {
+    "landuse": "residential",
+    "name": "ЖК Smart City",
+    "name:uk": "ЖК Smart City",
+    "place": "neighbourhood",
+    "residential": "apartments"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1105300360,
+   "tags": {
+    "cycleway:right": "lane",
+    "highway": "primary",
+    "lanes": "3",
+    "lit": "yes",
+    "maxspeed": "50",
+    "name": "вулиця Семена Палія",
+    "old_name": "Дніпропетровська дорога",
+    "oneway": "yes",
+    "smoothness": "good",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1108428650,
+   "tags": {
+    "addr:housenumber": "65",
+    "addr:street": "вулиця Владислава Бувалкіна",
+    "air_conditioning": "yes",
+    "building": "yes",
+    "building:levels": "1",
+    "cuisine": "burger;chicken;pizza;sushi",
+    "delivery": "yes",
+    "diet:meat": "yes",
+    "diet:vegetarian": "yes",
+    "name": "М'ясо",
+    "name:uk": "Шаурмен #1",
+    "opening_hours": "Mo-Su 10:00-20:00",
+    "outdoor_seating": "yes",
+    "shop": "butcher",
+    "takeaway": "yes",
+    "toilets": "yes",
+    "website": "https://shaurman.com.ua/"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1109167157,
+   "tags": {
+    "building": "yes",
+    "building:levels": "1",
+    "name": "Одеський хлібзавод №4",
+    "name:uk": "Одеський хлібзавод №4",
+    "shop": "bakery"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1175161753,
+   "tags": {
+    "building": "retail",
+    "building:levels": "1",
+    "contact:instagram": "https://www.instagram.com/odessky_khlebozavod_4/",
+    "height": "2",
+    "name": "Одеський хлібзавод № 4",
+    "name:uk": "Одеський хлібзавод № 4",
+    "shop": "bakery"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1175161754,
+   "tags": {
+    "building": "retail",
+    "building:levels": "1",
+    "contact:instagram": "https://www.instagram.com/odessky_khlebozavod_4/",
+    "height": "2",
+    "name": "Одеський хлібзавод № 4",
+    "name:uk": "Одеський хлібзавод № 4",
+    "shop": "bakery"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1175161760,
+   "tags": {
+    "amenity": "cafe",
+    "building": "retail",
+    "building:levels": "1",
+    "cuisine": "coffee_shop;tea",
+    "height": "2",
+    "name": "Чарівна кава",
+    "name:en": "Magic Coffee",
+    "name:uk": "Чарівна кава"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1212133275,
+   "tags": {
+    "building": "retail",
+    "building:levels": "1",
+    "name": "Coffee & Hot-dog"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1212133277,
+   "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "building:levels": "1",
+    "cuisine": "regional",
+    "name": "Початок",
+    "name:uk": "Початок"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1216403410,
+   "tags": {
+    "highway": "residential",
+    "lit": "yes",
+    "name": "вулиця Ярослава Баїса",
+    "old_name": "вулиця Володимира Висоцького",
+    "sidewalk": "both",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1247952894,
+   "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "building:levels": "1",
+    "name": "Маназин 24/7"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1303284130,
+   "tags": {
+    "addr:housenumber": "2-А/2",
+    "addr:street": "вулиця Ярослава Баїса",
+    "building": "retail",
+    "building:levels": "1",
+    "name": "M&A Flowers"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1353722815,
+   "tags": {
+    "amenity": "cafe",
+    "building": "yes",
+    "name": "Перша Пекарня"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1353722816,
+   "tags": {
+    "amenity": "pharmacy",
+    "building": "yes",
+    "healthcare": "pharmacy",
+    "name": "Аптека від складу"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 12911250,
+   "tags": {
+    "landuse": "residential",
+    "name": "ЖК \"Острови\"",
+    "name:uk": "ЖК \"Острови\"",
+    "residential": "urban",
+    "type": "multipolygon"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 19686881,
+   "tags": {
+    "building": "apartments",
+    "building:levels": "6;9",
+    "name": "ЖК Акварель 10 будинок 1",
+    "type": "multipolygon"
+   }
+  }
+ ]
+}
