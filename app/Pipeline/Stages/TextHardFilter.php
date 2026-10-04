@@ -14,7 +14,9 @@ use App\Pipeline\StageResult;
  * The hard filter again, after the LLM read the text:
  * - fields the site left empty are taken from the text; the site's own values stay;
  * - where the text is silent about outages, the site's own fields fill in;
- * - an explicit "no generator" rejects, an unknown generator passes with ⚡❓;
+ * - an explicit "no generator", or water or heating that stop in outages, rejects;
+ *   an unknown generator passes with ⚡❓ (docs/REQUIREMENTS.md: the building's
+ *   utilities must run on a generator; power in the flat is not required);
  * - then rooms, floor and price are checked again.
  */
 final class TextHardFilter implements Stage
@@ -38,7 +40,8 @@ final class TextHardFilter implements Stage
         $this->fillFromText($listing, $enrichment);
         $listing->enrichment = $this->withSourceHints($enrichment->toArray(), $listing->source_hints ?? []);
 
-        return $this->checkGenerator($listing, $listing->enrichment['generator'], $settings->allow_unknown_generator)
+        return $this->checkUtilities($listing->enrichment)
+            ?? $this->checkGenerator($listing, $listing->enrichment['generator'], $settings->allow_unknown_generator)
             ?? $this->hardFilter->handle($listing);
     }
 
@@ -69,6 +72,18 @@ final class TextHardFilter implements Stage
         }
 
         return $enrichment;
+    }
+
+    /**
+     * @param  array<string, mixed>  $enrichment
+     */
+    private function checkUtilities(array $enrichment): ?StageResult
+    {
+        return match (false) {
+            $enrichment['generator_water'] => StageResult::reject('no water in outages'),
+            $enrichment['generator_heating'] => StageResult::reject('no heating in outages'),
+            default => null,
+        };
     }
 
     private function checkGenerator(Listing $listing, ?bool $generator, bool $allowUnknown): ?StageResult

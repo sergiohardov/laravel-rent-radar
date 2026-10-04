@@ -76,6 +76,15 @@ it('rejects when the text says there is no generator', function () {
         ->and($result->reason)->toBe('no generator');
 });
 
+it('rejects when water or heating stop in outages', function (array $text, string $reason) {
+    [$result] = textFilter([], $text);
+
+    expect($result->reason)->toBe($reason);
+})->with([
+    'water' => [['generator' => true, 'generatorWater' => false], 'no water in outages'],
+    'heating' => [['generatorHeating' => false], 'no heating in outages'],
+]);
+
 it('passes an unknown generator with ⚡❓', function () {
     [$result, $listing] = textFilter([], []);
 
@@ -92,16 +101,15 @@ it('rejects an unknown generator when its switch is off', function () {
 });
 
 it('fills what the text is silent about from the site fields', function () {
-    [$result, $listing] = textFilter([], ['generatorWater' => false], [
-        'generator' => true, 'generator_water' => true, 'generator_heating' => true,
+    [$result, $listing] = textFilter([], ['generator' => true, 'generatorElevator' => false], [
+        'generator_water' => true, 'generator_heating' => true, 'generator_elevator' => true,
     ]);
 
     expect($result->passed)->toBeTrue()
-        ->and($listing->enrichment['generator'])->toBeTrue()
+        ->and($listing->enrichment['generator_water'])->toBeTrue()
         ->and($listing->enrichment['generator_heating'])->toBeTrue()
         // the text said no: the site does not override it
-        ->and($listing->enrichment['generator_water'])->toBeFalse()
-        ->and($listing->hasFlag(Flag::UnknownGenerator))->toBeFalse();
+        ->and($listing->enrichment['generator_elevator'])->toBeFalse();
 });
 
 it('journals a text rejection under its own stage name', function () {

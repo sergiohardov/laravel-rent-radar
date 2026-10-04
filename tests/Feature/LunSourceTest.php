@@ -120,7 +120,7 @@ it('reads what works during outages from the autonomy fields', function () {
 
     $listings = collect(lunListings())->keyBy('externalId');
 
-    // autonomy_power false sits next to water/heat/lift true: not "no generator"
+    // autonomy_power is the flat's own power, not required and not read
     expect($listings['4728177689']->sourceHints)->toBe(['generator_water' => true, 'generator_heating' => true, 'generator_elevator' => true])
         ->and($listings['4728177460']->sourceHints)->toBe(['generator_water' => true, 'generator_heating' => true])
         ->and($listings['4728181952']->sourceHints)->toBe([]);

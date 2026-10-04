@@ -47,8 +47,8 @@ final class LunListingMapper
 
     /**
      * LUN's autonomy_* fields: what keeps working during outages. autonomy_power
-     * false sits next to water/heat/lift true, i.e. it is about the flat's own
-     * power, not the building's generator, so only true counts.
+     * is the flat's own power (false sits next to water/heat/lift true); power in
+     * the flat is not required, so it is not read.
      *
      * @param  array<string, mixed>  $item
      * @return array<string, bool>
@@ -56,7 +56,6 @@ final class LunListingMapper
     private function outageHints(array $item): array
     {
         return array_filter([
-            'generator' => ($item['autonomy_power'] ?? null) === true ? true : null,
             'generator_water' => $item['autonomy_water'] ?? null,
             'generator_heating' => $item['autonomy_heat'] ?? null,
             'generator_elevator' => $item['autonomy_lift'] ?? null,

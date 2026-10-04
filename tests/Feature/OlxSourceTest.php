@@ -139,8 +139,9 @@ it('reads ticked blackout items as outage hints', function () {
 
     $listings = collect(olxListings())->keyBy('externalId');
 
+    // backup_power_supply may be the flat's own backup: not the building's generator
     expect($listings['901204760']->sourceHints)->toBe([
-        'generator' => true, 'generator_water' => true, 'generator_heating' => true, 'generator_elevator' => true,
+        'generator_water' => true, 'generator_heating' => true, 'generator_elevator' => true,
     ])
         // unticked items stay unknown, not "no"
         ->and($listings['936755882']->sourceHints)->toBe(['generator_water' => true, 'generator_heating' => true])
