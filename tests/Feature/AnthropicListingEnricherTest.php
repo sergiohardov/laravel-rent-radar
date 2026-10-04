@@ -2,12 +2,14 @@
 
 use App\Currency\CurrencyCode;
 use App\Enrichment\AnthropicListingEnricher;
+use App\Enrichment\Enrichment;
 use App\Enrichment\EnrichmentFailed;
 use App\Enrichment\GeneratorSchedule;
 use App\Enrichment\ListingEnricher;
 use App\Location\LocationKind;
 use App\Models\Listing;
 use App\Models\Location;
+use App\Providers\AppServiceProvider;
 
 /**
  * A Messages API answer with one record_listing call.
@@ -39,7 +41,7 @@ function fullInput(array $overrides = []): array
     ], $overrides);
 }
 
-function enrichListing(array $attributes = []): \App\Enrichment\Enrichment
+function enrichListing(array $attributes = []): Enrichment
 {
     return app(AnthropicListingEnricher::class)->enrich(Listing::factory()->make(array_merge([
         'title' => 'Сдам 2ую квартиру ЖК Фонтан, Макаренко 2а/Паркинг, Генератор',
@@ -139,7 +141,7 @@ it('keeps the strict schema within 16 nullable fields', function () {
 
 it('is the enricher the app binds', function () {
     $this->app->forgetInstance(ListingEnricher::class);
-    (new \App\Providers\AppServiceProvider($this->app))->register();
+    (new AppServiceProvider($this->app))->register();
 
     expect(app(ListingEnricher::class))->toBeInstanceOf(AnthropicListingEnricher::class);
 });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enrichment\Enrichment;
 use App\Models\Location;
 use Illuminate\Support\Facades\File;
 
@@ -34,7 +35,7 @@ function evalAnswer(array $input, array $usage): array
 
 it('reports accuracy per field and the cost per listing', function () {
     $ojstrakhaId = fn () => Location::query()->where('name', 'вулиця Давида Ойстраха')->value('id');
-    $base = (new \App\Enrichment\Enrichment)->toArray();
+    $base = (new Enrichment)->toArray();
     $flags = ['generator' => 'unknown', 'generator_water' => 'unknown', 'generator_heating' => 'unknown', 'generator_elevator' => 'unknown', 'closed_territory' => 'unknown', 'is_owner' => 'unknown'];
 
     // ids are only known once the command loaded the whitelist; the fake answers lazily
@@ -54,8 +55,8 @@ it('reports accuracy per field and the cost per listing', function () {
 
 it('leaves the real whitelist untouched', function () {
     Location::factory()->create(['name' => 'вулиця Справжня']);
-    $this->anthropic->push(evalAnswer((new \App\Enrichment\Enrichment)->toArray(), ['input_tokens' => 1, 'output_tokens' => 1]))
-        ->push(evalAnswer((new \App\Enrichment\Enrichment)->toArray(), ['input_tokens' => 1, 'output_tokens' => 1]));
+    $this->anthropic->push(evalAnswer((new Enrichment)->toArray(), ['input_tokens' => 1, 'output_tokens' => 1]))
+        ->push(evalAnswer((new Enrichment)->toArray(), ['input_tokens' => 1, 'output_tokens' => 1]));
 
     $this->artisan("llm:eval --cases={$this->casesFile}")->assertSuccessful();
 
