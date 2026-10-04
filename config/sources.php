@@ -20,4 +20,20 @@ return [
 
     'time_budget_seconds' => (float) env('SOURCES_TIME_BUDGET_SECONDS', 45),
 
+    /*
+    |--------------------------------------------------------------------------
+    | HTTP
+    |--------------------------------------------------------------------------
+    |
+    | LUN and OLX answer 403 to the hosting IP (Hetzner, Finland), so in
+    | production they go through a Ukrainian datacenter proxy, e.g.
+    | http://login:password@203.0.113.10:8080. Each source turns it on with
+    | its "use proxy" switch; in dev the proxy is not needed.
+    |
+    */
+
+    'proxy_url' => env('SOURCES_PROXY_URL'),
+
+    'http_timeout_seconds' => (int) env('SOURCES_HTTP_TIMEOUT_SECONDS', 15),
+
 ];

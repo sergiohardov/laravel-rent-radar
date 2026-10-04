@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * Run state of a listing source: on/off, interval, last run and last error.
  */
 #[Fillable([
-    'name', 'enabled', 'interval_min_minutes', 'interval_max_minutes', 'next_run_at',
+    'name', 'enabled', 'use_proxy', 'interval_min_minutes', 'interval_max_minutes', 'next_run_at',
     'last_run_at', 'last_success_at', 'last_report',
     'last_error', 'last_error_at', 'consecutive_failures',
 ])]
@@ -56,6 +56,7 @@ class Source extends Model
         return [
             'name' => SourceName::class,
             'enabled' => 'boolean',
+            'use_proxy' => 'boolean',
             'interval_min_minutes' => 'integer',
             'interval_max_minutes' => 'integer',
             'next_run_at' => 'immutable_datetime',
