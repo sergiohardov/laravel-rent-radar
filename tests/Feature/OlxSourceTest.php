@@ -133,3 +133,16 @@ it('fails on a blocked request', function () {
 it('is registered as the olx source', function () {
     expect(app(SourceRegistry::class)->get(SourceName::Olx))->toBeInstanceOf(OlxSource::class);
 });
+
+it('reads ticked blackout items as outage hints', function () {
+    Http::fake(['www.olx.ua/*' => Http::sequence()->push($this->page)->push($this->lastPage)]);
+
+    $listings = collect(olxListings())->keyBy('externalId');
+
+    expect($listings['901204760']->sourceHints)->toBe([
+        'generator' => true, 'generator_water' => true, 'generator_heating' => true, 'generator_elevator' => true,
+    ])
+        // unticked items stay unknown, not "no"
+        ->and($listings['936755882']->sourceHints)->toBe(['generator_water' => true, 'generator_heating' => true])
+        ->and($listings['903720947']->sourceHints)->toBe([]);
+});

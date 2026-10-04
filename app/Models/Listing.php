@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
-    'source', 'external_id', 'url', 'title', 'description', 'address', 'raw',
+    'source', 'external_id', 'url', 'title', 'description', 'address', 'raw', 'source_hints',
     'price', 'currency', 'price_uah', 'rooms', 'floor', 'floors_total', 'area', 'lat', 'lng', 'published_at',
     'decision', 'rejected_by', 'reject_reason', 'flags',
     'enrichment', 'enriched_at',
@@ -34,6 +34,13 @@ class Listing extends Model
         $this->flags = ($this->flags ?? collect())->push($flag)->unique()->values();
     }
 
+    public function removeFlag(Flag $flag): void
+    {
+        if ($this->flags !== null) {
+            $this->flags = $this->flags->reject(fn (Flag $set) => $set === $flag)->values();
+        }
+    }
+
     public function hasFlag(Flag $flag): bool
     {
         return (bool) $this->flags?->contains($flag);
@@ -52,6 +59,7 @@ class Listing extends Model
             'decision' => Decision::class,
             'flags' => AsEnumCollection::of(Flag::class),
             'raw' => 'array',
+            'source_hints' => 'array',
             'enrichment' => 'array',
             'price' => 'integer',
             'price_uah' => 'integer',

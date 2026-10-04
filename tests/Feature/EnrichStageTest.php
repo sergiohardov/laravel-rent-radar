@@ -77,8 +77,8 @@ it('runs after the hard filter, so rejected listings never reach the LLM', funct
         ->and(Listing::query()->where('external_id', '9')->value('rejected_by'))->toBe('hard_filter');
 });
 
-it('is a registered stage after the hard filter', function () {
+it('is a registered stage between the two hard filters', function () {
     $stages = (fn () => $this->stages)->call(app(Pipeline::class));
 
-    expect(array_map(fn ($stage) => $stage::class, $stages))->toBe([HardFilter::class, EnrichStage::class]);
+    expect(array_map(fn ($stage) => $stage::class, $stages))->toBe([HardFilter::class, EnrichStage::class, \App\Pipeline\Stages\TextHardFilter::class]);
 });

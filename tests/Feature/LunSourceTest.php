@@ -114,3 +114,14 @@ it('fails on a blocked request', function () {
 it('is registered as the lun source', function () {
     expect(app(SourceRegistry::class)->get(SourceName::Lun))->toBeInstanceOf(LunSource::class);
 });
+
+it('reads what works during outages from the autonomy fields', function () {
+    Http::fake(['flatfy.ua/*' => Http::sequence()->push($this->page)->push(['data' => []])]);
+
+    $listings = collect(lunListings())->keyBy('externalId');
+
+    // autonomy_power false sits next to water/heat/lift true: not "no generator"
+    expect($listings['4728177689']->sourceHints)->toBe(['generator_water' => true, 'generator_heating' => true, 'generator_elevator' => true])
+        ->and($listings['4728177460']->sourceHints)->toBe(['generator_water' => true, 'generator_heating' => true])
+        ->and($listings['4728181952']->sourceHints)->toBe([]);
+});

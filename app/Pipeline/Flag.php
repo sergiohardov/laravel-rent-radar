@@ -10,4 +10,5 @@ enum Flag: string
     case UnknownPrice = 'unknown_price';
     case UnknownRooms = 'unknown_rooms';
     case UnknownFloor = 'unknown_floor';
+    case UnknownGenerator = 'unknown_generator';
 }

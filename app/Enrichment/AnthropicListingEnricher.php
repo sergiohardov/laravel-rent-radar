@@ -22,6 +22,8 @@ final class AnthropicListingEnricher implements ListingEnricher
 
         Use only what the listing says. When it does not say, return null, or unknown for yes/no fields; never guess from typical values.
 
+        Yes/no fields: answer yes or no only when the listing explicitly states it. A listing that does not mention a generator, backup power or outages gets unknown for all of them. Do not infer from the heating type, gas, the building's age, the yard or anything else: "central heating" says nothing about outages, and "a quiet yard" says nothing about a closed territory.
+
         - complex, street, house, district: the residential complex, street, house number and district as the listing or its address line names them, in the listing's spelling.
         - rooms, floor, floors_total, area: as stated; area in square metres.
         - price, currency: the monthly rent and its currency (UAH, USD or EUR), not a deposit or commission.

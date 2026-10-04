@@ -43,7 +43,26 @@ final class OlxListingMapper
             lng: $preciseMap ? (float) $map['lon'] : null,
             // Kyiv time with its offset, e.g. 2026-10-03T23:48:57+03:00
             publishedAt: isset($offer['created_time']) ? CarbonImmutable::parse($offer['created_time']) : null,
+            sourceHints: $this->outageHints($params->get('blackout_autonomy')['key'] ?? null),
         );
+    }
+
+    /**
+     * blackout_autonomy lists what works during outages; an unticked item only
+     * means the seller did not tick it, so it stays unknown.
+     *
+     * @return array<string, bool>
+     */
+    private function outageHints(mixed $ticked): array
+    {
+        $ticked = is_array($ticked) ? $ticked : [];
+
+        return array_filter([
+            'generator' => in_array('backup_power_supply', $ticked, true),
+            'generator_water' => in_array('water_supply', $ticked, true),
+            'generator_heating' => in_array('heating', $ticked, true),
+            'generator_elevator' => in_array('elevator', $ticked, true),
+        ]);
     }
 
     /**

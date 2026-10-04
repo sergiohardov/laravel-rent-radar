@@ -100,5 +100,5 @@ it('runs as a pipeline stage and fills the journal', function () {
         ->and($listings[1]->decision)->toBe(Decision::Rejected)
         ->and($listings[1]->rejected_by)->toBe('hard_filter')
         ->and($listings[1]->reject_reason)->toBe('rooms 3 not in 2–2')
-        ->and($listings[2]->fresh()->flags->all())->toBe([Flag::UnknownPrice]);
+        ->and($listings[2]->fresh()->flags->all())->toContain(Flag::UnknownPrice);
 });
