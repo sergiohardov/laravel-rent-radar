@@ -13,7 +13,7 @@ it('runs a source through the pipeline and prints the report', function () {
     ]));
 
     $this->artisan('sources:run olx')
-        ->expectsOutput('olx: fetched 3, seen 0, new 3, passed 3, rejected 0, stop: exhausted')
+        ->expectsOutputToContain('olx: fetched 3, seen 0, new 3, passed 3, rejected 0, stop: exhausted, ')
         ->assertSuccessful();
 
     expect(Listing::query()->where('source', SourceName::Olx)->count())->toBe(3);

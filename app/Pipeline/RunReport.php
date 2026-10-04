@@ -11,5 +11,7 @@ final readonly class RunReport
         public int $passed,
         public int $rejected,
         public StopReason $stopReason,
+        public float $seconds = 0.0,
+        public int $peakMemoryMb = 0,
     ) {}
 }

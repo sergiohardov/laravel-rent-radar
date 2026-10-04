@@ -59,4 +59,8 @@ return [
         'max_pages' => 4, // 50 offers per page plus paid promotions
     ],
 
+    'dimria' => [
+        'max_pages' => 3, // 20 ids per page, one card request per id
+    ],
+
 ];

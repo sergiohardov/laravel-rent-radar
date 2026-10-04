@@ -50,7 +50,12 @@ final class Pipeline
             $this->process(Listing::query()->create($raw->toListingAttributes())) ? $passed++ : $rejected++;
         }
 
-        return new RunReport($fetched, $seen, $created, $passed, $rejected, $stopReason);
+        return new RunReport(
+            $fetched, $seen, $created, $passed, $rejected, $stopReason,
+            seconds: round(microtime(true) - $startedAt, 1),
+            // Whole process peak, to compare with the hosting's 128M memory_limit
+            peakMemoryMb: (int) ceil(memory_get_peak_usage(true) / 1024 / 1024),
+        );
     }
 
     private function process(Listing $listing): bool
