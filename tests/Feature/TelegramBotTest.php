@@ -11,6 +11,19 @@ it('answers /ping with the chat id', function () {
         ->assertReplyText('pong · chat_id -1001234567890');
 });
 
+it('answers /ping addressed to the bot by name in a group', function () {
+    config(['nutgram.config.bot_name' => 'rent_radar_dev_bot']);
+
+    app(Nutgram::class)
+        ->hearMessage([
+            'text' => '/ping@rent_radar_dev_bot',
+            'entities' => [['type' => 'bot_command', 'offset' => 0, 'length' => 24]],
+            'chat' => ['id' => -1001234567890, 'type' => 'supergroup', 'title' => 'Rent Radar Dev'],
+        ])
+        ->reply()
+        ->assertReplyText('pong · chat_id -1001234567890');
+});
+
 it('points the webhook at the dev tunnel with the secret token', function () {
     config(['services.telegram.tunnel_metrics_url' => 'http://cloudflared:2000/quicktunnel']);
     Http::fake(['cloudflared:2000/*' => Http::response(['hostname' => 'kissing-promo-fall-hitting.trycloudflare.com'])]);

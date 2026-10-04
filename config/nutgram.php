@@ -9,8 +9,11 @@ return [
     // and nutgram:hook:set / telegram:set-webhook register it with Telegram.
     'safe_mode' => true,
 
-    // Extra or specific configurations
-    'config' => [],
+    // Extra or specific configurations. Without bot_name a group command such as
+    // /ping@rent_radar_dev_bot does not match /ping
+    'config' => [
+        'bot_name' => env('TELEGRAM_BOT_USERNAME'),
+    ],
 
     // Handlers live in routes/telegram.php
     'routes' => true,
