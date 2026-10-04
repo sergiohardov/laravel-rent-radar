@@ -17,7 +17,9 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    // MariaDB when DB_CONNECTION is missing or misspelled: with Laravel's sqlite default
+    // `migrate --force` quietly created a database file in the app folder (docs/LOG.md)
+    'default' => env('DB_CONNECTION', 'mariadb'),
 
     /*
     |--------------------------------------------------------------------------
