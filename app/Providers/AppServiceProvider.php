@@ -2,15 +2,20 @@
 
 namespace App\Providers;
 
+use Anthropic\Client as AnthropicClient;
 use App\Currency\ExchangeRates;
 use App\Currency\NbuExchangeRates;
+use App\Enrichment\AnthropicListingEnricher;
+use App\Enrichment\ListingEnricher;
 use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
+use App\Pipeline\Stages\EnrichStage;
 use App\Pipeline\Stages\HardFilter;
 use App\Sources\DimRia\DimRiaSource;
 use App\Sources\Lun\LunSource;
 use App\Sources\Olx\OlxSource;
 use App\Sources\SourceRegistry;
+use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
@@ -34,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private const STAGES = [
         HardFilter::class,
+        EnrichStage::class,
     ];
 
     /**
@@ -42,6 +48,21 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(ExchangeRates::class, NbuExchangeRates::class);
+
+        // The SDK sends requests through its own PSR-18 transport, not Laravel's
+        // Http client; the timeout is enforced by that transport.
+        $this->app->singleton(AnthropicClient::class, fn () => new AnthropicClient(
+            apiKey: (string) config('services.anthropic.key'),
+            requestOptions: [
+                'transporter' => new GuzzleClient(['timeout' => config('services.anthropic.timeout_seconds')]),
+            ],
+        ));
+
+        $this->app->bind(AnthropicListingEnricher::class, fn (Application $app) => new AnthropicListingEnricher(
+            $app->make(AnthropicClient::class),
+            (string) config('services.anthropic.model'),
+        ));
+        $this->app->bind(ListingEnricher::class, AnthropicListingEnricher::class);
 
         $this->app->tag(self::SOURCES, 'listing-sources');
 

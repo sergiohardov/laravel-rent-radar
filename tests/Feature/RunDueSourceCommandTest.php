@@ -23,7 +23,7 @@ it('runs only the most overdue enabled source', function () {
     Source::for(SourceName::DimRia)->update(['next_run_at' => now()->subMinutes(5)]);
 
     $this->artisan('sources:run-due')
-        ->expectsOutputToContain('dimria: fetched 1, seen 0, new 1, passed 1, rejected 0, stop: exhausted, ')
+        ->expectsOutputToContain('dimria: fetched 1, seen 0, new 1, passed 1, rejected 0, failed 0, stop: exhausted, ')
         ->assertSuccessful();
 
     expect(Listing::query()->pluck('source')->all())->toBe([SourceName::DimRia])
