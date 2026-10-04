@@ -2,9 +2,9 @@
 
 ## Текущая позиция
 
-- **Этап:** 9 — Деплой на nic.ua. Пункт 30: SSH и rsync работают, миграции упали — в базе чужая таблица `public.users` (владелец `vladmir2`).
-- **Ветка:** `fix/30-deploy-known-hosts` — отправлена, ждёт PR и merge: проверка `known_hosts` и таблицы в своей схеме `rentradar`.
-- **Следующее действие:** пользователь добавляет `DB_SCHEMA=rentradar` в `.env` на хостинге и мержит ветку — мерж запустит деплой с `db:ensure-schema`; удался — отметить пункт 30, перейти к 31 (cron, админ, webhook прод-бота, `chat_id` рабочей группы).
+- **Этап:** 9 — Деплой на nic.ua. Пункт 30 закрыт: деплой из `main` проходит, прод отвечает на https://rentradar.creastep.com. Пункт 31 в работе: первый запуск по README → «Первый запуск».
+- **Ветка:** `chore/31-prod-launch` — локально, отправится после первого запуска на проде.
+- **Следующее действие:** пользователь по SSH и в cPanel — webhook прод-бота, `chat_id` рабочей группы, админ, прокси у ЛУН и OLX, сектор, cron (последним); затем проверить первые запуски и карточки, закрыть пункт 31 и этап 9.
 - **Открытые вопросы:**
   - Поддержка nic.ua: удалить таблицу `public.users` пользователя `vladmir2` в базе `creastep_rent_radar`, отозвать у `PUBLIC` `CONNECT` на базу и `CREATE` в `public`. Наша пустая `public.migrations` от первой попытки — можно удалить.
   - Текст ошибок Nutgram содержит адрес API с токеном бота (`/bot<token>/sendMediaGroup`), ошибки площадок через Scrape.do — токен Scrape.do в адресе: в `laravel.log` (через `report()`) и `failed_jobs` они попадают целиком. В последней ошибке источника токен уже маскируется (`SourceHttp::redact`); до прода — маскировать и в логах.
@@ -27,6 +27,7 @@ Headless-браузер не нужен: все три площадки отда
 
 ## Хронология
 
+- 2026-10-04 — Пункт 30 закрыт: после правок (секрет `known_hosts`, префикс cPanel у пользователя базы, своя схема `rentradar`) деплой из `main` прошёл; https://rentradar.creastep.com — главная, `/admin/login` и `/up` отвечают 200 за ~0,5 с, webhook без секрета Telegram игнорируется.
 - 2026-10-04 — Пункт 30, миграции на хостинге: сначала `role "rent_radar_adm" does not exist` — cPanel добавляет префикс логина и к пользователю базы (исправлено в `.env`). Затем `relation "users" already exists`: таблицу в нашей пустой базе создал чужой пользователь сервера `vladmir2` — в PostgreSQL 10 `CONNECT` к базе и `CREATE` в `public` по умолчанию есть у всех. Решение: таблицы приложения в своей схеме `rentradar` (`DB_SCHEMA`, создаёт деплой командой `db:ensure-schema`); в dev и тестах — `public`. Проверено: все 259 тестов проходят в схеме `rentradar`; временный «чужой» пользователь создаёт таблицу в `public`, а в `rentradar` получает `permission denied` и на создание, и на чтение.
 - 2026-10-04 — Пункт 30, первый деплой: тесты в GitHub Actions прошли, rsync упал — `Host key verification failed`. На нестандартном порту `known_hosts` хранит сервер как `[хост]:порт`, ключ ищется по этой записи. В workflow добавлена проверка до rsync: нет ключа для `[SSH_HOST]:SSH_PORT` — шаг падает с подсказкой, как получить правильный вывод `ssh-keyscan`.
 - 2026-10-04 — Пункт 30, workflow: `.github/workflows/deploy.yml` — тесты и Pint на `postgres:10` для каждого PR; пуш в `main` → `composer install --no-dev -o` (ассеты Filament публикует `filament:upgrade`) → rsync по SSH с `--delete` и `.deployignore` (на хостинге не трогаются `.env`, `storage/`, `bootstrap/cache/`, `public/.well-known` AutoSSL и `cgi-bin`) → `migrate --force`, `optimize`, `filament:optimize` через `/opt/alt/php84/usr/bin/php`. Нет `.env` на хостинге — деплой падает с понятным сообщением. Решение пользователя: сборки ассетов (Vite) нет — своих ассетов нет, стартовая страница Laravel без сборки берёт встроенные стили. Проверено локально: `actionlint` без замечаний, сухой прогон rsync (уходят только код, `vendor`, `public`), `optimize` и `filament:optimize` проходят, админка с кешами отвечает 200.
