@@ -28,7 +28,8 @@ services:
         condition: service_healthy
 
   postgres:
-    image: postgres:16
+    # The hosting runs PostgreSQL 10.23 (docs/hosting.md); 10.21 is the last arm64 build of 10
+    image: postgres:10
     environment:
       POSTGRES_DB: ${DB_DATABASE:-rent_radar}
       POSTGRES_USER: ${DB_USERNAME:-rent_radar}
@@ -36,7 +37,7 @@ services:
     ports:
       - "${FORWARD_DB_PORT:-5433}:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata10:/var/lib/postgresql/data
       - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
@@ -61,4 +62,4 @@ services:
     profiles: [tunnel]
 
 volumes:
-  pgdata:
+  pgdata10:

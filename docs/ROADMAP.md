@@ -80,7 +80,7 @@
 
 *Перенесён после доработок: ждём от хостинга данные для пункта 28 (версия PostgreSQL, шаг cron, `opcache`, SSH).*
 
-- [ ] 28 Проверки на хостинге: `select version();` (→ тег postgres в dev), `which php && php -v` по SSH, минимальный шаг cron
+- [x] 28 Проверки на хостинге: `select version();` (→ тег postgres в dev), `which php && php -v` по SSH, минимальный шаг cron
 - [ ] 29 База, поддомен с SSL, `.env` прода; украинский прокси дата-центра для ЛУН и OLX — купить и проверить с хостинга, вместе с рабочей `SOURCES_HTTP_VERSION` для OLX
 - [ ] 30 GitHub Actions: тесты → `composer install --no-dev -o` → сборка ассетов → rsync → `migrate --force`, `optimize`
 - [ ] 31 Cron `schedule:run` по полному пути PHP, прод-бот, webhook, рабочая группа

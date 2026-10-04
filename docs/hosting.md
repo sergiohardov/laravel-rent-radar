@@ -44,9 +44,26 @@
 
 Вывод для cron и деплоя: системный `php` — это 8.3, поэтому вызываем `/opt/alt/php84/usr/bin/php` по полному пути, как и записано в CLAUDE.md.
 
-### Ещё проверить (пункт 28)
+## Пункт 28 — проверки в cPanel (2026-10-04)
 
-- Версия PostgreSQL: `select version();` в phpPgAdmin.
-- Минимальный шаг cron в cPanel.
-- Почему нет `opcache` для сайта — возможно, включается в Select PHP Version → Extensions.
-- Открыть SSH через поддержку nic.ua: нужен для деплоя через rsync (пункт 30).
+| Что | Значение |
+|---|---|
+| PostgreSQL | **10.23** (`select version();` в phpPgAdmin). Поддержка 10 закончилась в 2022 году, но Laravel 13 с ней работает: для сервера ниже 12 схема читается без `attgenerated`. Все миграции, 250 тестов и живой запуск DIM.RIA прошли на `postgres:10`; dev переведён на `postgres:10` (10.21 — последняя сборка 10 для arm64) |
+| Cron | шаг «Once Per Minute» (`* * * * *`) есть |
+| `opcache` | включён в cPanel → Select PHP Version → Extensions для PHP 8.4. Селектор пишет «pdo_mysql skipped as conflicting» — MySQL-драйвер нам не нужен, важно, чтобы остался `pdo_pgsql` |
+| SSH | открыт поддержкой; нужен для деплоя через rsync (пункт 30). Порт **2345**, адрес сервера, логин и пароль — в кабинете nic.ua → «Хостинг» → шестерёнка у заказа → «Настройки хостинга»: `ssh <логин>@<сервер> -p 2345` ([инструкция nic.ua](https://nic.kayako.com/en-us/article/389-how-to-connect-via-ssh-protocol-to-hosting-with-cpanel)) |
+
+### По SSH
+
+| Что | Значение |
+|---|---|
+| `php` в shell | `/usr/local/bin/php` → **8.4.26**: после выбора 8.4 в Select PHP Version shell-`php` переключился вместе с сайтом (при проверке `check.php` был 8.3). В cron и деплое всё равно полный путь — выбор в панели можно случайно сменить |
+| `/opt/alt/php84/usr/bin/php` | 8.4.26; модули `pdo_pgsql`, `intl`, `zip`, `bcmath` — те же, что включены в панели |
+| `memory_limit` (CLI) | 128M |
+| `max_execution_time` (CLI) | 0 — без лимита, как у любого PHP CLI; запуск всё равно держит свои 30 с + 30 с LLM, а LVE ограничивает процессы хостинга |
+| rsync | 3.1.3 — подходит для деплоя |
+| Домашняя папка | `/home/<логин>` |
+
+Мелочи при входе: OpenSSH сервера без постквантового обмена ключами (предупреждение клиента, на работу не влияет); `perl: warning: Setting locale failed` — Mac передаёт `LC_CTYPE=UTF-8`, которого нет на сервере; лечится строкой `SetEnv LC_ALL=C.UTF-8` для этого хоста в `~/.ssh/config`.
+
+Чего не позволяет PostgreSQL 10 и чего в коде быть не должно: генерируемые колонки (12+), `INCLUDE` в индексах (11+), процедуры (11+), встроенный `gen_random_uuid()` (13+), `MERGE` (15+).
