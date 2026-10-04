@@ -2,9 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Location\OsmLocationMapper;
-use App\Location\OverpassClient;
-use App\Models\Location;
+use App\Location\OsmLocationImporter;
 use App\Models\Setting;
 use Illuminate\Console\Command;
 
@@ -17,7 +15,7 @@ class ImportOsmLocationsCommand extends Command
 
     protected $description = 'Add streets, complexes and suburbs around the sector point from OpenStreetMap to the whitelist';
 
-    public function handle(OverpassClient $overpass, OsmLocationMapper $mapper): int
+    public function handle(OsmLocationImporter $importer): int
     {
         $settings = Setting::current();
         $settings->fill(array_filter([
@@ -32,24 +30,15 @@ class ImportOsmLocationsCommand extends Command
             return self::INVALID;
         }
 
-        $entries = $mapper->map($overpass->around($settings->center_lat, $settings->center_lng, $settings->radius_m));
-
-        $added = 0;
-        foreach ($entries as $entry) {
-            $location = Location::query()->firstOrNew(['kind' => $entry['kind'], 'name' => $entry['name']]);
-            $added += $location->exists ? 0 : 1;
-            // Keep aliases added by hand
-            $location->aliases = array_values(array_unique([...($location->aliases ?? []), ...$entry['aliases']]));
-            $location->save();
-        }
+        $result = $importer->import($settings->center_lat, $settings->center_lng, $settings->radius_m);
 
         $this->info(sprintf(
             'OpenStreetMap around %s, %s within %d m: %d entries, %d new.',
             $settings->center_lat,
             $settings->center_lng,
             $settings->radius_m,
-            count($entries),
-            $added,
+            $result['entries'],
+            $result['added'],
         ));
 
         return self::SUCCESS;
