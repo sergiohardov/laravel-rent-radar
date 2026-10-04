@@ -17,6 +17,9 @@ enum Flag: string implements HasLabel
     /** Only the district matched the sector whitelist (📍?) */
     case DistrictOnly = 'district_only';
 
+    /** Listed as one room, the text describes a euro two-room flat */
+    case EuroTwoRoom = 'euro_two_room';
+
     public function getLabel(): string
     {
         return match ($this) {
@@ -25,6 +28,7 @@ enum Flag: string implements HasLabel
             self::UnknownFloor => 'этаж ❓',
             self::UnknownGenerator => 'генератор ❓',
             self::DistrictOnly => '📍? только район',
+            self::EuroTwoRoom => 'евродвушка',
         };
     }
 }

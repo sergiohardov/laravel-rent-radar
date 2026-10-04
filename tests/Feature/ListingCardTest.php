@@ -63,6 +63,10 @@ it('marks a district-only match with 📍?', function () {
         ->and(app(ListingCard::class)->caption($listing))->toContain('dom.ria.com — открыть объявление');
 });
 
+it('calls a one-room listing that passed as a euro two-room flat so', function () {
+    expect(card(['rooms' => 1, 'flags' => [Flag::EuroTwoRoom]]))->toContain('🏠 евродвушка · 4/9 эт · 52 м²');
+});
+
 it('escapes text from the listing', function () {
     $caption = card([], ['street' => '<b>Бреуса</b> & Co']);
 

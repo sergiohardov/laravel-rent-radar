@@ -34,6 +34,7 @@ it('saves the settings', function () {
             'floor_min' => 2,
             'floor_max' => 9,
             'allow_unknown_floor' => false,
+            'allow_euro_two_room' => false,
             'center_lat' => 46.48,
             'center_lng' => 30.73,
             'radius_m' => 1500,
@@ -42,7 +43,7 @@ it('saves the settings', function () {
         ->assertHasNoFormErrors()
         ->assertNotified();
 
-    expect(Setting::current()->only(['max_price_uah', 'rooms_min', 'rooms_max', 'floor_min', 'floor_max', 'allow_unknown_floor', 'allow_unknown_price', 'center_lat', 'center_lng', 'radius_m']))
+    expect(Setting::current()->only(['max_price_uah', 'rooms_min', 'rooms_max', 'floor_min', 'floor_max', 'allow_unknown_floor', 'allow_unknown_price', 'allow_euro_two_room', 'center_lat', 'center_lng', 'radius_m']))
         ->toBe([
             'max_price_uah' => 17000,
             'rooms_min' => 1,
@@ -51,6 +52,7 @@ it('saves the settings', function () {
             'floor_max' => 9,
             'allow_unknown_floor' => false,
             'allow_unknown_price' => true,
+            'allow_euro_two_room' => false,
             'center_lat' => 46.48,
             'center_lng' => 30.73,
             'radius_m' => 1500,
