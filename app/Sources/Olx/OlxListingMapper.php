@@ -49,7 +49,9 @@ final class OlxListingMapper
 
     /**
      * blackout_autonomy lists what works during outages; an unticked item only
-     * means the seller did not tick it, so it stays unknown.
+     * means the seller did not tick it, so it stays unknown. backup_power_supply
+     * may be the flat's own backup, which does not count as the building's
+     * generator, so it is not read.
      *
      * @return array<string, bool>
      */
@@ -58,7 +60,6 @@ final class OlxListingMapper
         $ticked = is_array($ticked) ? $ticked : [];
 
         return array_filter([
-            'generator' => in_array('backup_power_supply', $ticked, true),
             'generator_water' => in_array('water_supply', $ticked, true),
             'generator_heating' => in_array('heating', $ticked, true),
             'generator_elevator' => in_array('elevator', $ticked, true),

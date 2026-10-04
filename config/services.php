@@ -41,4 +41,8 @@ return [
         'timeout_seconds' => (int) env('ANTHROPIC_TIMEOUT_SECONDS', 30),
     ],
 
+    'overpass' => [
+        'url' => env('OVERPASS_URL', 'https://overpass-api.de/api/interpreter'),
+    ],
+
 ];
