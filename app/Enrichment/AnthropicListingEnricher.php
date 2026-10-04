@@ -5,6 +5,7 @@ namespace App\Enrichment;
 use Anthropic\Client;
 use Anthropic\Messages\Message;
 use Anthropic\Messages\ToolUseBlock;
+use Anthropic\Messages\Usage;
 use App\Models\Listing;
 use App\Models\Location;
 
@@ -37,6 +38,9 @@ final class AnthropicListingEnricher implements ListingEnricher
         Sector entries, one per line as id | kind | name | aliases:
         TEXT;
 
+    /** Token usage of the last answer, for cost reports */
+    public ?Usage $lastUsage = null;
+
     public function __construct(
         private readonly Client $client,
         private readonly string $model,
@@ -57,6 +61,8 @@ final class AnthropicListingEnricher implements ListingEnricher
             toolChoice: ['type' => 'tool', 'name' => self::TOOL],
             tools: [$this->tool()],
         );
+
+        $this->lastUsage = $message->usage;
 
         return Enrichment::fromArray($this->toolInput($message));
     }
