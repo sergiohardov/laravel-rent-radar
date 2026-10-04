@@ -96,7 +96,7 @@
 
 ### LLM
 
-- Haiku через `anthropic-ai/sdk` за интерфейсом `ListingEnricher`. Модель задаётся в `.env`.
+- Haiku через `anthropic-ai/sdk` за интерфейсом `ListingEnricher`. Модель задаётся в `.env`. Качество и расход — `php artisan llm:eval` на размеченном наборе `tests/Fixtures/llm-eval/cases.json` (реальный API, ~$0.17 за прогон). ~$0.0054 за объявление; кэш промпта не срабатывает — у Haiku 4.5 минимум 4096 токенов, наш системный промпт ~2500.
 - Вызывается только для объявлений, прошедших дешёвые фильтры.
 - На вход — заголовок, описание и адресные поля площадки. На выход — JSON через tool use: `complex, street, house, district, floor, floors_total, rooms, area, price, currency, generator, generator_water, generator_heating, generator_elevator, generator_schedule, closed_territory, is_owner, location_id`.
 - `generator_schedule` — enum: круглосуточно / днём / по графику / не сказано.
