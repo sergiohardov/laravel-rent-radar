@@ -36,4 +36,18 @@ return [
 
     'http_timeout_seconds' => (int) env('SOURCES_HTTP_TIMEOUT_SECONDS', 15),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Per Source
+    |--------------------------------------------------------------------------
+    |
+    | Page limits cap a run when nothing stops it earlier, e.g. the first run
+    | on an empty database.
+    |
+    */
+
+    'lun' => [
+        'max_pages' => 5, // 24 listings per page
+    ],
+
 ];
