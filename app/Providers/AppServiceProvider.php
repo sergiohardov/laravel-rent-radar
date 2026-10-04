@@ -7,6 +7,7 @@ use App\Currency\NbuExchangeRates;
 use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
 use App\Pipeline\Stages\HardFilter;
+use App\Sources\DimRia\DimRiaSource;
 use App\Sources\Lun\LunSource;
 use App\Sources\Olx\OlxSource;
 use App\Sources\SourceRegistry;
@@ -23,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
     private const SOURCES = [
         LunSource::class,
         OlxSource::class,
+        DimRiaSource::class,
     ];
 
     /**
