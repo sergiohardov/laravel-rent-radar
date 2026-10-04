@@ -64,6 +64,16 @@ final class Pipeline
     }
 
     /**
+     * Runs a saved listing through all stages again, e.g. after the LLM was down.
+     */
+    public function reprocess(Listing $listing): Decision
+    {
+        $listing->fill(['decision' => Decision::Pending, 'rejected_by' => null, 'reject_reason' => null]);
+
+        return $this->process($listing);
+    }
+
+    /**
      * @return Decision the listing's decision after the stages
      */
     private function process(Listing $listing): Decision
