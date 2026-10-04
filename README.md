@@ -14,7 +14,7 @@
 
 ## Стек
 
-Laravel 13 · Filament 5 · PHP 8.4 · PostgreSQL · Pest · Nutgram · Claude API (Haiku) · Docker
+Laravel 13 · Filament 5 · PHP 8.4 · MariaDB 11.4 · Pest · Nutgram · Claude API (Haiku) · Docker
 
 ## Статус
 
@@ -38,7 +38,7 @@ docker compose exec php php artisan test    # Pest, база rent_radar_test, с
 Дальше:
 
 ```bash
-docker compose up -d                        # php (http://localhost:8080), scheduler, postgres
+docker compose up -d                        # php (http://localhost:8080), scheduler, mariadb
 docker compose --profile tunnel up -d       # + публичный HTTPS-туннель для webhook dev-бота
 docker compose run --rm node npm run build  # сборка ассетов
 docker compose down                         # остановить; данные БД остаются в volume pgdata
@@ -48,7 +48,7 @@ docker compose down                         # остановить; данные
 |---|---|
 | `php` | PHP 8.4 + Apache с лимитами хостинга (128M, 60 с), код монтируется из папки проекта |
 | `scheduler` | тот же образ, supercronic раз в минуту запускает `artisan schedule:run` — как cron на хостинге: опрос площадок, повтор `failed`, проверка «сутки без новых объявлений», очередь карточек и алертов (`queue:work --stop-when-empty`) |
-| `postgres` | PostgreSQL 10, как на хостинге; базы `rent_radar` и `rent_radar_test`; с хоста — порт 5433 |
+| `mariadb` | MariaDB 11.4, как на хостинге; базы `rent_radar` и `rent_radar_test`; с хоста — порт 3307 |
 | `node` | Node 24 для сборки ассетов, запускается разово |
 | `cloudflared` | быстрый туннель без аккаунта Cloudflare; адрес меняется при каждом запуске |
 
@@ -73,19 +73,19 @@ Telegram dev-бота:
 
 ## Прод
 
-Shared-хостинг nic.ua (cPanel, LiteSpeed, PHP 8.4, PostgreSQL 10). Cron раз в минуту запускает Laravel scheduler. Деплой — GitHub Actions: тесты и сборка в CI, на хостинг — rsync и миграции. Факты о хостинге — [docs/hosting.md](docs/hosting.md).
+Shared-хостинг nic.ua (cPanel, LiteSpeed, PHP 8.4, MariaDB 11.4). Cron раз в минуту запускает Laravel scheduler. Деплой — GitHub Actions: тесты и сборка в CI, на хостинг — rsync и миграции. Факты о хостинге — [docs/hosting.md](docs/hosting.md).
 
 Подготовка хостинга (один раз):
 
 1. **Поддомен** `rentradar.creastep.com` в cPanel → Domains, корень — `/home/<логин>/rentradar.creastep.com/public` (приложение лежит в `~/rentradar.creastep.com`, наружу смотрит только `public/`).
 2. **SSL** — cPanel → SSL/TLS Status → AutoSSL для поддомена.
-3. **PHP 8.4** — cPanel → Select PHP Version, расширения `pdo_pgsql intl zip bcmath opcache`.
-4. **База** — cPanel → PostgreSQL Databases: база и пользователь со всеми правами на неё.
+3. **PHP 8.4** — cPanel → Select PHP Version, расширения `pdo_mysql intl zip bcmath opcache`.
+4. **База** — cPanel → MySQL Databases: база и пользователь со всеми правами на неё (cPanel добавляет к обоим префикс логина).
 5. **`.env`** — `~/rentradar.creastep.com/.env` по шаблону [.env.production.example](.env.production.example): ключи и пароли только там (`chmod 600`). У прода свой бот и рабочая группа, у dev — свой бот и тестовая группа. Конфиг на проде закеширован: после правки `.env` — `/opt/alt/php84/usr/bin/php artisan optimize`.
 6. **Ключ для деплоя** — отдельный SSH-ключ без пароля, авторизованный на хостинге (`ssh-copy-id -p 2345`).
 7. **Секреты GitHub** — Settings → Secrets and variables → Actions: `SSH_HOST`, `SSH_PORT` (2345), `SSH_USER`, `SSH_PRIVATE_KEY` (закрытый ключ целиком), `SSH_KNOWN_HOSTS` (вывод `ssh-keyscan -p 2345 <сервер>`).
 
-Деплой — [.github/workflows/deploy.yml](.github/workflows/deploy.yml): каждый PR проверяется тестами и Pint на PostgreSQL 10; пуш в `main` после тестов ставит зависимости без dev, заливает приложение rsync по SSH (что не заливается и не удаляется на хостинге — [.deployignore](.deployignore)), выполняет миграции и кеширует конфиг, маршруты и представления. Повторить вручную — Actions → «Tests and deploy» → Run workflow.
+Деплой — [.github/workflows/deploy.yml](.github/workflows/deploy.yml): каждый PR проверяется тестами и Pint на MariaDB 11.4; пуш в `main` после тестов ставит зависимости без dev, заливает приложение rsync по SSH (что не заливается и не удаляется на хостинге — [.deployignore](.deployignore)), выполняет миграции и кеширует конфиг, маршруты и представления. Повторить вручную — Actions → «Tests and deploy» → Run workflow.
 
 Первый запуск (один раз, после первого деплоя; команды — по SSH в `~/rentradar.creastep.com`, PHP — `/opt/alt/php84/usr/bin/php`). Порядок важен: пока сектор пуст, свежие объявления отсеиваются как «вне сектора» и запоминаются как виденные, поэтому cron — последним.
 
