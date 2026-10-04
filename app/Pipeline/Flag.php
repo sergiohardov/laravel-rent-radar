@@ -11,4 +11,7 @@ enum Flag: string
     case UnknownRooms = 'unknown_rooms';
     case UnknownFloor = 'unknown_floor';
     case UnknownGenerator = 'unknown_generator';
+
+    /** Only the district matched the sector whitelist (📍?) */
+    case DistrictOnly = 'district_only';
 }

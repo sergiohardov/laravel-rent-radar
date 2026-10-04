@@ -80,5 +80,5 @@ it('runs after the hard filter, so rejected listings never reach the LLM', funct
 it('is a registered stage between the two hard filters', function () {
     $stages = (fn () => $this->stages)->call(app(Pipeline::class));
 
-    expect(array_map(fn ($stage) => $stage::class, $stages))->toBe([HardFilter::class, EnrichStage::class, \App\Pipeline\Stages\TextHardFilter::class]);
+    expect(array_map(fn ($stage) => $stage::class, $stages))->toBe([HardFilter::class, EnrichStage::class, \App\Pipeline\Stages\TextHardFilter::class, \App\Location\LocationMatcher::class]);
 });

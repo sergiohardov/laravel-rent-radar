@@ -7,6 +7,7 @@ use App\Currency\ExchangeRates;
 use App\Currency\NbuExchangeRates;
 use App\Enrichment\AnthropicListingEnricher;
 use App\Enrichment\ListingEnricher;
+use App\Location\LocationMatcher;
 use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
 use App\Pipeline\Stages\EnrichStage;
@@ -42,6 +43,7 @@ class AppServiceProvider extends ServiceProvider
         HardFilter::class,
         EnrichStage::class,
         TextHardFilter::class,
+        LocationMatcher::class,
     ];
 
     /**
