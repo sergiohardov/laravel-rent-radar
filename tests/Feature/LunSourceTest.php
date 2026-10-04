@@ -126,8 +126,11 @@ it('reads what works during outages from the autonomy fields', function () {
         ->and($listings['4728181952']->sourceHints)->toBe([]);
 });
 
-it('builds the first photo URL', function () {
+it('builds up to 10 photo URLs in the site order', function () {
     Http::fake(['flatfy.ua/*' => Http::sequence()->push($this->page)->push(['data' => []])]);
 
-    expect(lunListings()[0]->photoUrl)->toBe('https://market-images.lunstatic.net/lun-ua/1280/960/images/1146984893.jpg');
+    $photos = lunListings()[0]->photoUrls;
+    expect($photos[0])->toBe('https://market-images.lunstatic.net/lun-ua/1280/960/images/1146984893.jpg')
+        ->and(count($photos))->toBeGreaterThan(1)->toBeLessThanOrEqual(10)
+        ->and($photos)->toBe(array_values(array_unique($photos)));
 });

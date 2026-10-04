@@ -7,12 +7,12 @@ use App\Pipeline\Decision;
 use DateTimeInterface;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\Middleware\RateLimited;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 
 /**
- * Posts one listing card. At most 20 cards a minute go to the group (the
- * telegram-cards limiter); a Telegram 429 puts the job back for retry_after.
+ * Posts one listing card. GroupMessageLimit keeps the group under Telegram's
+ * messages a minute, counting each photo of the album; a Telegram 429 puts
+ * the job back for retry_after.
  */
 class SendListingCard implements ShouldQueue
 {
@@ -27,7 +27,9 @@ class SendListingCard implements ShouldQueue
      */
     public function middleware(): array
     {
-        return [new RateLimited('telegram-cards')];
+        $photos = count(Listing::query()->find($this->listingId)?->photo_urls ?? []);
+
+        return [new GroupMessageLimit(max(1, $photos))];
     }
 
     /**

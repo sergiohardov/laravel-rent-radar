@@ -1,8 +1,8 @@
 <?php
 
+use App\Telegram\GroupMessageLimit;
 use App\Telegram\NutgramTelegramNotifier;
 use App\Telegram\SendAlert;
-use Illuminate\Queue\Middleware\RateLimited;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use Tests\Fakes\FakeTelegramNotifier;
@@ -22,9 +22,8 @@ it('waits for retry_after when Telegram says too many requests', function () {
     $job->handle(new FakeTelegramNotifier(new TelegramException('Too Many Requests', 429, parameters: ['retry_after' => 9])));
 });
 
-it('shares the group limit with listing cards', function () {
-    expect((new SendAlert('text'))->middleware()[0])->toBeInstanceOf(RateLimited::class)
-        ->and((fn () => $this->limiterName)->call((new SendAlert('text'))->middleware()[0]))->toBe('telegram-cards');
+it('shares the group limit with listing cards as one message', function () {
+    expect((new SendAlert('text'))->middleware())->toEqual([new GroupMessageLimit(1)]);
 });
 
 it('sends the alert as an HTML message without a link preview', function () {

@@ -12,11 +12,15 @@ use Carbon\CarbonImmutable;
  */
 final readonly class RawListing
 {
+    /** A Telegram album holds up to 10 photos */
+    public const MAX_PHOTOS = 10;
+
     /**
      * @param  array<string, mixed>  $raw  the source's own payload, kept for the journal
      * @param  array<string, bool>  $sourceHints  what the site's own fields say about power
      *                                            outages, keyed like the enrichment
      *                                            (generator, generator_water…)
+     * @param  list<string>  $photoUrls  the main photo first
      */
     public function __construct(
         public SourceName $source,
@@ -36,7 +40,7 @@ final readonly class RawListing
         public ?float $lng = null,
         public ?CarbonImmutable $publishedAt = null,
         public array $sourceHints = [],
-        public ?string $photoUrl = null,
+        public array $photoUrls = [],
     ) {}
 
     /**
@@ -50,7 +54,7 @@ final readonly class RawListing
             'source' => $this->source,
             'external_id' => $this->externalId,
             'url' => $this->url,
-            'photo_url' => $this->photoUrl,
+            'photo_urls' => $this->photoUrls !== [] ? array_slice($this->photoUrls, 0, self::MAX_PHOTOS) : null,
             'title' => $this->title,
             'description' => $this->description,
             'address' => $this->address,

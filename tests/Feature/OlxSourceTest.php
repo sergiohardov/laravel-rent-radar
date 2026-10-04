@@ -148,11 +148,12 @@ it('reads ticked blackout items as outage hints', function () {
         ->and($listings['903720947']->sourceHints)->toBe([]);
 });
 
-it('builds the first photo URL in 1280x960', function () {
+it('builds up to 10 photo URLs in 1280x960', function () {
     Http::fake(['www.olx.ua/*' => Http::sequence()->push($this->page)->push($this->lastPage)]);
 
-    $photo = olxListings()[0]->photoUrl;
+    $photos = olxListings()[0]->photoUrls;
 
-    expect($photo)->toStartWith('https://ireland.apollo.olxcdn.com:443/v1/files/')
-        ->and($photo)->toEndWith('/image;s=1280x960');
+    expect(count($photos))->toBeGreaterThan(1)->toBeLessThanOrEqual(10)
+        ->and($photos)->each->toStartWith('https://ireland.apollo.olxcdn.com:443/v1/files/')
+        ->and($photos)->each->toEndWith('/image;s=1280x960');
 });

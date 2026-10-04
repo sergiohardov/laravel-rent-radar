@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
-    'source', 'external_id', 'url', 'photo_url', 'title', 'description', 'address', 'raw', 'source_hints',
+    'source', 'external_id', 'url', 'photo_urls', 'title', 'description', 'address', 'raw', 'source_hints',
     'price', 'currency', 'price_uah', 'rooms', 'floor', 'floors_total', 'area', 'lat', 'lng', 'published_at',
     'decision', 'rejected_by', 'reject_reason', 'flags',
     'enrichment', 'enriched_at', 'telegram_message_id', 'notified_at',
@@ -59,6 +59,7 @@ class Listing extends Model
             'decision' => Decision::class,
             'flags' => AsEnumCollection::of(Flag::class),
             'raw' => 'array',
+            'photo_urls' => 'array',
             'source_hints' => 'array',
             'enrichment' => 'array',
             'price' => 'integer',

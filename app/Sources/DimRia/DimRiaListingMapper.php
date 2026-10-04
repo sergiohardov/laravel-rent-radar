@@ -43,11 +43,29 @@ final class DimRiaListingMapper
             publishedAt: isset($card['publishing_date'])
                 ? CarbonImmutable::createFromFormat('Y-m-d H:i:s', $card['publishing_date'], 'Europe/Kyiv')
                 : null,
-            // main_photo "dom/photo/…/346345342.jpg" is served as …/346345342fl.jpg
-            photoUrl: filled($card['main_photo'] ?? null)
-                ? 'https://cdn.riastatic.com/photos/'.preg_replace('/\.jpg$/', 'fl.jpg', $card['main_photo'])
-                : null,
+            photoUrls: $this->photoUrls($card),
         );
+    }
+
+    /**
+     * The main photo, then the rest in the site's order. A file
+     * "dom/photo/…/346345342.jpg" is served as …/346345342fl.jpg.
+     *
+     * @param  array<string, mixed>  $card
+     * @return list<string>
+     */
+    private function photoUrls(array $card): array
+    {
+        return collect($card['photos'] ?? [])
+            ->sortBy('ordering')
+            ->pluck('file')
+            ->prepend($card['main_photo'] ?? null)
+            ->filter()
+            ->unique()
+            ->take(RawListing::MAX_PHOTOS)
+            ->map(fn (string $file) => 'https://cdn.riastatic.com/photos/'.preg_replace('/\.jpg$/', 'fl.jpg', $file))
+            ->values()
+            ->all();
     }
 
     /**

@@ -23,9 +23,7 @@ use App\Sources\SourceRegistry;
 use App\Telegram\NutgramTelegramNotifier;
 use App\Telegram\TelegramNotifier;
 use GuzzleHttp\Client as GuzzleClient;
-use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -97,7 +95,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Telegram allows about 20 messages a minute into one group
-        RateLimiter::for('telegram-cards', fn () => Limit::perMinute(20));
+        //
     }
 }
