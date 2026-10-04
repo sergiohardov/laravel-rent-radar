@@ -16,6 +16,7 @@ final class SourceRunner
 {
     public function __construct(
         private readonly Pipeline $pipeline,
+        private readonly SourceAlerts $alerts,
     ) {}
 
     /**
@@ -36,15 +37,18 @@ final class SourceRunner
                 'last_error_at' => now(),
                 'consecutive_failures' => $state->consecutive_failures + 1,
             ])->save();
+            $this->alerts->failed($state);
 
             throw $e;
         }
 
+        $failuresBefore = $state->consecutive_failures;
         $state->fill([
             'last_success_at' => now(),
             'last_report' => (array) $report,
             'consecutive_failures' => 0,
         ])->save();
+        $this->alerts->succeeded($state, $failuresBefore);
 
         return $report;
     }
