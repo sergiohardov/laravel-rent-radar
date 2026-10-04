@@ -74,3 +74,28 @@ it('runs last and journals out-of-sector listings', function () {
         ->and($listing->rejected_by)->toBe('location_matcher')
         ->and($listing->reject_reason)->toBe('not in sector: Бреуса');
 });
+
+it('rejects a numbered complex whose number is not in the text', function () {
+    $pearl = Location::factory()->create(['kind' => LocationKind::Complex, 'name' => '54-я Жемчужина']);
+    $listing = Listing::factory()->make([
+        'title' => 'Сдам 1-ком квартиру в 53 жемчужине',
+        'description' => 'Таирова, 8 этаж',
+        'address' => 'Таїрова',
+        'enrichment' => array_merge((new Enrichment)->toArray(), ['location_id' => $pearl->id, 'complex' => '53-я Жемчужина']),
+    ]);
+
+    $result = app(LocationMatcher::class)->handle($listing);
+
+    expect($result->passed)->toBeFalse()
+        ->and($result->reason)->toBe('not in sector: 53-я Жемчужина (picked 54-я Жемчужина, but 54 is not in the text)');
+});
+
+it('accepts a numbered complex whose number is in the text', function () {
+    $pearl = Location::factory()->create(['kind' => LocationKind::Complex, 'name' => '54-я Жемчужина']);
+    $listing = Listing::factory()->make([
+        'title' => 'Сдам 2-к в 54 Жемчужине',
+        'enrichment' => array_merge((new Enrichment)->toArray(), ['location_id' => $pearl->id]),
+    ]);
+
+    expect(app(LocationMatcher::class)->handle($listing)->passed)->toBeTrue();
+});

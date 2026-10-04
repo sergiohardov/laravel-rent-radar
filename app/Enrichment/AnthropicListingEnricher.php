@@ -32,7 +32,7 @@ final class AnthropicListingEnricher implements ListingEnricher
         - generator_schedule: round_the_clock when backup power runs all the time, daytime when it runs during the day, scheduled when only for some hours, unknown when not said.
         - closed_territory: yes for a closed or guarded territory (gated yard, security, barrier), no if the listing says it is open.
         - is_owner: yes when the owner lets the flat directly, no when an agent or agency does or a commission is charged.
-        - location_id: the id of the sector entry below where the flat is. Match names and aliases across Ukrainian and Russian spellings, old and new street names, abbreviations and typos. Prefer a street or complex entry; pick a district entry only when the listing names no street or complex. Null when the flat is not in the list or the listing names no place.
+        - location_id: the id of the sector entry below where the flat is. Match names and aliases across Ukrainian and Russian spellings, old and new street names, abbreviations and typos. Numbers are part of a name: complexes of one series with different numbers are different places ("53 Жемчужина" is not "54-я Жемчужина", "Перлина" is the Ukrainian "Жемчужина"). Prefer a street or complex entry; pick a district entry only when the listing names no street or complex. Null when the flat is not in the list or the listing names no place.
 
         Sector entries, one per line as id | kind | name | aliases:
         TEXT;
