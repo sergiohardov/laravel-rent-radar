@@ -7,15 +7,16 @@ use App\Models\Listing;
 use App\Pipeline\Decision;
 use App\Pipeline\Pipeline;
 use App\Sources\SourceName;
+use App\Telegram\GroupMessageLimit;
 use App\Telegram\NutgramTelegramNotifier;
 use App\Telegram\SendListingCard;
 use App\Telegram\TelegramNotifier;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Queue\Middleware\RateLimited;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Facades\RateLimiter;
+use Psr\Http\Message\RequestInterface as Request;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
+use SergiX44\Nutgram\Testing\FormDataParser;
 use Tests\Fakes\FakeListingEnricher;
 use Tests\Fakes\FakeListingSource;
 use Tests\Fakes\FakeTelegramNotifier;
@@ -70,11 +71,12 @@ it('waits for retry_after when Telegram says too many requests', function () {
     $job->handle(new FakeTelegramNotifier(new TelegramException('Too Many Requests', 429, parameters: ['retry_after' => 17])));
 });
 
-it('throttles cards to 20 a minute', function () {
-    $middleware = (new SendListingCard(1))->middleware();
+it('counts every photo of the album against the group limit', function () {
+    $album = Listing::factory()->create(['photo_urls' => array_map(fn ($i) => "https://cdn.example.test/{$i}.jpg", range(1, 7))]);
+    $text = Listing::factory()->create(['photo_urls' => null]);
 
-    expect($middleware[0])->toBeInstanceOf(RateLimited::class)
-        ->and(RateLimiter::limiter('telegram-cards')(new SendListingCard(1))->maxAttempts)->toBe(20);
+    expect((new SendListingCard($album->id))->middleware())->toEqual([new GroupMessageLimit(7)])
+        ->and((new SendListingCard($text->id))->middleware())->toEqual([new GroupMessageLimit(1)]);
 });
 
 it('drains the queue every minute from the scheduler', function () {
@@ -85,11 +87,40 @@ it('drains the queue every minute from the scheduler', function () {
         ->and($event->withoutOverlapping)->toBeTrue();
 });
 
-it('posts a photo with the HTML caption to the group', function () {
+/**
+ * A message as Telegram returns it from the test group.
+ */
+function sentMessage(int $id): array
+{
+    return ['message_id' => $id, 'date' => 1, 'chat' => ['id' => -1004355960067, 'type' => 'supergroup']];
+}
+
+it('posts the photos as one album with the HTML caption on the first', function () {
     config(['services.telegram.chat_id' => '-1004355960067']);
     $bot = app(Nutgram::class);
-    $bot->willReceive(['message_id' => 55, 'date' => 1, 'chat' => ['id' => -1004355960067, 'type' => 'supergroup']]);
-    $listing = Listing::factory()->make(['photo_url' => 'https://cdn.riastatic.com/photos/x/1fl.jpg', 'price' => 12000, 'currency' => CurrencyCode::Uah]);
+    $bot->willReceive([sentMessage(60), sentMessage(61), sentMessage(62)]);
+    $photos = ['https://cdn.example.test/1.jpg', 'https://cdn.example.test/2.jpg', 'https://cdn.example.test/3.jpg'];
+    $listing = Listing::factory()->make(['photo_urls' => $photos, 'price' => 12000, 'currency' => CurrencyCode::Uah]);
+
+    expect(app(NutgramTelegramNotifier::class)->send($listing))->toBe(60);
+
+    $bot->assertReply('sendMediaGroup', ['chat_id' => '-1004355960067']);
+    $bot->assertRaw(function (Request $request) use (&$media) {
+        $media = json_decode(FormDataParser::parse($request)->params['media'], true);
+
+        return true;
+    }, index: 0);
+    expect(array_column($media, 'media'))->toBe($photos)
+        ->and($media[0]['caption'])->toContain('12 000 грн')
+        ->and($media[0]['parse_mode'])->toBe('HTML')
+        ->and($media[1])->not->toHaveKey('caption');
+});
+
+it('posts a single photo with the HTML caption to the group', function () {
+    config(['services.telegram.chat_id' => '-1004355960067']);
+    $bot = app(Nutgram::class);
+    $bot->willReceive(sentMessage(55));
+    $listing = Listing::factory()->make(['photo_urls' => ['https://cdn.riastatic.com/photos/x/1fl.jpg'], 'price' => 12000, 'currency' => CurrencyCode::Uah]);
 
     $messageId = app(NutgramTelegramNotifier::class)->send($listing);
 
@@ -102,8 +133,19 @@ it('falls back to a text message when Telegram cannot fetch the photo', function
     $bot = app(Nutgram::class);
     $bot->willReceive(['description' => 'Bad Request: wrong file identifier/HTTP URL specified', 'error_code' => 400], ok: false)
         ->willReceive(['message_id' => 56, 'date' => 1, 'chat' => ['id' => -1004355960067, 'type' => 'supergroup']]);
-    $listing = Listing::factory()->make(['photo_url' => 'https://example.test/broken.jpg']);
+    $listing = Listing::factory()->make(['photo_urls' => ['https://example.test/broken.jpg']]);
 
     expect(app(NutgramTelegramNotifier::class)->send($listing))->toBe(56);
     $bot->assertReply('sendMessage', ['chat_id' => '-1004355960067', 'parse_mode' => 'HTML'], index: 1);
+});
+
+it('falls back to the main photo alone when Telegram cannot fetch one of the album', function () {
+    config(['services.telegram.chat_id' => '-1004355960067']);
+    $bot = app(Nutgram::class);
+    $bot->willReceive(['description' => 'Bad Request: failed to get HTTP URL content', 'error_code' => 400], ok: false)
+        ->willReceive(sentMessage(57));
+    $listing = Listing::factory()->make(['photo_urls' => ['https://cdn.example.test/1.jpg', 'https://example.test/broken.jpg']]);
+
+    expect(app(NutgramTelegramNotifier::class)->send($listing))->toBe(57);
+    $bot->assertReply('sendPhoto', ['photo' => 'https://cdn.example.test/1.jpg', 'parse_mode' => 'HTML'], index: 1);
 });

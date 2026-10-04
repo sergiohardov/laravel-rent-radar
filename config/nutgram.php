@@ -13,6 +13,9 @@ return [
     // /ping@rent_radar_dev_bot does not match /ping
     'config' => [
         'bot_name' => env('TELEGRAM_BOT_USERNAME'),
+        // Telegram fetches album photos from the sites' CDNs before it answers;
+        // ten OLX photos take longer than the default 5 s
+        'timeout' => 30,
     ],
 
     // Handlers live in routes/telegram.php

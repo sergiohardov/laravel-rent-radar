@@ -5,12 +5,11 @@ namespace App\Telegram;
 use DateTimeInterface;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\Middleware\RateLimited;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 
 /**
- * Posts one service message to the group. Alerts share the group's 20 a
- * minute with listing cards (the telegram-cards limiter).
+ * Posts one service message to the group. Alerts share the group's messages
+ * a minute with listing cards (GroupMessageLimit).
  */
 class SendAlert implements ShouldQueue
 {
@@ -25,7 +24,7 @@ class SendAlert implements ShouldQueue
      */
     public function middleware(): array
     {
-        return [new RateLimited('telegram-cards')];
+        return [new GroupMessageLimit(1)];
     }
 
     /**
