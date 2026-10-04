@@ -43,6 +43,10 @@ final class DimRiaListingMapper
             publishedAt: isset($card['publishing_date'])
                 ? CarbonImmutable::createFromFormat('Y-m-d H:i:s', $card['publishing_date'], 'Europe/Kyiv')
                 : null,
+            // main_photo "dom/photo/…/346345342.jpg" is served as …/346345342fl.jpg
+            photoUrl: filled($card['main_photo'] ?? null)
+                ? 'https://cdn.riastatic.com/photos/'.preg_replace('/\.jpg$/', 'fl.jpg', $card['main_photo'])
+                : null,
         );
     }
 

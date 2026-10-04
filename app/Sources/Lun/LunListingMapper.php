@@ -42,6 +42,9 @@ final class LunListingMapper
             lng: isset($location[0]) ? (float) $location[0] : null,
             publishedAt: isset($item['insert_time']) ? CarbonImmutable::parse($item['insert_time']) : null,
             sourceHints: $this->outageHints($item),
+            photoUrl: isset($item['images'][0]['image_id'])
+                ? "https://market-images.lunstatic.net/lun-ua/1280/960/images/{$item['images'][0]['image_id']}.jpg"
+                : null,
         );
     }
 

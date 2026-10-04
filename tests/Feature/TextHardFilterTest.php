@@ -132,13 +132,13 @@ it('journals a text rejection under its own stage name', function () {
         ->and($listing->reject_reason)->toBe('no generator');
 });
 
-it('keeps a listing that passes both filters pending with its flags', function () {
+it('sends a listing that passes both filters with its flags', function () {
     app()->instance(ListingEnricher::class, new FakeListingEnricher(new Enrichment(floor: 4)));
 
     app(Pipeline::class)->run(FakeListingSource::withIds(1, 1, SourceName::Olx));
 
     $listing = Listing::query()->sole();
-    expect($listing->decision)->toBe(Decision::Pending)
+    expect($listing->decision)->toBe(Decision::Notified)
         ->and($listing->flags->all())->toHaveCount(2)
         ->and($listing->flags->all())->toContain(Flag::UnknownPrice, Flag::UnknownGenerator);
 });

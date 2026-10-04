@@ -95,7 +95,8 @@ it('runs as a pipeline stage and fills the journal', function () {
     app(Pipeline::class)->run($source);
 
     $listings = Listing::query()->orderBy('external_id')->get();
-    expect($listings[0]->decision)->toBe(Decision::Pending)
+    // passed every stage; the test queue is sync, so the card is already sent
+    expect($listings[0]->decision)->toBe(Decision::Notified)
         ->and($listings[0]->price_uah)->toBe(14000)
         ->and($listings[1]->decision)->toBe(Decision::Rejected)
         ->and($listings[1]->rejected_by)->toBe('hard_filter')

@@ -36,6 +36,7 @@ final readonly class RawListing
         public ?float $lng = null,
         public ?CarbonImmutable $publishedAt = null,
         public array $sourceHints = [],
+        public ?string $photoUrl = null,
     ) {}
 
     /**
@@ -49,6 +50,7 @@ final readonly class RawListing
             'source' => $this->source,
             'external_id' => $this->externalId,
             'url' => $this->url,
+            'photo_url' => $this->photoUrl,
             'title' => $this->title,
             'description' => $this->description,
             'address' => $this->address,

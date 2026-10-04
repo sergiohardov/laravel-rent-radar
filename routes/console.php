@@ -8,3 +8,7 @@ Schedule::command('sources:run-due')->everyMinute()->withoutOverlapping(5);
 
 // Listings the LLM failed on get another try while they are fresh
 Schedule::command('listings:retry-failed')->hourlyAt(30)->withoutOverlapping(5);
+
+// Listing cards wait in the database queue; like the hosting cron, a short-lived worker
+// drains it every minute
+Schedule::command('queue:work --stop-when-empty --max-time=50')->everyMinute()->withoutOverlapping(5);

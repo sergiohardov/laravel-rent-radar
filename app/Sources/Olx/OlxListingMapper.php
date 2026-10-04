@@ -44,6 +44,9 @@ final class OlxListingMapper
             // Kyiv time with its offset, e.g. 2026-10-03T23:48:57+03:00
             publishedAt: isset($offer['created_time']) ? CarbonImmutable::parse($offer['created_time']) : null,
             sourceHints: $this->outageHints($params->get('blackout_autonomy')['key'] ?? null),
+            photoUrl: isset($offer['photos'][0]['link'])
+                ? str_replace('{width}x{height}', '1280x960', $offer['photos'][0]['link'])
+                : null,
         );
     }
 

@@ -137,3 +137,9 @@ it('fails on a blocked search', function () {
 it('is registered as the dimria source', function () {
     expect(app(SourceRegistry::class)->get(SourceName::DimRia))->toBeInstanceOf(DimRiaSource::class);
 });
+
+it('builds the main photo URL', function () {
+    fakeDimRia();
+
+    expect(dimriaListings()[0]->photoUrl)->toBe('https://cdn.riastatic.com/photos/dom/photo/34634/3463453/346345342/346345342fl.jpg');
+});
