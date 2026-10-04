@@ -69,7 +69,7 @@ Telegram dev-бота:
    ```
 4. В группе `/ping@<имя_бота>` — бот ответит `chat_id`, его в `TELEGRAM_CHAT_ID`.
 
-Админка: http://localhost:8080/admin, вход — `ADMIN_EMAIL` и `ADMIN_PASSWORD` из `.env`. На проде админ создаётся командой `php artisan make:filament-user`, пароль вводит владелец.
+Админка: http://localhost:8080/admin, вход — `ADMIN_EMAIL` и `ADMIN_PASSWORD` из `.env`. На проде админ создаётся командой `php artisan make:filament-user`, пароль вводит владелец. Разделы: «Настройки» — цена, комнаты, этажи, переключатели ❓ и точка сектора; новые значения действуют со следующего запуска источника.
 
 ## Прод
 
