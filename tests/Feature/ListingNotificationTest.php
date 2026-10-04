@@ -13,6 +13,7 @@ use App\Telegram\TelegramNotifier;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Queue\Middleware\RateLimited;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\RateLimiter;
 use SergiX44\Nutgram\Nutgram;
 use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 use Tests\Fakes\FakeListingEnricher;
@@ -73,7 +74,7 @@ it('throttles cards to 20 a minute', function () {
     $middleware = (new SendListingCard(1))->middleware();
 
     expect($middleware[0])->toBeInstanceOf(RateLimited::class)
-        ->and(\Illuminate\Support\Facades\RateLimiter::limiter('telegram-cards')(new SendListingCard(1))->maxAttempts)->toBe(20);
+        ->and(RateLimiter::limiter('telegram-cards')(new SendListingCard(1))->maxAttempts)->toBe(20);
 });
 
 it('drains the queue every minute from the scheduler', function () {

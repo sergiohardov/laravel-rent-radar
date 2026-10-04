@@ -10,11 +10,13 @@ use App\Enrichment\ListingEnricher;
 use App\Location\LocationMatcher;
 use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
+use App\Pipeline\Stage;
 use App\Pipeline\Stages\EnrichStage;
 use App\Pipeline\Stages\HardFilter;
 use App\Pipeline\Stages\NotifyStage;
 use App\Pipeline\Stages\TextHardFilter;
 use App\Sources\DimRia\DimRiaSource;
+use App\Sources\ListingSource;
 use App\Sources\Lun\LunSource;
 use App\Sources\Olx\OlxSource;
 use App\Sources\SourceRegistry;
@@ -31,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Listing source adapters, see App\Sources\ListingSource.
      *
-     * @var list<class-string<\App\Sources\ListingSource>>
+     * @var list<class-string<ListingSource>>
      */
     private const SOURCES = [
         LunSource::class,
@@ -42,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Pipeline stages in order, cheap checks first, see App\Pipeline\Stage.
      *
-     * @var list<class-string<\App\Pipeline\Stage>>
+     * @var list<class-string<Stage>>
      */
     private const STAGES = [
         HardFilter::class,

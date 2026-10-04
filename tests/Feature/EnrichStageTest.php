@@ -5,12 +5,16 @@ use App\Enrichment\AnthropicListingEnricher;
 use App\Enrichment\Enrichment;
 use App\Enrichment\EnrichmentFailed;
 use App\Enrichment\ListingEnricher;
+use App\Location\LocationMatcher;
 use App\Models\Listing;
 use App\Pipeline\Decision;
 use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
 use App\Pipeline\Stages\EnrichStage;
 use App\Pipeline\Stages\HardFilter;
+use App\Pipeline\Stages\NotifyStage;
+use App\Pipeline\Stages\TextHardFilter;
+use App\Sources\RawListing;
 use App\Sources\SourceName;
 use Tests\Fakes\FakeListingEnricher;
 use Tests\Fakes\FakeListingSource;
@@ -68,7 +72,7 @@ it('runs after the hard filter, so rejected listings never reach the LLM', funct
     app()->instance(ListingEnricher::class, $enricher);
     $source = new FakeListingSource(SourceName::Olx, [
         ...FakeListingSource::withIds(1, 1, SourceName::Olx)->fetch(),
-        new \App\Sources\RawListing(SourceName::Olx, '9', 'https://example.test/9', [], rooms: 1),
+        new RawListing(SourceName::Olx, '9', 'https://example.test/9', [], rooms: 1),
     ]);
 
     app(Pipeline::class)->run($source);
@@ -80,5 +84,5 @@ it('runs after the hard filter, so rejected listings never reach the LLM', funct
 it('is a registered stage between the two hard filters', function () {
     $stages = (fn () => $this->stages)->call(app(Pipeline::class));
 
-    expect(array_map(fn ($stage) => $stage::class, $stages))->toBe([HardFilter::class, EnrichStage::class, \App\Pipeline\Stages\TextHardFilter::class, \App\Location\LocationMatcher::class, \App\Pipeline\Stages\NotifyStage::class]);
+    expect(array_map(fn ($stage) => $stage::class, $stages))->toBe([HardFilter::class, EnrichStage::class, TextHardFilter::class, LocationMatcher::class, NotifyStage::class]);
 });
