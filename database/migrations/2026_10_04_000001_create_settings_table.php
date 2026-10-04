@@ -14,9 +14,10 @@ return new class extends Migration
     {
         // A single row of search settings; defaults follow docs/REQUIREMENTS.md
         Schema::create('settings', function (Blueprint $table) {
-            $table->id();
+            // Not auto-increment: MariaDB allows no CHECK on such a column, and there is one row
+            $table->unsignedTinyInteger('id')->primary();
 
-            // Sector: point + radius; GeoFilter is off while the point is empty
+            // Sector point and radius, only for the OpenStreetMap import
             $table->decimal('center_lat', 9, 6)->nullable();
             $table->decimal('center_lng', 9, 6)->nullable();
             $table->unsignedInteger('radius_m')->nullable();
@@ -34,7 +35,10 @@ return new class extends Migration
             $table->boolean('allow_unknown_floor')->default(true);
             $table->boolean('allow_unknown_generator')->default(true);
 
-            $table->timestampsTz();
+            // A euro two-room flat listed as one room counts as two rooms
+            $table->boolean('allow_euro_two_room')->default(true);
+
+            $table->datetimes();
         });
 
         DB::statement('ALTER TABLE settings ADD CONSTRAINT settings_single_row CHECK (id = 1)');

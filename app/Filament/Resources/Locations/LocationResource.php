@@ -80,7 +80,8 @@ class LocationResource extends Resource
                     ->color('gray')
                     ->limitList(4)
                     ->expandableLimitedList()
-                    ->searchable(query: fn (Builder $query, string $search) => $query->orWhereRaw('aliases::text ilike ?', ['%'.$search.'%'])),
+                    // JSON columns compare bytewise in MariaDB (utf8mb4_bin), hence lower() on both sides
+                    ->searchable(query: fn (Builder $query, string $search) => $query->orWhereRaw('lower(aliases) like ?', ['%'.mb_strtolower($search).'%'])),
             ])
             ->filters([
                 SelectFilter::make('kind')->label('Тип')->options(LocationKind::class),

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('kind', 16);
             $table->string('name');
             // Russian/Ukrainian, old/new names, abbreviations
-            $table->jsonb('aliases')->default('[]');
-            $table->timestampsTz();
+            $table->json('aliases')->default('[]');
+            $table->datetimes();
 
             $table->unique(['kind', 'name']);
         });

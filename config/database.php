@@ -79,6 +79,8 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
+            // The app works in UTC; the session too, for NOW() and CURRENT_TIMESTAMP defaults
+            'timezone' => '+00:00',
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
@@ -95,9 +97,7 @@ return [
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
-            // Production keeps its tables in its own schema: on the shared hosting any
-            // role may connect to the database and create tables in public (PostgreSQL < 15)
-            'search_path' => env('DB_SCHEMA', 'public'),
+            'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
         ],
 

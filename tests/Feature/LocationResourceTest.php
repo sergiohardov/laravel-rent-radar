@@ -27,6 +27,16 @@ it('lists the whitelist and finds an entry by its alias', function () {
         ->assertCanNotSeeTableRecords([$complex]);
 });
 
+it('finds an alias whatever its case', function () {
+    $street = Location::factory()->create(['name' => 'вулиця Академіка Заболотного', 'aliases' => ['улица Академика Заболотного']]);
+    $other = Location::factory()->create(['name' => 'Марсельська вулиця', 'aliases' => []]);
+
+    Livewire::test(ManageLocations::class)
+        ->searchTable('АКАДЕМИКА заболотного')
+        ->assertCanSeeTableRecords([$street])
+        ->assertCanNotSeeTableRecords([$other]);
+});
+
 it('adds an entry with aliases by hand', function () {
     Livewire::test(ManageLocations::class)
         ->callAction('create', data: [

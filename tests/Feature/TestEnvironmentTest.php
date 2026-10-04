@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 
 it('runs against the migrated Postgres test database', function () {
-    expect(DB::connection()->getDriverName())->toBe('pgsql')
+    expect(DB::connection()->getDriverName())->toBe('mariadb')
         ->and(DB::connection()->getDatabaseName())->toBe('rent_radar_test')
         ->and(Schema::hasTable('users'))->toBeTrue();
 });

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresDatesInUtc;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,10 +17,12 @@ use Illuminate\Database\Eloquent\Model;
 ])]
 class Setting extends Model
 {
+    use StoresDatesInUtc;
+
     /**
-     * Keep the UTC offset when writing timestampTz columns.
+     * The only row has id 1; the key is not auto-increment.
      */
-    protected $dateFormat = 'Y-m-d H:i:sP';
+    public $incrementing = false;
 
     /**
      * The settings row, created with the migration defaults on first use.

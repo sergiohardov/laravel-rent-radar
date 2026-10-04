@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Location\LocationKind;
+use App\Models\Concerns\StoresDatesInUtc;
 use Database\Factories\LocationFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,10 +18,7 @@ class Location extends Model
     /** @use HasFactory<LocationFactory> */
     use HasFactory;
 
-    /**
-     * Keep the UTC offset when writing timestampTz columns.
-     */
-    protected $dateFormat = 'Y-m-d H:i:sP';
+    use StoresDatesInUtc;
 
     /**
      * Get the attributes that should be cast.
@@ -31,7 +29,8 @@ class Location extends Model
     {
         return [
             'kind' => LocationKind::class,
-            'aliases' => 'array',
+            // Unescaped Cyrillic, so the admin search can match it with LIKE
+            'aliases' => 'json:unicode',
         ];
     }
 }
