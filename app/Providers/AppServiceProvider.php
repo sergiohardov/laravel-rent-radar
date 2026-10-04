@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Anthropic\Client as AnthropicClient;
 use App\Currency\ExchangeRates;
 use App\Currency\NbuExchangeRates;
 use App\Pipeline\Pipeline;
@@ -11,6 +12,7 @@ use App\Sources\DimRia\DimRiaSource;
 use App\Sources\Lun\LunSource;
 use App\Sources\Olx\OlxSource;
 use App\Sources\SourceRegistry;
+use GuzzleHttp\Client as GuzzleClient;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
@@ -42,6 +44,15 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(ExchangeRates::class, NbuExchangeRates::class);
+
+        // The SDK sends requests through its own PSR-18 transport, not Laravel's
+        // Http client; the timeout is enforced by that transport.
+        $this->app->singleton(AnthropicClient::class, fn () => new AnthropicClient(
+            apiKey: (string) config('services.anthropic.key'),
+            requestOptions: [
+                'transporter' => new GuzzleClient(['timeout' => config('services.anthropic.timeout_seconds')]),
+            ],
+        ));
 
         $this->app->tag(self::SOURCES, 'listing-sources');
 
