@@ -1,0 +1,128 @@
+# Tests on every pull request; on main, tests and then the deploy to nic.ua.
+# Secrets (Settings → Secrets and variables → Actions): SSH_HOST, SSH_PORT, SSH_USER,
+# SSH_PRIVATE_KEY, SSH_KNOWN_HOSTS. The hosting keeps its own .env; see README → «Прод».
+name: Tests and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# One deploy at a time; a newer push waits for the running one
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      # The hosting runs PostgreSQL 10.23
+      postgres:
+        image: postgres:10
+        env:
+          POSTGRES_DB: rent_radar_test
+          POSTGRES_USER: rent_radar
+          POSTGRES_PASSWORD: secret
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U rent_radar -d rent_radar_test"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_USERNAME: rent_radar
+      DB_PASSWORD: secret
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, intl, zip, bcmath
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('composer.lock') }}
+
+      - name: Install dependencies
+        run: |
+          cp .env.example .env
+          composer install --no-interaction --prefer-dist --no-progress
+          php artisan key:generate
+
+      - name: Code style
+        run: vendor/bin/pint --test
+
+      - name: Tests
+        run: php artisan test --compact
+
+  deploy:
+    needs: test
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      # Relative to the home folder; the subdomain serves its public/
+      APP_DIR: rentradar.creastep.com
+      # The shell php follows the panel's choice, which may change: call 8.4 by path
+      PHP: /opt/alt/php84/usr/bin/php
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_pgsql, intl, zip, bcmath
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ hashFiles('composer.lock') }}
+
+      # Also publishes Filament's CSS, JS and fonts into public/ (filament:upgrade)
+      - name: Install production dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist --no-progress
+
+      - name: SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      # .deployignore keeps the hosting's .env, storage and cPanel files out of reach of --delete
+      - name: Upload
+        run: >-
+          rsync -az --delete --exclude-from=.deployignore
+          -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT"
+          ./ "$SSH_USER@$SSH_HOST:$APP_DIR/"
+
+      - name: Migrate and cache
+        run: |
+          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" "APP_DIR='$APP_DIR' PHP='$PHP' bash -s" <<'REMOTE'
+          set -euo pipefail
+          cd "$APP_DIR"
+          if [ ! -f .env ]; then
+            echo "No .env in ~/$APP_DIR: copy .env.production.example and fill it" >&2
+            exit 1
+          fi
+          mkdir -p storage/app/private storage/app/public storage/framework/cache/data \
+            storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
+          "$PHP" artisan migrate --force
+          "$PHP" artisan optimize
+          "$PHP" artisan filament:optimize
+          REMOTE
