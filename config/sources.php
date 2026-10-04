@@ -23,6 +23,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Alerts
+    |--------------------------------------------------------------------------
+    |
+    | The group hears about a source once its failures in a row reach this
+    | number, and again when it works after that. A source that runs but
+    | brings no new listings for this many hours is reported once, until a
+    | new listing comes.
+    |
+    */
+
+    'alert_after_failures' => 3,
+
+    'silence_alert_hours' => 24,
+
+    /*
+    |--------------------------------------------------------------------------
     | HTTP
     |--------------------------------------------------------------------------
     |
