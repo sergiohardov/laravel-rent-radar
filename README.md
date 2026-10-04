@@ -81,7 +81,11 @@ Shared-хостинг nic.ua (cPanel, LiteSpeed, PHP 8.4, PostgreSQL 10). Cron �
 2. **SSL** — cPanel → SSL/TLS Status → AutoSSL для поддомена.
 3. **PHP 8.4** — cPanel → Select PHP Version, расширения `pdo_pgsql intl zip bcmath opcache`.
 4. **База** — cPanel → PostgreSQL Databases: база и пользователь со всеми правами на неё.
-5. **`.env`** — `~/rentradar.creastep.com/.env` по шаблону [.env.production.example](.env.production.example): ключи и пароли только там. У прода свой бот и рабочая группа, у dev — свой бот и тестовая группа.
+5. **`.env`** — `~/rentradar.creastep.com/.env` по шаблону [.env.production.example](.env.production.example): ключи и пароли только там (`chmod 600`). У прода свой бот и рабочая группа, у dev — свой бот и тестовая группа. Конфиг на проде закеширован: после правки `.env` — `/opt/alt/php84/usr/bin/php artisan optimize`.
+6. **Ключ для деплоя** — отдельный SSH-ключ без пароля, авторизованный на хостинге (`ssh-copy-id -p 2345`).
+7. **Секреты GitHub** — Settings → Secrets and variables → Actions: `SSH_HOST`, `SSH_PORT` (2345), `SSH_USER`, `SSH_PRIVATE_KEY` (закрытый ключ целиком), `SSH_KNOWN_HOSTS` (вывод `ssh-keyscan -p 2345 <сервер>`).
+
+Деплой — [.github/workflows/deploy.yml](.github/workflows/deploy.yml): каждый PR проверяется тестами и Pint на PostgreSQL 10; пуш в `main` после тестов ставит зависимости без dev, заливает приложение rsync по SSH (что не заливается и не удаляется на хостинге — [.deployignore](.deployignore)), выполняет миграции и кеширует конфиг, маршруты и представления. Повторить вручную — Actions → «Tests and deploy» → Run workflow.
 
 ## Документация
 
