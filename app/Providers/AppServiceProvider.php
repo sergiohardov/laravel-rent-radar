@@ -7,6 +7,7 @@ use App\Currency\NbuExchangeRates;
 use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
 use App\Pipeline\Stages\HardFilter;
+use App\Sources\Lun\LunSource;
 use App\Sources\SourceRegistry;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -18,7 +19,9 @@ class AppServiceProvider extends ServiceProvider
      *
      * @var list<class-string<\App\Sources\ListingSource>>
      */
-    private const SOURCES = [];
+    private const SOURCES = [
+        LunSource::class,
+    ];
 
     /**
      * Pipeline stages in order, cheap checks first, see App\Pipeline\Stage.

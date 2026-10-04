@@ -2,6 +2,10 @@
 
 Разведка 2026-10-04, пункт 01. Фикстура — [tests/Fixtures/lun/realties-odesa-rent-page-1.json](../../tests/Fixtures/lun/realties-odesa-rent-page-1.json).
 
+## Адаптер
+
+`App\Sources\Lun\LunSource` + `LunListingMapper`, тесты — `tests/Feature/LunSourceTest.php`. Первый живой прогон из dev 2026-10-04: 5 страниц, 120 объявлений за 4,4 с, 10 прошли `HardFilter`. На проде — через прокси (`use_proxy` у источника, `SOURCES_PROXY_URL`).
+
 ## Итог
 
 - Данные отдаёт JSON-эндпоинт, которым пользуется сам сайт. Headless-браузер не нужен.
