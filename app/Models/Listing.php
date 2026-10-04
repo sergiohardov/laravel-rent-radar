@@ -34,6 +34,13 @@ class Listing extends Model
         $this->flags = ($this->flags ?? collect())->push($flag)->unique()->values();
     }
 
+    public function removeFlag(Flag $flag): void
+    {
+        if ($this->flags !== null) {
+            $this->flags = $this->flags->reject(fn (Flag $set) => $set === $flag)->values();
+        }
+    }
+
     public function hasFlag(Flag $flag): bool
     {
         return (bool) $this->flags?->contains($flag);

@@ -12,7 +12,8 @@ use App\Pipeline\StageResult;
 
 /**
  * Rooms, floor and price against Settings. An unknown value passes with a ❓ flag
- * unless its "pass when unknown" switch is off.
+ * unless its "pass when unknown" switch is off. Safe to run again after the
+ * LLM filled a value: its ❓ flags are recomputed each time.
  */
 final class HardFilter implements Stage
 {
@@ -30,6 +31,10 @@ final class HardFilter implements Stage
     public function handle(Listing $listing): StageResult
     {
         $settings = $this->settings ??= Setting::current();
+
+        foreach ([Flag::UnknownRooms, Flag::UnknownFloor, Flag::UnknownPrice] as $flag) {
+            $listing->removeFlag($flag);
+        }
 
         return $this->checkRange($listing, 'rooms', $listing->rooms, $settings->rooms_min, $settings->rooms_max, $settings->allow_unknown_rooms, Flag::UnknownRooms)
             ?? $this->checkRange($listing, 'floor', $listing->floor, $settings->floor_min, $settings->floor_max, $settings->allow_unknown_floor, Flag::UnknownFloor)

@@ -11,6 +11,7 @@ use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
 use App\Pipeline\Stages\EnrichStage;
 use App\Pipeline\Stages\HardFilter;
+use App\Pipeline\Stages\TextHardFilter;
 use App\Sources\DimRia\DimRiaSource;
 use App\Sources\Lun\LunSource;
 use App\Sources\Olx\OlxSource;
@@ -40,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
     private const STAGES = [
         HardFilter::class,
         EnrichStage::class,
+        TextHardFilter::class,
     ];
 
     /**
