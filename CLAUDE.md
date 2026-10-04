@@ -98,7 +98,8 @@
 - Вызывается только для объявлений, прошедших дешёвые фильтры.
 - На вход — заголовок, описание и адресные поля площадки. На выход — JSON через tool use: `complex, street, house, district, floor, floors_total, rooms, area, price, currency, generator, generator_water, generator_heating, generator_elevator, generator_schedule, closed_territory, is_owner, location_id`.
 - `generator_schedule` — enum: круглосуточно / днём / по графику / не сказано.
-- Флаги `true / false / null`: `null` значит «в тексте не сказано», модель не угадывает.
+- Флаги `true / false / null`: `null` значит «в тексте не сказано», модель не угадывает. В ответе модели флаги — `yes / no / unknown`: строгая схема инструмента допускает не больше 16 nullable-полей и не принимает `enum` на nullable-типе.
+- Ошибка LLM на одном объявлении (лимит, 5xx, таймаут, отказ) — объявление `failed` с причиной, запуск идёт дальше; неверный ключ или битый запрос роняют весь запуск.
 - Whitelist сектора с id и алиасами передаётся в промпт (кэшируется вместе с системным промптом). Модель возвращает `location_id` совпавшей записи или `null`, код проверяет, что такой id есть в whitelist.
 
 ### Telegram
