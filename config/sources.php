@@ -55,4 +55,8 @@ return [
         'max_pages' => 5, // 24 listings per page
     ],
 
+    'olx' => [
+        'max_pages' => 4, // 50 offers per page plus paid promotions
+    ],
+
 ];
