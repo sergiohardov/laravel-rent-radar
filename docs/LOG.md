@@ -2,9 +2,9 @@
 
 ## Текущая позиция
 
-- **Этап:** 2 — окружение. Пункт 08 закрыт: Filament 5.9, панель `/admin`, админ из сидера.
-- **Ветка:** `feature/08-filament` — отправлена, ждёт PR и merge.
-- **Следующее действие:** после `pull` — 🏁 итог этапа 2: поднять проект с нуля по README на чистом клоне (Claude в отдельной папке, затем пользователь у себя).
+- **Этап:** 3 — ядро пайплайна. Этап 2 закрыт: проект поднимается с нуля по README.
+- **Ветка:** `docs/08-stage-2-summary` — отправлена, ждёт PR и merge.
+- **Следующее действие:** после `pull` — пункт 09: модель `Listing` и миграции, хранение Settings.
 - **Открытые вопросы:**
   - Значения настроек: точка и радиус сектора, список ЖК/улиц для whitelist. Комнаты, этажи и цена — в [REQUIREMENTS.md](REQUIREMENTS.md). До готовности админки задаются сидером.
   - Хранение Settings: `spatie/laravel-settings` или своя модель с одной строкой. Решаем в пункте 09.
@@ -27,6 +27,7 @@ Headless-браузер не нужен: все три площадки отда
 
 ## Хронология
 
+- 2026-10-04 — Итог этапа 2: свежий клон с GitHub в отдельной папке поднят строго по README (`cp .env.example .env`, `up -d`, `composer install`, `key:generate`, `migrate --seed`, `test`): 7 тестов зелёные, главная, вход в админку и ассеты Filament — 200. Пользователь поднял проект у себя. Структура папок зафиксирована в CLAUDE.md → «Архитектура».
 - 2026-10-04 — Пункт 08: Filament 5.9, панель `admin` на `/admin`. `User` реализует `FilamentUser` (все пользователи — админы, регистрации нет). Dev-админ — `AdminUserSeeder` из `ADMIN_EMAIL` (admin@example.com) и `ADMIN_PASSWORD` (сгенерирован, в `.env.example`); на проде — `make:filament-user`. Ассеты Filament не коммитятся: публикуются `filament:upgrade` при `composer install`.
 - 2026-10-04 — Пункт 07: Laravel 13.34 на PostgreSQL, Pest 5.3 (PHPUnit 13) вместо PHPUnit. Тесты — в базе `rent_radar_test` (`phpunit.xml`), `RefreshDatabase` для Feature, `Http::preventStrayRequests()` в `TestCase`. `CLAUDE.md` и `AGENTS.md` из шаблона Laravel не взяты — правила проекта в нашем `CLAUDE.md`. Из `.env.example` убраны Redis, Memcached и AWS.
 - 2026-10-04 — Пункт 06: `compose.yaml` — php, scheduler (supercronic v0.2.49 в образе php, контрольные суммы сверены с релизом), postgres 16 с базами `rent_radar` и `rent_radar_test`, node 24 (профиль `tools`), cloudflared 2026.9.3 (профиль `tunnel`, быстрый туннель — решение пользователя; адрес — `http://cloudflared:2000/quicktunnel`). `.env.example` общий для compose и Laravel.
