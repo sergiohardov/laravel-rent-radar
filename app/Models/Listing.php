@@ -4,16 +4,18 @@ namespace App\Models;
 
 use App\Currency\CurrencyCode;
 use App\Pipeline\Decision;
+use App\Pipeline\Flag;
 use App\Sources\SourceName;
 use Database\Factories\ListingFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
     'source', 'external_id', 'url', 'title', 'description', 'raw',
-    'price', 'currency', 'rooms', 'floor', 'floors_total', 'area', 'lat', 'lng', 'published_at',
-    'decision', 'rejected_by', 'reject_reason',
+    'price', 'currency', 'price_uah', 'rooms', 'floor', 'floors_total', 'area', 'lat', 'lng', 'published_at',
+    'decision', 'rejected_by', 'reject_reason', 'flags',
     'enrichment', 'enriched_at',
 ])]
 class Listing extends Model
@@ -27,6 +29,16 @@ class Listing extends Model
      */
     protected $dateFormat = 'Y-m-d H:i:sP';
 
+    public function addFlag(Flag $flag): void
+    {
+        $this->flags = ($this->flags ?? collect())->push($flag)->unique()->values();
+    }
+
+    public function hasFlag(Flag $flag): bool
+    {
+        return (bool) $this->flags?->contains($flag);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -38,9 +50,11 @@ class Listing extends Model
             'source' => SourceName::class,
             'currency' => CurrencyCode::class,
             'decision' => Decision::class,
+            'flags' => AsEnumCollection::of(Flag::class),
             'raw' => 'array',
             'enrichment' => 'array',
             'price' => 'integer',
+            'price_uah' => 'integer',
             'rooms' => 'integer',
             'floor' => 'integer',
             'floors_total' => 'integer',
