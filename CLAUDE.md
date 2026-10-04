@@ -77,16 +77,16 @@
 
 ### Сектор
 
-- Точка + радиус вокруг района + whitelist ЖК/улиц с алиасами (рус/укр, старое/новое название, сокращения).
-- Объявление в секторе, если совпала карта **или** текст. Совпал только район — флаг 📍?.
-- Карта в радиусе, а текст называет улицу вне whitelist — флаг ⚠️.
+- Сектор — whitelist улиц и ЖК с алиасами (рус/укр, старое/новое название, сокращения) плюс районы. Наполняется вручную в админке и импортом из OpenStreetMap по точке и радиусу из Settings: карта нужна только для этого импорта.
+- Координаты объявлений для сектора не используются. Проверяется только текст: заголовок, описание и адресные поля площадки (улица, ЖК, район).
+- Совпала улица или ЖК — объявление в секторе. Совпал только район — проходит с 📍?. Не совпало ничего — отсев.
 
 ### Фильтры
 
 - **Жёсткие:** комнаты, этаж, цена ≤ X грн. Цены в $ и € переводятся в гривну по курсу НБУ раз в сутки.
 - **Генератор:** явное «нет» в тексте — отсев, не сказано — проходит с ⚡❓.
 - Значение неизвестно — объявление проходит с ❓. У каждого фильтра переключатель «пропускать при ❓».
-- **Мягкие флаги от LLM:** ⚡ генератор (что запитано и когда), 🔒 закрытая территория, 👤 собственник (✅/❌/❓), плюс 📍 источник локации (карта / текст / оба / только район).
+- **Мягкие флаги от LLM:** ⚡ генератор (что запитано и когда), 🔒 закрытая территория, 👤 собственник (✅/❌/❓), плюс 📍 чем подтверждён сектор (улица / ЖК / только район).
 
 ### Дубли
 
@@ -96,10 +96,10 @@
 
 - Haiku через `anthropic-ai/sdk` за интерфейсом `ListingEnricher`. Модель задаётся в `.env`.
 - Вызывается только для объявлений, прошедших дешёвые фильтры.
-- На вход — заголовок и описание. На выход — JSON через tool use: `complex, street, house, district, floor, floors_total, rooms, area, price, currency, generator, generator_water, generator_heating, generator_elevator, generator_schedule, closed_territory, is_owner`.
+- На вход — заголовок, описание и адресные поля площадки. На выход — JSON через tool use: `complex, street, house, district, floor, floors_total, rooms, area, price, currency, generator, generator_water, generator_heating, generator_elevator, generator_schedule, closed_territory, is_owner, location_id`.
 - `generator_schedule` — enum: круглосуточно / днём / по графику / не сказано.
 - Флаги `true / false / null`: `null` значит «в тексте не сказано», модель не угадывает.
-- Алиасы улиц в промпт не передаются: сопоставление с whitelist — fuzzy match в коде.
+- Whitelist сектора с id и алиасами передаётся в промпт (кэшируется вместе с системным промптом). Модель возвращает `location_id` совпавшей записи или `null`, код проверяет, что такой id есть в whitelist.
 
 ### Telegram
 
@@ -112,8 +112,8 @@
 
 Один пользователь-админ. Разделы:
 
-- **Settings:** точка, радиус, порог цены, комнаты, этажи, переключатели ❓.
-- **Locations:** whitelist ЖК/улиц с алиасами.
+- **Settings:** точка и радиус (для импорта улиц), порог цены, комнаты, этажи, переключатели ❓.
+- **Locations:** whitelist ЖК/улиц с алиасами: вручную и импорт из OpenStreetMap.
 - **Sources:** вкл/выкл, интервал, последний запуск, последняя ошибка.
 - **Listings:** журнал всех объявлений с решением, причиной отсева и полями от LLM.
 
@@ -125,10 +125,9 @@
 SourceAdapter (Lun/Olx/DimRia) → RawListing DTO
 → SeenFilter        // dedup by source + external id
 → HardFilter        // structured fields only, unknown → pass with ❓
-→ GeoFilter         // only if coordinates present
-→ LlmEnricher       // fields + flags + street/complex from title and description
+→ LlmEnricher       // fields + flags + location_id from the sector whitelist in the prompt
 → HardFilter again  // with enriched values
-→ LocationMatcher   // map OR text; district only → 📍?
+→ LocationMatcher   // location_id exists in whitelist; district only → 📍?
 → TelegramNotifier
 ```
 
@@ -141,9 +140,9 @@ SourceAdapter (Lun/Olx/DimRia) → RawListing DTO
 ```
 app/
   Sources/        # ListingSource, RawListing, адаптеры: Lun/, Olx/, DimRia/
-  Pipeline/       # оркестратор и стадии: SeenFilter, HardFilter, GeoFilter…
+  Pipeline/       # оркестратор и стадии: SeenFilter, Stages/ (HardFilter…)
   Enrichment/     # ListingEnricher, AnthropicListingEnricher
-  Location/       # LocationMatcher, fuzzy match по whitelist
+  Location/       # LocationMatcher, импорт улиц и ЖК из OpenStreetMap
   Currency/       # курс НБУ
   Telegram/       # TelegramNotifier, обработчик кнопки «🗑 убрать»
   Models/  Filament/  Console/Commands/  Providers/
