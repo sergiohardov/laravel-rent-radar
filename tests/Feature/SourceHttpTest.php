@@ -23,12 +23,18 @@ function sentOptions(SourceName $name): array
     return $options;
 }
 
-it('goes direct over HTTP/1.1 with a timeout by default', function () {
+it('goes direct over HTTP/2 with a timeout by default', function () {
     $options = sentOptions(SourceName::Lun);
 
-    expect($options['protocol'])->toBe('1.1')
+    expect($options['protocol'])->toBe('2.0')
         ->and($options['timeout'])->toBe(15)
         ->and($options)->not->toHaveKey('proxy');
+});
+
+it('uses the configured HTTP version', function () {
+    config(['sources.http_version' => '1.1']);
+
+    expect(sentOptions(SourceName::Olx)['protocol'])->toBe('1.1');
 });
 
 it('goes through the proxy when the source switch is on', function () {

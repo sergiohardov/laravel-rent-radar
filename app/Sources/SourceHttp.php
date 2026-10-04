@@ -8,8 +8,8 @@ use Illuminate\Http\Client\PendingRequest;
 use RuntimeException;
 
 /**
- * HTTP client for source adapters: HTTP/1.1, a timeout, and the proxy when the
- * source's "use proxy" switch is on.
+ * HTTP client for source adapters: the configured HTTP version, a timeout, and
+ * the proxy when the source's "use proxy" switch is on.
  */
 final class SourceHttp
 {
@@ -22,8 +22,9 @@ final class SourceHttp
         $request = $this->http
             ->timeout(config('sources.http_timeout_seconds'))
             ->acceptJson()
-            // OLX's CloudFront rejects HTTP/2 client fingerprints; keep every source on 1.1
-            ->withOptions(['version' => 1.1]);
+            // OLX's CloudFront blocks by TLS fingerprint + HTTP version: PHP on
+            // OpenSSL passes with HTTP/2 and gets 403 with 1.1 (docs/sources/olx.md)
+            ->withOptions(['version' => (float) config('sources.http_version')]);
 
         if (! Source::for($name)->use_proxy) {
             return $request;

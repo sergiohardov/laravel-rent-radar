@@ -36,6 +36,11 @@ return [
 
     'http_timeout_seconds' => (int) env('SOURCES_HTTP_TIMEOUT_SECONDS', 15),
 
+    // OLX lets a client through or not by its TLS fingerprint together with
+    // the HTTP version, so the version that works depends on the machine's
+    // curl/OpenSSL build; verify on the hosting before changing it.
+    'http_version' => env('SOURCES_HTTP_VERSION', '2.0'),
+
     /*
     |--------------------------------------------------------------------------
     | Per Source
