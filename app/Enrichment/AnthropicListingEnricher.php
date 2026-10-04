@@ -28,7 +28,7 @@ final class AnthropicListingEnricher implements ListingEnricher
         - complex, street, house, district: the residential complex, street, house number and district as the listing or its address line names them, in the listing's spelling.
         - rooms, floor, floors_total, area: as stated; area in square metres.
         - price, currency: the monthly rent and its currency (UAH, USD or EUR), not a deposit or commission.
-        - generator: yes if the building has a generator or backup power that keeps its utilities running during outages (water pumps, heating, lift), no if the listing says it has none. Backup only for the flat itself (an EcoFlow, inverter, batteries, power station) does not count: answer unknown for it.
+        - generator: yes if the building has a generator or backup power that keeps its utilities running during outages (water pumps, heating, lift), no only if the listing says the building has none. Backup only for the flat itself ("генератор на квартиру", an EcoFlow, inverter, batteries, power station) does not count: answer unknown for it. Heating from a gas boiler or water that works without power is not a "no": answer unknown.
         - generator_water, generator_heating, generator_elevator: yes or no for whether water, heating and the lift keep working during power outages.
         - generator_schedule: round_the_clock when backup power runs all the time, daytime when it runs during the day, scheduled when only for some hours, unknown when not said.
         - closed_territory: yes for a closed or guarded territory (gated yard, security, barrier), no if the listing says it is open.

@@ -85,6 +85,13 @@ it('rejects when water or heating stop in outages', function (array $text, strin
     'heating' => [['generatorHeating' => false], 'no heating in outages'],
 ]);
 
+it('passes water and heating that work in outages, whatever it says about a generator', function (?bool $generator) {
+    [$result, $listing] = textFilter([], ['generator' => $generator, 'generatorWater' => true, 'generatorHeating' => true]);
+
+    expect($result->passed)->toBeTrue()
+        ->and($listing->hasFlag(Flag::UnknownGenerator))->toBeFalse();
+})->with(['no generator' => [false], 'unknown generator' => [null]]);
+
 it('passes an unknown generator with ⚡❓', function () {
     [$result, $listing] = textFilter([], []);
 

@@ -41,7 +41,7 @@ final class TextHardFilter implements Stage
         $listing->enrichment = $this->withSourceHints($enrichment->toArray(), $listing->source_hints ?? []);
 
         return $this->checkUtilities($listing->enrichment)
-            ?? $this->checkGenerator($listing, $listing->enrichment['generator'], $settings->allow_unknown_generator)
+            ?? $this->checkGenerator($listing, $listing->enrichment, $settings->allow_unknown_generator)
             ?? $this->hardFilter->handle($listing);
     }
 
@@ -86,9 +86,21 @@ final class TextHardFilter implements Stage
         };
     }
 
-    private function checkGenerator(Listing $listing, ?bool $generator, bool $allowUnknown): ?StageResult
+    /**
+     * Water and heating that keep working in outages meet the requirement whatever
+     * the text says about a generator: the LLM reads "no generator" into a gas
+     * boiler that works without power (llm:eval).
+     *
+     * @param  array<string, mixed>  $enrichment
+     */
+    private function checkGenerator(Listing $listing, array $enrichment, bool $allowUnknown): ?StageResult
     {
         $listing->removeFlag(Flag::UnknownGenerator);
+        $generator = $enrichment['generator'];
+
+        if ($enrichment['generator_water'] === true && $enrichment['generator_heating'] === true) {
+            return null;
+        }
 
         if ($generator === false) {
             return StageResult::reject('no generator');
