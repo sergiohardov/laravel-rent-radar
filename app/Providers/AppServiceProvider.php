@@ -8,6 +8,7 @@ use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
 use App\Pipeline\Stages\HardFilter;
 use App\Sources\Lun\LunSource;
+use App\Sources\Olx\OlxSource;
 use App\Sources\SourceRegistry;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private const SOURCES = [
         LunSource::class,
+        OlxSource::class,
     ];
 
     /**
