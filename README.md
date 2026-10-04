@@ -77,11 +77,11 @@ Shared-хостинг nic.ua (cPanel, LiteSpeed, PHP 8.4, PostgreSQL 10). Cron �
 
 Подготовка хостинга (один раз):
 
-1. **Поддомен** `rentradar.creastep.com` в cPanel → Domains, корень — `/home/<логин>/rentradar/public` (приложение лежит в `~/rentradar`, наружу смотрит только `public/`).
+1. **Поддомен** `rentradar.creastep.com` в cPanel → Domains, корень — `/home/<логин>/rentradar.creastep.com/public` (приложение лежит в `~/rentradar.creastep.com`, наружу смотрит только `public/`).
 2. **SSL** — cPanel → SSL/TLS Status → AutoSSL для поддомена.
 3. **PHP 8.4** — cPanel → Select PHP Version, расширения `pdo_pgsql intl zip bcmath opcache`.
 4. **База** — cPanel → PostgreSQL Databases: база и пользователь со всеми правами на неё.
-5. **`.env`** — `~/rentradar/.env` по шаблону [.env.production.example](.env.production.example): ключи и пароли только там. Бот и группа те же, что в dev, поэтому бот работает в одном месте: после запуска на проде локальный — `docker compose stop`.
+5. **`.env`** — `~/rentradar.creastep.com/.env` по шаблону [.env.production.example](.env.production.example): ключи и пароли только там. У прода свой бот и рабочая группа, у dev — свой бот и тестовая группа.
 
 ## Документация
 
