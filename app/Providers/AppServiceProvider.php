@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Currency\ExchangeRates;
+use App\Currency\NbuExchangeRates;
 use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
 use App\Sources\SourceRegistry;
@@ -29,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(ExchangeRates::class, NbuExchangeRates::class);
+
         $this->app->tag(self::SOURCES, 'listing-sources');
 
         $this->app->singleton(SourceRegistry::class, fn (Application $app) => new SourceRegistry(
