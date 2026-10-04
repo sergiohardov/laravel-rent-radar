@@ -5,6 +5,8 @@ namespace App\Providers;
 use Anthropic\Client as AnthropicClient;
 use App\Currency\ExchangeRates;
 use App\Currency\NbuExchangeRates;
+use App\Enrichment\AnthropicListingEnricher;
+use App\Enrichment\ListingEnricher;
 use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
 use App\Pipeline\Stages\HardFilter;
@@ -52,6 +54,11 @@ class AppServiceProvider extends ServiceProvider
             requestOptions: [
                 'transporter' => new GuzzleClient(['timeout' => config('services.anthropic.timeout_seconds')]),
             ],
+        ));
+
+        $this->app->bind(ListingEnricher::class, fn (Application $app) => new AnthropicListingEnricher(
+            $app->make(AnthropicClient::class),
+            (string) config('services.anthropic.model'),
         ));
 
         $this->app->tag(self::SOURCES, 'listing-sources');
