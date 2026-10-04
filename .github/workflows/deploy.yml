@@ -18,20 +18,21 @@ jobs:
   test:
     runs-on: ubuntu-latest
     services:
-      # The hosting runs PostgreSQL 10.23
-      postgres:
-        image: postgres:10
+      # The hosting runs MariaDB 11.4.13
+      mariadb:
+        image: mariadb:11.4
         env:
-          POSTGRES_DB: rent_radar_test
-          POSTGRES_USER: rent_radar
-          POSTGRES_PASSWORD: secret
-        ports: ['5432:5432']
+          MARIADB_DATABASE: rent_radar_test
+          MARIADB_USER: rent_radar
+          MARIADB_PASSWORD: secret
+          MARIADB_RANDOM_ROOT_PASSWORD: '1'
+        ports: ['3306:3306']
         options: >-
-          --health-cmd "pg_isready -U rent_radar -d rent_radar_test"
-          --health-interval 5s --health-timeout 3s --health-retries 10
+          --health-cmd "healthcheck.sh --connect --innodb_initialized"
+          --health-interval 5s --health-timeout 3s --health-retries 20
     env:
       DB_HOST: 127.0.0.1
-      DB_PORT: 5432
+      DB_PORT: 3306
       DB_USERNAME: rent_radar
       DB_PASSWORD: secret
     steps:
@@ -40,7 +41,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: pdo_pgsql, intl, zip, bcmath
+          extensions: pdo_mysql, intl, zip, bcmath
           coverage: none
           tools: composer:v2
 
@@ -80,7 +81,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: pdo_pgsql, intl, zip, bcmath
+          extensions: pdo_mysql, intl, zip, bcmath
           coverage: none
           tools: composer:v2
 
@@ -128,7 +129,8 @@ jobs:
           fi
           mkdir -p storage/app/private storage/app/public storage/framework/cache/data \
             storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
-          "$PHP" artisan db:ensure-schema
+          # Drop the cached config first: migrations must read the current .env
+          "$PHP" artisan optimize:clear
           "$PHP" artisan migrate --force
           "$PHP" artisan optimize
           "$PHP" artisan filament:optimize

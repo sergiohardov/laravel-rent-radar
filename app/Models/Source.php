@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\StoresDatesInUtc;
 use App\Sources\SourceName;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -17,10 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 ])]
 class Source extends Model
 {
-    /**
-     * Keep the UTC offset when writing timestampTz columns.
-     */
-    protected $dateFormat = 'Y-m-d H:i:sP';
+    use StoresDatesInUtc;
 
     public static function for(SourceName $name): self
     {

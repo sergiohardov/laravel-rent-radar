@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Currency\CurrencyCode;
+use App\Models\Concerns\StoresDatesInUtc;
 use App\Pipeline\Decision;
 use App\Pipeline\Flag;
 use App\Sources\SourceName;
@@ -23,11 +24,7 @@ class Listing extends Model
     /** @use HasFactory<ListingFactory> */
     use HasFactory;
 
-    /**
-     * Keep the UTC offset when writing timestampTz columns, so "23:55+03:00"
-     * is stored as 20:55 UTC instead of 23:55 UTC.
-     */
-    protected $dateFormat = 'Y-m-d H:i:sP';
+    use StoresDatesInUtc;
 
     public function addFlag(Flag $flag): void
     {
