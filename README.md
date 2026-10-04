@@ -87,6 +87,15 @@ Shared-хостинг nic.ua (cPanel, LiteSpeed, PHP 8.4, PostgreSQL 10). Cron �
 
 Деплой — [.github/workflows/deploy.yml](.github/workflows/deploy.yml): каждый PR проверяется тестами и Pint на PostgreSQL 10; пуш в `main` после тестов ставит зависимости без dev, заливает приложение rsync по SSH (что не заливается и не удаляется на хостинге — [.deployignore](.deployignore)), выполняет миграции и кеширует конфиг, маршруты и представления. Повторить вручную — Actions → «Tests and deploy» → Run workflow.
 
+Первый запуск (один раз, после первого деплоя; команды — по SSH в `~/rentradar.creastep.com`, PHP — `/opt/alt/php84/usr/bin/php`). Порядок важен: пока сектор пуст, свежие объявления отсеиваются как «вне сектора» и запоминаются как виденные, поэтому cron — последним.
+
+1. **Webhook прод-бота:** `php artisan telegram:set-webhook` → `Webhook: https://rentradar.creastep.com/telegram/webhook`.
+2. **Рабочая группа:** в группе `/ping@<прод-бот>` → `chat_id` в `TELEGRAM_CHAT_ID` в `.env` → `php artisan optimize` (конфиг закеширован).
+3. **Проверка отправки:** `php artisan tinker --execute 'app(App\Telegram\TelegramNotifier::class)->alert("✅ Rent Radar на проде подключён");'`.
+4. **Админ:** `php artisan make:filament-user`, вход — https://rentradar.creastep.com/admin.
+5. **Админка:** «Источники» — «Прокси» у ЛУН и OLX (DIM.RIA — напрямую); «Настройки» — фильтры и точка сектора; «Сектор» — «Импорт из OpenStreetMap», затем просмотреть записи.
+6. **Cron** — cPanel → Cron Jobs, «Once Per Minute»: `cd /home/<логин>/rentradar.creastep.com && /opt/alt/php84/usr/bin/php artisan schedule:run >> /dev/null 2>&1`. Через минуту-две в «Источниках» появятся запуски, в «Журнале» — объявления.
+
 ## Документация
 
 - [docs/REQUIREMENTS.md](docs/REQUIREMENTS.md) — требования к квартире
