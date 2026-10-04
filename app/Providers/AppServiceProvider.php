@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Pipeline\Pipeline;
+use App\Pipeline\SeenFilter;
 use App\Sources\SourceRegistry;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -16,6 +18,13 @@ class AppServiceProvider extends ServiceProvider
     private const SOURCES = [];
 
     /**
+     * Pipeline stages in order, cheap checks first, see App\Pipeline\Stage.
+     *
+     * @var list<class-string<\App\Pipeline\Stage>>
+     */
+    private const STAGES = [];
+
+    /**
      * Register any application services.
      */
     public function register(): void
@@ -24,6 +33,13 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(SourceRegistry::class, fn (Application $app) => new SourceRegistry(
             $app->tagged('listing-sources'),
+        ));
+
+        $this->app->bind(Pipeline::class, fn (Application $app) => new Pipeline(
+            $app->make(SeenFilter::class),
+            array_map(fn (string $stage) => $app->make($stage), self::STAGES),
+            config('sources.stop_after_seen'),
+            config('sources.time_budget_seconds'),
         ));
     }
 
