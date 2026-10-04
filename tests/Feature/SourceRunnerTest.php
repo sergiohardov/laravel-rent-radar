@@ -52,3 +52,10 @@ it('creates the state row with interval defaults', function () {
         ->and([$state->interval_min_minutes, $state->interval_max_minutes])->toBe([5, 10])
         ->and($state->isDue(now()->toImmutable()))->toBeTrue();
 });
+
+it('stores the failure without the API token', function () {
+    expect(fn () => app(SourceRunner::class)->run(new FailingListingSource(SourceName::Olx, 'cURL error 28 for https://api.scrape.do/?token=t0k3n&url=x')))
+        ->toThrow(RuntimeException::class);
+
+    expect(Source::for(SourceName::Olx)->last_error)->toBe('RuntimeException: cURL error 28 for https://api.scrape.do/?token=***&url=x');
+});

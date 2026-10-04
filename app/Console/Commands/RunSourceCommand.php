@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Pipeline\RunReport;
+use App\Sources\SourceHttp;
 use App\Sources\SourceName;
 use App\Sources\SourceRegistry;
 use App\Sources\SourceRunner;
@@ -29,7 +30,7 @@ class RunSourceCommand extends Command
             $report = $runner->run($sources->get($name));
         } catch (Throwable $e) {
             report($e);
-            $this->error("{$name->value}: ".class_basename($e).': '.$e->getMessage());
+            $this->error("{$name->value}: ".SourceHttp::redact(class_basename($e).': '.$e->getMessage()));
 
             return self::FAILURE;
         }
