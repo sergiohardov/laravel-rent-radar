@@ -2,12 +2,11 @@
 
 ## Текущая позиция
 
-- **Этап:** 3 — ядро пайплайна. Этап 2 закрыт: проект поднимается с нуля по README.
-- **Ветка:** `docs/08-stage-2-summary` — отправлена, ждёт PR и merge.
-- **Следующее действие:** после `pull` — пункт 09: модель `Listing` и миграции, хранение Settings.
+- **Этап:** 3 — ядро пайплайна. Пункт 09 закрыт: модели `Listing` и `Setting`.
+- **Ветка:** `feature/09-listing-settings` — отправлена, ждёт PR и merge.
+- **Следующее действие:** после `pull` — пункт 10: DTO `RawListing`, контракт `ListingSource`, оркестратор пайплайна, artisan-команда запуска источника, расписание с джиттером.
 - **Открытые вопросы:**
-  - Значения настроек: точка и радиус сектора, список ЖК/улиц для whitelist. Комнаты, этажи и цена — в [REQUIREMENTS.md](REQUIREMENTS.md). До готовности админки задаются сидером.
-  - Хранение Settings: `spatie/laravel-settings` или своя модель с одной строкой. Решаем в пункте 09.
+  - Значения настроек: точка и радиус сектора, список ЖК/улиц для whitelist. Комнаты, этажи и цена уже стоят по умолчанию в `settings` (из [REQUIREMENTS.md](REQUIREMENTS.md)); пока точка не задана, `GeoFilter` выключен.
   - Первый запуск DIM.RIA: ~2400 карточек по одной не укладываются в 60 с. Решаем в пункте 15.
   - Как учитывать приблизительные координаты OLX (`map.radius` 1–7 км) в `GeoFilter`. Решаем в пункте 11.
   - Объединять ли `autonomy_*` от ЛУН с ответом LLM о генераторе. Решаем в пункте 16.
@@ -27,6 +26,7 @@ Headless-браузер не нужен: все три площадки отда
 
 ## Хронология
 
+- 2026-10-04 — Пункт 09: модель `Listing` (уникальная пара `source + external_id`, `raw` и `enrichment` в jsonb, решение, стадия и причина отсева) и enum `SourceName`, `Decision`, `CurrencyCode`. Настройки — своя модель `Setting` из одной строки (решение пользователя: меньше зависимостей, страница в Filament собирается легко), вторая строка запрещена ограничением `CHECK (id = 1)`; значения по умолчанию из REQUIREMENTS. Найдено и исправлено: Eloquent отбрасывает смещение при записи дат, модели с `timestampTz` задают `$dateFormat = 'Y-m-d H:i:sP'` — правило в CLAUDE.md → «Время».
 - 2026-10-04 — Итог этапа 2: свежий клон с GitHub в отдельной папке поднят строго по README (`cp .env.example .env`, `up -d`, `composer install`, `key:generate`, `migrate --seed`, `test`): 7 тестов зелёные, главная, вход в админку и ассеты Filament — 200. Пользователь поднял проект у себя. Структура папок зафиксирована в CLAUDE.md → «Архитектура».
 - 2026-10-04 — Пункт 08: Filament 5.9, панель `admin` на `/admin`. `User` реализует `FilamentUser` (все пользователи — админы, регистрации нет). Dev-админ — `AdminUserSeeder` из `ADMIN_EMAIL` (admin@example.com) и `ADMIN_PASSWORD` (сгенерирован, в `.env.example`); на проде — `make:filament-user`. Ассеты Filament не коммитятся: публикуются `filament:upgrade` при `composer install`.
 - 2026-10-04 — Пункт 07: Laravel 13.34 на PostgreSQL, Pest 5.3 (PHPUnit 13) вместо PHPUnit. Тесты — в базе `rent_radar_test` (`phpunit.xml`), `RefreshDatabase` для Feature, `Http::preventStrayRequests()` в `TestCase`. `CLAUDE.md` и `AGENTS.md` из шаблона Laravel не взяты — правила проекта в нашем `CLAUDE.md`. Из `.env.example` убраны Redis, Memcached и AWS.
