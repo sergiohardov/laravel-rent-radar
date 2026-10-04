@@ -6,6 +6,7 @@ use App\Currency\ExchangeRates;
 use App\Currency\NbuExchangeRates;
 use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
+use App\Pipeline\Stages\HardFilter;
 use App\Sources\SourceRegistry;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -24,7 +25,9 @@ class AppServiceProvider extends ServiceProvider
      *
      * @var list<class-string<\App\Pipeline\Stage>>
      */
-    private const STAGES = [];
+    private const STAGES = [
+        HardFilter::class,
+    ];
 
     /**
      * Register any application services.
