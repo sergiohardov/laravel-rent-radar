@@ -132,7 +132,27 @@ SourceAdapter (Lun/Olx/DimRia) → RawListing DTO
 → TelegramNotifier
 ```
 
-Решение и причина отсева каждой стадии пишутся в журнал Listings. Структура папок фиксируется здесь при создании каркаса (этап 2).
+Решение и причина отсева каждой стадии пишутся в журнал Listings.
+
+### Структура
+
+Стандартный Laravel 13, доменный код — по модулям в `app/`. Папка появляется вместе с первым классом в ней.
+
+```
+app/
+  Sources/        # ListingSource, RawListing, адаптеры: Lun/, Olx/, DimRia/
+  Pipeline/       # оркестратор и стадии: SeenFilter, HardFilter, GeoFilter…
+  Enrichment/     # ListingEnricher, AnthropicListingEnricher
+  Location/       # LocationMatcher, fuzzy match по whitelist
+  Currency/       # курс НБУ
+  Telegram/       # TelegramNotifier, обработчик кнопки «🗑 убрать»
+  Models/  Filament/  Console/Commands/  Providers/
+config/admin.php  # dev-админ для сидера
+docker/           # php (Dockerfile, php.ini, crontab), postgres (init)
+docs/             # ROADMAP, LOG, REQUIREMENTS, hosting.md, sources/
+resources/views/telegram/   # тексты карточек и алертов
+tests/Feature/  tests/Unit/  tests/Fixtures/<площадка>/
+```
 
 ### Соглашения
 

@@ -28,7 +28,7 @@
 - [x] 06 Compose: php, postgres (+ тестовая БД), scheduler (supercronic → `schedule:run`), node (одноразовый), cloudflared; `.env.example`
 - [x] 07 Laravel 13, Pest, подключение к Postgres, первый зелёный тест
 - [x] 08 Filament 5: панель, пользователь-админ
-- [ ] 🏁 Итог этапа 2: проект поднимается с нуля по README на чистом клоне
+- [x] 🏁 Итог этапа 2: проект поднимается с нуля по README на чистом клоне
 
 ## Этап 3 — Ядро пайплайна
 
