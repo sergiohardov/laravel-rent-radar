@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+// Cron calls schedule:run every minute, like on the hosting. Each call runs at
+// most one due source; the lock outlives a crashed run by five minutes at most.
+Schedule::command('sources:run-due')->everyMinute()->withoutOverlapping(5);
