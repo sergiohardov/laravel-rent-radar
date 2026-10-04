@@ -41,7 +41,7 @@ function fullInput(array $overrides = []): array
 
 function enrichListing(array $attributes = []): \App\Enrichment\Enrichment
 {
-    return app(ListingEnricher::class)->enrich(Listing::factory()->make(array_merge([
+    return app(AnthropicListingEnricher::class)->enrich(Listing::factory()->make(array_merge([
         'title' => 'Сдам 2ую квартиру ЖК Фонтан, Макаренко 2а/Паркинг, Генератор',
         'address' => 'Київський',
         'description' => 'Генератор на весь дом, вода и лифт работают.',
@@ -137,6 +137,9 @@ it('keeps the strict schema within 16 nullable fields', function () {
     expect($nullable->count())->toBeLessThanOrEqual(16);
 });
 
-it('is the bound listing enricher', function () {
+it('is the enricher the app binds', function () {
+    $this->app->forgetInstance(ListingEnricher::class);
+    (new \App\Providers\AppServiceProvider($this->app))->register();
+
     expect(app(ListingEnricher::class))->toBeInstanceOf(AnthropicListingEnricher::class);
 });

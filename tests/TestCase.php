@@ -3,9 +3,11 @@
 namespace Tests;
 
 use Anthropic\Client as AnthropicClient;
+use App\Enrichment\ListingEnricher;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Http;
 use Tests\Fakes\FakeAnthropicTransport;
+use Tests\Fakes\FakeListingEnricher;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -24,5 +26,8 @@ abstract class TestCase extends BaseTestCase
             apiKey: 'test-key',
             requestOptions: ['transporter' => $this->anthropic, 'maxRetries' => 0],
         ));
+
+        // Pipeline runs skip the LLM unless a test asks for the real enricher
+        $this->app->instance(ListingEnricher::class, new FakeListingEnricher);
     }
 }

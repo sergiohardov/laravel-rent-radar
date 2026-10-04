@@ -9,6 +9,7 @@ use App\Enrichment\AnthropicListingEnricher;
 use App\Enrichment\ListingEnricher;
 use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
+use App\Pipeline\Stages\EnrichStage;
 use App\Pipeline\Stages\HardFilter;
 use App\Sources\DimRia\DimRiaSource;
 use App\Sources\Lun\LunSource;
@@ -38,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private const STAGES = [
         HardFilter::class,
+        EnrichStage::class,
     ];
 
     /**
@@ -56,10 +58,11 @@ class AppServiceProvider extends ServiceProvider
             ],
         ));
 
-        $this->app->bind(ListingEnricher::class, fn (Application $app) => new AnthropicListingEnricher(
+        $this->app->bind(AnthropicListingEnricher::class, fn (Application $app) => new AnthropicListingEnricher(
             $app->make(AnthropicClient::class),
             (string) config('services.anthropic.model'),
         ));
+        $this->app->bind(ListingEnricher::class, AnthropicListingEnricher::class);
 
         $this->app->tag(self::SOURCES, 'listing-sources');
 
