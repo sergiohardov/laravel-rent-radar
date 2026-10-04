@@ -12,13 +12,18 @@ use App\Pipeline\Pipeline;
 use App\Pipeline\SeenFilter;
 use App\Pipeline\Stages\EnrichStage;
 use App\Pipeline\Stages\HardFilter;
+use App\Pipeline\Stages\NotifyStage;
 use App\Pipeline\Stages\TextHardFilter;
 use App\Sources\DimRia\DimRiaSource;
 use App\Sources\Lun\LunSource;
 use App\Sources\Olx\OlxSource;
 use App\Sources\SourceRegistry;
+use App\Telegram\NutgramTelegramNotifier;
+use App\Telegram\TelegramNotifier;
 use GuzzleHttp\Client as GuzzleClient;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -44,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
         EnrichStage::class,
         TextHardFilter::class,
         LocationMatcher::class,
+        NotifyStage::class,
     ];
 
     /**
@@ -68,6 +74,8 @@ class AppServiceProvider extends ServiceProvider
         ));
         $this->app->bind(ListingEnricher::class, AnthropicListingEnricher::class);
 
+        $this->app->bind(TelegramNotifier::class, NutgramTelegramNotifier::class);
+
         $this->app->tag(self::SOURCES, 'listing-sources');
 
         $this->app->singleton(SourceRegistry::class, fn (Application $app) => new SourceRegistry(
@@ -87,6 +95,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Telegram allows about 20 messages a minute into one group
+        RateLimiter::for('telegram-cards', fn () => Limit::perMinute(20));
     }
 }

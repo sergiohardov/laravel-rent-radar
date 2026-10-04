@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Telegram;
+
+use App\Models\Listing;
+use App\Pipeline\Decision;
+use DateTimeInterface;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Middleware\RateLimited;
+use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
+
+/**
+ * Posts one listing card. At most 20 cards a minute go to the group (the
+ * telegram-cards limiter); a Telegram 429 puts the job back for retry_after.
+ */
+class SendListingCard implements ShouldQueue
+{
+    use Queueable;
+
+    public function __construct(
+        public readonly int $listingId,
+    ) {}
+
+    /**
+     * @return list<object>
+     */
+    public function middleware(): array
+    {
+        return [new RateLimited('telegram-cards')];
+    }
+
+    /**
+     * Rate-limit releases count as attempts, so the job lives by time instead.
+     */
+    public function retryUntil(): DateTimeInterface
+    {
+        return now()->addDay();
+    }
+
+    public function handle(TelegramNotifier $notifier): void
+    {
+        $listing = Listing::query()->find($this->listingId);
+        if ($listing === null || $listing->telegram_message_id !== null) {
+            return;
+        }
+
+        try {
+            $messageId = $notifier->send($listing);
+        } catch (TelegramException $e) {
+            if ($e->getCode() !== 429) {
+                throw $e;
+            }
+
+            $this->release((int) $e->getParameter('retry_after', 30));
+
+            return;
+        }
+
+        $listing->forceFill([
+            'decision' => Decision::Notified,
+            'telegram_message_id' => $messageId,
+            'notified_at' => now(),
+        ])->save();
+    }
+}

@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
     'source', 'external_id', 'url', 'photo_url', 'title', 'description', 'address', 'raw', 'source_hints',
     'price', 'currency', 'price_uah', 'rooms', 'floor', 'floors_total', 'area', 'lat', 'lng', 'published_at',
     'decision', 'rejected_by', 'reject_reason', 'flags',
-    'enrichment', 'enriched_at',
+    'enrichment', 'enriched_at', 'telegram_message_id', 'notified_at',
 ])]
 class Listing extends Model
 {
@@ -71,6 +71,8 @@ class Listing extends Model
             'lng' => 'float',
             'published_at' => 'immutable_datetime',
             'enriched_at' => 'immutable_datetime',
+            'telegram_message_id' => 'integer',
+            'notified_at' => 'immutable_datetime',
         ];
     }
 }

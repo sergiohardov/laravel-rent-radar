@@ -3,7 +3,6 @@
 /** @var SergiX44\Nutgram\Nutgram $bot */
 
 use SergiX44\Nutgram\Nutgram;
-use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,12 +14,11 @@ use SergiX44\Nutgram\Telegram\Exceptions\TelegramException;
 |
 */
 
-// A failing handler is logged and the update acknowledged: on a 500 Telegram
-// would deliver the same update again and again
+// A failing handler, Telegram API errors inside it included, is logged and the
+// update acknowledged: on a 500 Telegram would deliver it again and again.
+// No onApiError: it would make every API call of this bot return null instead
+// of throwing, and the card job could not see a 429.
 $bot->onException(function (Nutgram $bot, Throwable $e) {
-    report($e);
-});
-$bot->onApiError(function (Nutgram $bot, TelegramException $e) {
     report($e);
 });
 

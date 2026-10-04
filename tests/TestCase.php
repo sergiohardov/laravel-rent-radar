@@ -4,10 +4,12 @@ namespace Tests;
 
 use Anthropic\Client as AnthropicClient;
 use App\Enrichment\ListingEnricher;
+use App\Telegram\TelegramNotifier;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Http;
 use Tests\Fakes\FakeAnthropicTransport;
 use Tests\Fakes\FakeListingEnricher;
+use Tests\Fakes\FakeTelegramNotifier;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -27,7 +29,8 @@ abstract class TestCase extends BaseTestCase
             requestOptions: ['transporter' => $this->anthropic, 'maxRetries' => 0],
         ));
 
-        // Pipeline runs skip the LLM unless a test asks for the real enricher
+        // Pipeline runs skip the LLM and Telegram unless a test asks for the real ones
         $this->app->instance(ListingEnricher::class, new FakeListingEnricher);
+        $this->app->instance(TelegramNotifier::class, new FakeTelegramNotifier);
     }
 }

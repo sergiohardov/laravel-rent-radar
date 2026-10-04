@@ -63,6 +63,13 @@ it('acknowledges an update whose handler fails instead of answering 500', functi
     expect(fn () => $bot->hearText('/boom')->reply())->not->toThrow(RuntimeException::class);
 });
 
+it('acknowledges an update whose reply Telegram refuses', function () {
+    $bot = app(Nutgram::class);
+    $bot->willReceive(['description' => 'Bad Request: chat not found', 'error_code' => 400], ok: false);
+
+    expect(fn () => $bot->hearText('/ping')->reply())->not->toThrow(Throwable::class);
+});
+
 it('checks the webhook secret token', function () {
     expect(config('nutgram.safe_mode'))->toBeTrue();
 });

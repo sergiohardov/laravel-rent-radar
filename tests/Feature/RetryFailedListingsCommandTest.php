@@ -26,7 +26,7 @@ it('runs a failed listing through the pipeline again', function () {
         ->assertSuccessful();
 
     $listing->refresh();
-    expect($listing->decision)->toBe(Decision::Pending)
+    expect($listing->decision)->toBe(Decision::Notified)
         ->and($listing->rejected_by)->toBeNull()
         ->and($listing->reject_reason)->toBeNull()
         ->and($listing->enrichment['generator'])->toBeTrue();
