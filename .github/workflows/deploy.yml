@@ -129,8 +129,9 @@ jobs:
           fi
           mkdir -p storage/app/private storage/app/public storage/framework/cache/data \
             storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
-          # Drop the cached config first: migrations must read the current .env
-          "$PHP" artisan optimize:clear
+          # Drop the cached config first: migrations must read the current .env.
+          # Only the config: the app cache lives in the database, which may have no tables yet
+          "$PHP" artisan config:clear
           "$PHP" artisan migrate --force
           "$PHP" artisan optimize
           "$PHP" artisan filament:optimize
