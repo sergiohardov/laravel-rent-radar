@@ -59,6 +59,16 @@ docker compose down                         # остановить; данные
 
 Все переменные будут описаны в `.env.example`.
 
+Telegram dev-бота:
+
+1. Бот от @BotFather и тестовая группа с ботом-администратором (право удалять сообщения).
+2. В `.env`: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_BOT_USERNAME` (без `@`).
+3. Туннель и webhook (адрес туннеля меняется при каждом запуске — команду повторять):
+   ```bash
+   docker compose --profile tunnel up -d && docker compose exec php php artisan telegram:set-webhook
+   ```
+4. В группе `/ping@<имя_бота>` — бот ответит `chat_id`, его в `TELEGRAM_CHAT_ID`.
+
 Админка: http://localhost:8080/admin, вход — `ADMIN_EMAIL` и `ADMIN_PASSWORD` из `.env`. На проде админ создаётся командой `php artisan make:filament-user`, пароль вводит владелец.
 
 ## Прод
