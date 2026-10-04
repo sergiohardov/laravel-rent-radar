@@ -61,7 +61,7 @@ final class ListingCard
     }
 
     /**
-     * "2 комн · 4/9 эт · 52 м²"
+     * "2 комн · 4/9 эт · 52 м²"; a one-room listing that passed as a euro two-room says so.
      */
     private function params(Listing $listing): string
     {
@@ -72,7 +72,7 @@ final class ListingCard
         };
 
         return implode(' · ', array_filter([
-            ($listing->rooms ?? '?').' комн',
+            $listing->hasFlag(Flag::EuroTwoRoom) ? 'евродвушка' : ($listing->rooms ?? '?').' комн',
             $floor,
             $listing->area !== null ? rtrim(rtrim(number_format($listing->area, 1, '.', ''), '0'), '.').' м²' : null,
         ]));

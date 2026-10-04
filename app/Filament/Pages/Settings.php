@@ -61,6 +61,10 @@ class Settings extends Page
                         TextInput::make('rooms_max')->label('Комнат до')->integer()->required()->minValue(1)->maxValue(10),
                         TextInput::make('floor_min')->label('Этаж от')->integer()->required()->minValue(-2)->maxValue(100)->lte('floor_max'),
                         TextInput::make('floor_max')->label('Этаж до')->integer()->required()->minValue(-2)->maxValue(100),
+                        Toggle::make('allow_euro_two_room')
+                            ->label('Пропускать евродвушку')
+                            ->hintIcon(Heroicon::OutlinedQuestionMarkCircle, tooltip: 'Площадки часто пишут евродвушку как 1 комнату. Включено — проверяются и квартиры от 1 комнаты, даже если в «Комнат от» стоит 2: проходит та, в тексте которой евродвушка (в любом написании) или кухня-студия/гостиная с отдельной спальней. Работает, когда «Комнат от» = 2.')
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make('Если значение неизвестно ❓')

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
     'center_lat', 'center_lng', 'radius_m',
     'max_price_uah', 'rooms_min', 'rooms_max', 'floor_min', 'floor_max',
     'allow_unknown_price', 'allow_unknown_rooms', 'allow_unknown_floor', 'allow_unknown_generator',
+    'allow_euro_two_room',
 ])]
 class Setting extends Model
 {
@@ -59,6 +60,7 @@ class Setting extends Model
             'allow_unknown_rooms' => 'boolean',
             'allow_unknown_floor' => 'boolean',
             'allow_unknown_generator' => 'boolean',
+            'allow_euro_two_room' => 'boolean',
         ];
     }
 }
