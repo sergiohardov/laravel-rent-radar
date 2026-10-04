@@ -147,3 +147,12 @@ it('reads ticked blackout items as outage hints', function () {
         ->and($listings['936755882']->sourceHints)->toBe(['generator_water' => true, 'generator_heating' => true])
         ->and($listings['903720947']->sourceHints)->toBe([]);
 });
+
+it('builds the first photo URL in 1280x960', function () {
+    Http::fake(['www.olx.ua/*' => Http::sequence()->push($this->page)->push($this->lastPage)]);
+
+    $photo = olxListings()[0]->photoUrl;
+
+    expect($photo)->toStartWith('https://ireland.apollo.olxcdn.com:443/v1/files/')
+        ->and($photo)->toEndWith('/image;s=1280x960');
+});

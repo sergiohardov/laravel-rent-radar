@@ -125,3 +125,9 @@ it('reads what works during outages from the autonomy fields', function () {
         ->and($listings['4728177460']->sourceHints)->toBe(['generator_water' => true, 'generator_heating' => true])
         ->and($listings['4728181952']->sourceHints)->toBe([]);
 });
+
+it('builds the first photo URL', function () {
+    Http::fake(['flatfy.ua/*' => Http::sequence()->push($this->page)->push(['data' => []])]);
+
+    expect(lunListings()[0]->photoUrl)->toBe('https://market-images.lunstatic.net/lun-ua/1280/960/images/1146984893.jpg');
+});
