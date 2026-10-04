@@ -45,4 +45,9 @@ return [
         'url' => env('OVERPASS_URL', 'https://overpass-api.de/api/interpreter'),
     ],
 
+    'telegram' => [
+        'chat_id' => env('TELEGRAM_CHAT_ID'),
+        'tunnel_metrics_url' => env('TELEGRAM_TUNNEL_METRICS_URL'),
+    ],
+
 ];
