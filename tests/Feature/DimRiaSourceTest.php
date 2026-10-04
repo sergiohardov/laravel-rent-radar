@@ -138,12 +138,12 @@ it('is registered as the dimria source', function () {
     expect(app(SourceRegistry::class)->get(SourceName::DimRia))->toBeInstanceOf(DimRiaSource::class);
 });
 
-it('puts the main photo first and the rest after it, up to 10', function () {
+it('puts the main photo first and the rest after it, up to the album size', function () {
     fakeDimRia();
 
     $photos = dimriaListings()[0]->photoUrls;
     expect($photos[0])->toBe('https://cdn.riastatic.com/photos/dom/photo/34634/3463453/346345342/346345342fl.jpg')
-        ->and(count($photos))->toBeGreaterThan(1)->toBeLessThanOrEqual(10)
+        ->and(count($photos))->toBeGreaterThan(1)->toBeLessThanOrEqual(RawListing::MAX_PHOTOS)
         ->and($photos)->toBe(array_values(array_unique($photos)))
         ->and($photos)->each->toEndWith('fl.jpg');
 });

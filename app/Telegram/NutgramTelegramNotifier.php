@@ -11,7 +11,7 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 
 /**
- * Sends the card as an album of up to 10 photos with the caption on the first,
+ * Sends the card as an album (RawListing::MAX_PHOTOS) with the caption on the first,
  * or as one photo when there is one. Telegram fetches the photos from the
  * site's CDN and fails the whole album when it cannot get one of them; then
  * the main photo goes alone, and without it the same text as a plain message.

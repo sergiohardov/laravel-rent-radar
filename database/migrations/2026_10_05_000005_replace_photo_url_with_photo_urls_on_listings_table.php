@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('listings', function (Blueprint $table) {
-            // Up to 10 photos, the first is the main one: a Telegram album holds 10
+            // Up to RawListing::MAX_PHOTOS photos for the Telegram album, the main one first
             $table->jsonb('photo_urls')->nullable()->after('url');
         });
 

@@ -12,8 +12,11 @@ use Carbon\CarbonImmutable;
  */
 final readonly class RawListing
 {
-    /** A Telegram album holds up to 10 photos */
-    public const MAX_PHOTOS = 10;
+    /**
+     * Photos per card. A Telegram album holds up to 10, but each photo counts
+     * against the group's 20 messages a minute and slows the post; 6 are enough.
+     */
+    public const MAX_PHOTOS = 6;
 
     /**
      * @param  array<string, mixed>  $raw  the source's own payload, kept for the journal
