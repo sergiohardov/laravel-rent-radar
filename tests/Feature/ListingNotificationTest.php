@@ -4,6 +4,7 @@ use App\Currency\CurrencyCode;
 use App\Enrichment\Enrichment;
 use App\Enrichment\ListingEnricher;
 use App\Models\Listing;
+use App\Models\Setting;
 use App\Pipeline\Decision;
 use App\Pipeline\Pipeline;
 use App\Sources\SourceName;
@@ -11,6 +12,7 @@ use App\Telegram\GroupMessageLimit;
 use App\Telegram\NutgramTelegramNotifier;
 use App\Telegram\SendListingCard;
 use App\Telegram\TelegramNotifier;
+use Carbon\CarbonImmutable;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Queue;
 use Psr\Http\Message\RequestInterface as Request;
@@ -148,4 +150,30 @@ it('falls back to the main photo alone when Telegram cannot fetch one of the alb
 
     expect(app(NutgramTelegramNotifier::class)->send($listing))->toBe(57);
     $bot->assertReply('sendPhoto', ['photo' => 'https://cdn.example.test/1.jpg', 'parse_mode' => 'HTML'], index: 1);
+});
+
+it('posts without sound in quiet hours', function () {
+    config(['services.telegram.chat_id' => '-1004355960067']);
+    Setting::current()->update(['quiet_hours_enabled' => true, 'quiet_from' => '23:00', 'quiet_to' => '08:00']);
+    $this->travelTo(CarbonImmutable::parse('2026-10-05 02:00', 'Europe/Kyiv'));
+    $bot = app(Nutgram::class);
+    $bot->willReceive(sentMessage(70))->willReceive(sentMessage(71));
+
+    app(NutgramTelegramNotifier::class)->send(Listing::factory()->make(['photo_urls' => ['https://cdn.example.test/1.jpg']]));
+    app(NutgramTelegramNotifier::class)->alert('ЛУН снова работает');
+
+    $bot->assertReply('sendPhoto', ['disable_notification' => true], index: 0)
+        ->assertReply('sendMessage', ['disable_notification' => true], index: 1);
+});
+
+it('posts with sound outside quiet hours', function () {
+    config(['services.telegram.chat_id' => '-1004355960067']);
+    Setting::current()->update(['quiet_hours_enabled' => true, 'quiet_from' => '23:00', 'quiet_to' => '08:00']);
+    $this->travelTo(CarbonImmutable::parse('2026-10-05 12:00', 'Europe/Kyiv'));
+    $bot = app(Nutgram::class);
+    $bot->willReceive(sentMessage(72));
+
+    app(NutgramTelegramNotifier::class)->alert('ЛУН снова работает');
+
+    $bot->assertRaw(fn (Request $request) => ! array_key_exists('disable_notification', FormDataParser::parse($request)->params), index: 0);
 });

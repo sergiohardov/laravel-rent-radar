@@ -11,6 +11,8 @@ use SergiX44\Nutgram\Telegram\Types\Input\InputMediaPhoto;
 use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 
 /**
+ * In quiet hours (Settings) everything goes without sound.
+ *
  * Sends the card as an album (RawListing::MAX_PHOTOS) with the caption on the first,
  * or as one photo when there is one. Telegram fetches the photos from the
  * site's CDN and fails the whole album when it cannot get one of them; then
@@ -21,6 +23,7 @@ final class NutgramTelegramNotifier implements TelegramNotifier
     public function __construct(
         private readonly Nutgram $bot,
         private readonly ListingCard $card,
+        private readonly QuietHours $quietHours,
     ) {}
 
     public function send(Listing $listing): int
@@ -28,6 +31,7 @@ final class NutgramTelegramNotifier implements TelegramNotifier
         $chatId = $this->chatId();
         $caption = $this->card->caption($listing);
         $photos = array_values($listing->photo_urls ?? []);
+        $silent = $this->silent();
 
         if (count($photos) > 1) {
             $messageId = $this->tryPhotos(fn () => $this->bot->sendMediaGroup(
@@ -37,6 +41,7 @@ final class NutgramTelegramNotifier implements TelegramNotifier
                     parse_mode: $i === 0 ? ParseMode::HTML : null,
                 ), $photos, array_keys($photos)),
                 chat_id: $chatId,
+                disable_notification: $silent,
             )[0]->message_id);
 
             if ($messageId !== null) {
@@ -50,6 +55,7 @@ final class NutgramTelegramNotifier implements TelegramNotifier
                 chat_id: $chatId,
                 caption: $caption,
                 parse_mode: ParseMode::HTML,
+                disable_notification: $silent,
             )->message_id);
 
             if ($messageId !== null) {
@@ -57,7 +63,7 @@ final class NutgramTelegramNotifier implements TelegramNotifier
             }
         }
 
-        return $this->message($chatId, $caption);
+        return $this->message($chatId, $caption, $silent);
     }
 
     /**
@@ -81,17 +87,26 @@ final class NutgramTelegramNotifier implements TelegramNotifier
 
     public function alert(string $text): int
     {
-        return $this->message($this->chatId(), $text);
+        return $this->message($this->chatId(), $text, $this->silent());
     }
 
-    private function message(string $chatId, string $text): int
+    private function message(string $chatId, string $text, ?bool $silent): int
     {
         return $this->bot->sendMessage(
             text: $text,
             chat_id: $chatId,
             parse_mode: ParseMode::HTML,
+            disable_notification: $silent,
             link_preview_options: LinkPreviewOptions::make(is_disabled: true),
         )->message_id;
+    }
+
+    /**
+     * true in quiet hours; null otherwise, so the request carries no extra field.
+     */
+    private function silent(): ?bool
+    {
+        return $this->quietHours->isNow() ? true : null;
     }
 
     private function chatId(): string

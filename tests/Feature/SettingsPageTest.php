@@ -88,3 +88,22 @@ it('requires the hard filters', function () {
         ->call('save')
         ->assertHasFormErrors(['max_price_uah' => 'required']);
 });
+
+it('saves quiet hours', function () {
+    Livewire::test(Settings::class)
+        ->fillForm(['quiet_hours_enabled' => true, 'quiet_from' => '22:30', 'quiet_to' => '07:00'])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    $settings = Setting::current();
+    expect($settings->quiet_hours_enabled)->toBeTrue()
+        ->and(substr($settings->quiet_from, 0, 5))->toBe('22:30')
+        ->and(substr($settings->quiet_to, 0, 5))->toBe('07:00');
+});
+
+it('rejects quiet hours that start and end at the same time', function () {
+    Livewire::test(Settings::class)
+        ->fillForm(['quiet_hours_enabled' => true, 'quiet_from' => '08:00', 'quiet_to' => '08:00'])
+        ->call('save')
+        ->assertHasFormErrors(['quiet_from' => 'different']);
+});
