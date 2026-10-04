@@ -82,7 +82,7 @@
 
 - [x] 28 Проверки на хостинге: `select version();` (→ тег postgres в dev), `which php && php -v` по SSH, минимальный шаг cron
 - [x] 29 База, поддомен с SSL, `.env` прода; украинский IP для ЛУН и OLX — пока Scrape.do (API по 443: хостинг выпускает наружу только 80 и 443), проверен с хостинга
-- [ ] 30 GitHub Actions: тесты → `composer install --no-dev -o` → сборка ассетов → rsync → `migrate --force`, `optimize`
+- [ ] 30 GitHub Actions: тесты → `composer install --no-dev -o` → rsync → `migrate --force`, `optimize` (сборка ассетов не нужна — решение 2026-10-04)
 - [ ] 31 Cron `schedule:run` по полному пути PHP, прод-бот, webhook, рабочая группа
 - [ ] 🏁 Итог этапа 9: бот работает на проде, первый запуск разослал свежие совпадения
 

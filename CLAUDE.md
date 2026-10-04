@@ -43,7 +43,7 @@
 
 Результаты grill-сессии 2026-10-03. Меняются только по решению пользователя, каждое изменение — запись в хронологию LOG.
 
-**Стек:** Laravel 13 · Filament 5 · PostgreSQL · PHP 8.4 · Pest · Nutgram · `anthropic-ai/sdk` · Node 24 LTS (только сборка ассетов).
+**Стек:** Laravel 13 · Filament 5 · PostgreSQL · PHP 8.4 · Pest · Nutgram · `anthropic-ai/sdk` · Node 24 LTS (сборка ассетов — пока не нужна: своих ассетов нет, Filament ставит свои через composer).
 
 ### Прод: shared-хостинг nic.ua (NIC-S, cPanel, CloudLinux)
 
@@ -55,7 +55,7 @@
 - Источники читаются обычным HTTP/JSON (headless-браузера на хостинге нет).
 - IP общий и зарубежный (сеть Hetzner, Финляндия). ЛУН и OLX с него отвечают 403, поэтому на проде они ходят через украинский прокси дата-центра: адрес — в `.env`, у источника флаг «через прокси». DIM.RIA — напрямую. В dev прокси не нужен.
 - Поддомен с SSL: на нём Filament и Telegram webhook.
-- Деплой — GitHub Actions: тесты → `composer install --no-dev -o` → сборка ассетов → rsync → `artisan migrate --force && artisan optimize`. Composer и npm работают только в CI.
+- Деплой — GitHub Actions (`.github/workflows/deploy.yml`): тесты и Pint на PostgreSQL 10 → `composer install --no-dev -o` → rsync по SSH (порт 2345, исключения — `.deployignore`) → `migrate --force`, `optimize`, `filament:optimize`. Composer работает только в CI. Сборки ассетов нет — своих ассетов нет.
 - В cron и деплой-скрипте PHP вызывается по полному пути выбранной версии (вида `/opt/alt/php84/usr/bin/php`): системный `php` на CloudLinux может оказаться другой версии.
 
 ### Dev повторяет прод
@@ -64,7 +64,7 @@
 
 - `php:8.4-apache` + `mod_rewrite`, расширения `pdo_pgsql intl zip bcmath`, php.ini с лимитами прода.
 - Scheduler — supercronic с `schedule:run` раз в минуту, как cron на хостинге.
-- Node — одноразовый контейнер для сборки.
+- Node — одноразовый контейнер для сборки (пока не нужен).
 - `cloudflared` — публичный HTTPS для webhook dev-бота.
 - Postgres `10`, как на хостинге (10.23; в Docker — 10.21, последняя сборка для arm64), отдельная тестовая БД. Без возможностей PostgreSQL 11+ (генерируемые колонки, `INCLUDE`, процедуры, `gen_random_uuid()`).
 

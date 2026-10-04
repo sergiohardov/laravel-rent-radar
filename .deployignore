@@ -1,0 +1,33 @@
+# rsync --exclude-from for the deploy: these paths are neither uploaded nor
+# deleted on the hosting (--delete leaves excluded paths alone).
+
+# Lives only on the hosting
+/.env
+/storage/
+/bootstrap/cache/
+error_log
+
+# cPanel: AutoSSL challenges and the default cgi-bin of the subdomain
+/public/.well-known/
+/public/cgi-bin/
+
+# Not needed in production
+/.git/
+/.github/
+/.idea/
+/.claude/
+/docker/
+/docs/
+/hosting-check/
+/node_modules/
+/tests/
+/public/hot
+/.env.example
+/.phpunit.result.cache
+/.phpunit.cache/
+/compose.yaml
+/phpunit.xml
+/pint.json
+/CLAUDE.md
+/README.md
+.DS_Store
