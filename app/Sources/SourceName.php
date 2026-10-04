@@ -2,16 +2,18 @@
 
 namespace App\Sources;
 
-enum SourceName: string
+use Filament\Support\Contracts\HasLabel;
+
+enum SourceName: string implements HasLabel
 {
     case Lun = 'lun';
     case Olx = 'olx';
     case DimRia = 'dimria';
 
     /**
-     * The name people know the site by, for Telegram messages.
+     * The name people know the site by, for Telegram messages and the admin panel.
      */
-    public function label(): string
+    public function getLabel(): string
     {
         return match ($this) {
             self::Lun => 'ЛУН',

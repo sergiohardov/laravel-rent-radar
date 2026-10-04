@@ -20,7 +20,7 @@ final class SourceAlerts
         }
 
         $this->send('source-failing', [
-            'source' => $state->name->label(),
+            'source' => $state->name->getLabel(),
             'failures' => $state->consecutive_failures,
             'error' => $state->last_error,
             'lastSuccess' => $this->kyiv($state->last_success_at),
@@ -34,7 +34,7 @@ final class SourceAlerts
         }
 
         $this->send('source-recovered', [
-            'source' => $state->name->label(),
+            'source' => $state->name->getLabel(),
             'failures' => $failuresBefore,
         ]);
     }
@@ -62,7 +62,7 @@ final class SourceAlerts
         }
 
         $this->send('source-silent', [
-            'source' => $state->name->label(),
+            'source' => $state->name->getLabel(),
             'hours' => $hours,
             'lastNew' => $this->kyiv($lastNew),
             'lastRun' => $this->kyiv($state->last_run_at),
