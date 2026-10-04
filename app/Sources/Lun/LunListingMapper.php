@@ -41,7 +41,26 @@ final class LunListingMapper
             lat: isset($location[1]) ? (float) $location[1] : null,
             lng: isset($location[0]) ? (float) $location[0] : null,
             publishedAt: isset($item['insert_time']) ? CarbonImmutable::parse($item['insert_time']) : null,
+            sourceHints: $this->outageHints($item),
         );
+    }
+
+    /**
+     * LUN's autonomy_* fields: what keeps working during outages. autonomy_power
+     * false sits next to water/heat/lift true, i.e. it is about the flat's own
+     * power, not the building's generator, so only true counts.
+     *
+     * @param  array<string, mixed>  $item
+     * @return array<string, bool>
+     */
+    private function outageHints(array $item): array
+    {
+        return array_filter([
+            'generator' => ($item['autonomy_power'] ?? null) === true ? true : null,
+            'generator_water' => $item['autonomy_water'] ?? null,
+            'generator_heating' => $item['autonomy_heat'] ?? null,
+            'generator_elevator' => $item['autonomy_lift'] ?? null,
+        ], 'is_bool');
     }
 
     /**

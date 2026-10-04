@@ -14,6 +14,9 @@ final readonly class RawListing
 {
     /**
      * @param  array<string, mixed>  $raw  the source's own payload, kept for the journal
+     * @param  array<string, bool>  $sourceHints  what the site's own fields say about power
+     *                                            outages, keyed like the enrichment
+     *                                            (generator, generator_water…)
      */
     public function __construct(
         public SourceName $source,
@@ -32,6 +35,7 @@ final readonly class RawListing
         public ?float $lat = null,
         public ?float $lng = null,
         public ?CarbonImmutable $publishedAt = null,
+        public array $sourceHints = [],
     ) {}
 
     /**
@@ -49,6 +53,7 @@ final readonly class RawListing
             'description' => $this->description,
             'address' => $this->address,
             'raw' => $this->raw,
+            'source_hints' => $this->sourceHints,
             'price' => $this->price,
             'currency' => $this->currency,
             'rooms' => $this->rooms,
