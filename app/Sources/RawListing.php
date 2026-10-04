@@ -14,9 +14,9 @@ final readonly class RawListing
 {
     /**
      * Photos per card. A Telegram album holds up to 10, but each photo counts
-     * against the group's 20 messages a minute and slows the post; 6 are enough.
+     * against the group's 20 messages a minute: with 5, four cards fit a minute.
      */
-    public const MAX_PHOTOS = 6;
+    public const MAX_PHOTOS = 5;
 
     /**
      * @param  array<string, mixed>  $raw  the source's own payload, kept for the journal
