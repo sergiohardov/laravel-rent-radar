@@ -87,6 +87,13 @@ Shared-хостинг nic.ua (cPanel, LiteSpeed, PHP 8.4, MariaDB 11.4). Cron р
 
 Деплой — [.github/workflows/deploy.yml](.github/workflows/deploy.yml): каждый PR проверяется тестами и Pint на MariaDB 11.4; пуш в `main` после тестов ставит зависимости без dev, заливает приложение rsync по SSH (что не заливается и не удаляется на хостинге — [.deployignore](.deployignore)), выполняет миграции и кеширует конфиг, маршруты и представления. Повторить вручную — Actions → «Tests and deploy» → Run workflow.
 
+Ретранслятор для ЛУН и OLX ([relay/relay.php](relay/relay.php)) — на украинском хостинге CityHost, ставится вручную:
+
+1. **Сайт** `relay.creastep.com` на CityHost (локация «Украина», PHP 8.4), A-запись `relay` в DNS `creastep.com` на IP сервера, SSL Let's Encrypt.
+2. **Файлы:** `relay/relay.php` — в корень сайта; `relay-config.php` по образцу [relay/relay-config.example.php](relay/relay-config.example.php) — уровнем выше корня сайта (или рядом с `relay.php`), ключ — `openssl rand -hex 32`.
+3. **Проверка** — в ответе 200: `curl -s -o /dev/null -w "%{http_code}\n" "https://relay.creastep.com/relay.php?key=КЛЮЧ&url=https%3A%2F%2Fflatfy.ua%2Fapi%2Frealties%3Fgeo_id%3D10016589%26section_id%3D2%26page%3D1"`.
+4. **Бот:** в `.env` прода `SOURCES_PROXY_URL="https://relay.creastep.com/relay.php?key=КЛЮЧ"`, затем `php artisan optimize`; в «Источниках» у ЛУН и OLX — «Прокси».
+
 Первый запуск (один раз, после первого деплоя; команды — по SSH в `~/rentradar.creastep.com`, PHP — `/opt/alt/php84/usr/bin/php`). Порядок важен: пока сектор пуст, свежие объявления отсеиваются как «вне сектора» и запоминаются как виденные, поэтому cron — последним.
 
 1. **Webhook прод-бота:** `php artisan telegram:set-webhook` → `Webhook: https://rentradar.creastep.com/telegram/webhook`.
