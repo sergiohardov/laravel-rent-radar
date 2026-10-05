@@ -1,4 +1,5 @@
 <?php
+
 // Check a hosting before moving the relay there: do LUN and OLX answer
 // plain PHP curl from this server's IP? Upload to the hosting, open in the browser
 // (or run `php check.php` over SSH), then delete the file.
