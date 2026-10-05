@@ -7,6 +7,7 @@ use App\Enrichment\GeneratorSchedule;
 use App\Filament\Resources\Listings\Pages\ManageListings;
 use App\Models\Listing;
 use App\Pipeline\Flag;
+use App\Pipeline\RejectReasons;
 use App\Sources\SourceName;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -58,20 +59,6 @@ class ListingResource extends Resource
         'telegram_notifier' => 'Telegram',
     ];
 
-    /**
-     * Reject reasons grouped by what failed; patterns follow the stages' reason texts.
-     *
-     * @var array<string, array{label: string, patterns: list<string>}>
-     */
-    public const REASONS = [
-        'rooms' => ['label' => 'Комнаты', 'patterns' => ['rooms %']],
-        'floor' => ['label' => 'Этаж', 'patterns' => ['floor %']],
-        'price' => ['label' => 'Цена', 'patterns' => ['price %']],
-        'generator' => ['label' => 'Генератор', 'patterns' => ['no generator%', 'generator unknown%']],
-        'outages' => ['label' => 'Вода или тепло при отключениях', 'patterns' => ['no water%', 'no heating%']],
-        'sector' => ['label' => 'Вне сектора', 'patterns' => ['not in sector%']],
-    ];
-
     public static function canCreate(): bool
     {
         return false;
@@ -120,15 +107,8 @@ class ListingResource extends Resource
                 SelectFilter::make('rejected_by')->label('Стадия отсева')->options(self::STAGES),
                 SelectFilter::make('reason')
                     ->label('Причина отсева')
-                    ->options(array_map(fn (array $reason) => $reason['label'], self::REASONS))
-                    ->query(fn (Builder $query, array $data) => $query->when(
-                        self::REASONS[$data['value'] ?? ''] ?? null,
-                        fn (Builder $query, array $reason) => $query->where(function (Builder $query) use ($reason) {
-                            foreach ($reason['patterns'] as $pattern) {
-                                $query->orWhere('reject_reason', 'like', $pattern);
-                            }
-                        }),
-                    )),
+                    ->options(RejectReasons::labels())
+                    ->query(fn (Builder $query, array $data) => RejectReasons::apply($query, (string) ($data['value'] ?? ''))),
             ])
             ->recordActions([
                 Action::make('open')

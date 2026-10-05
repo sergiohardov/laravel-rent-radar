@@ -18,7 +18,6 @@ error_log
 /.claude/
 /docker/
 /docs/
-/hosting-check/
 # Deployed by hand to the Ukrainian relay hosting
 /relay/
 /node_modules/
