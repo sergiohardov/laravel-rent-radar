@@ -45,6 +45,8 @@
 | Направить webhook dev-бота на туннель (после перезапуска туннеля) | `docker compose exec php php artisan telegram:set-webhook` |
 | Перезапустить туннель, если адрес протух | `docker compose --profile tunnel restart cloudflared` |
 | Узнать `chat_id` группы | в группе: `/ping@имя_бота` |
+| Обновить меню команд бота (после новых команд) | `telegram:set-webhook` — ставит webhook и регистрирует команды |
+| Состояние площадок, воронка, причины отсева — в группе | `/status`, `/funnel`, `/reasons`, `/help` |
 | Отправить проверочное сообщение в группу (dev) | `docker compose exec php php artisan tinker --execute 'app(App\Telegram\TelegramNotifier::class)->alert("Проверка");'` |
 
 ## Прод: SSH и приложение

@@ -28,11 +28,16 @@ it('points the webhook at the dev tunnel with the secret token', function () {
     config(['services.telegram.tunnel_metrics_url' => 'http://cloudflared:2000/quicktunnel']);
     Http::fake(['cloudflared:2000/*' => Http::response(['hostname' => 'kissing-promo-fall-hitting.trycloudflare.com'])]);
     $bot = app(Nutgram::class);
-    $bot->willReceive(true)->willReceive(['url' => 'https://kissing-promo-fall-hitting.trycloudflare.com/telegram/webhook', 'has_custom_certificate' => false, 'pending_update_count' => 0]);
+    $bot->willReceive(true)
+        ->willReceive(['url' => 'https://kissing-promo-fall-hitting.trycloudflare.com/telegram/webhook', 'has_custom_certificate' => false, 'pending_update_count' => 0])
+        ->willReceive(true);
 
     $this->artisan('telegram:set-webhook')
         ->expectsOutput('Webhook: https://kissing-promo-fall-hitting.trycloudflare.com/telegram/webhook')
+        ->expectsOutput('Commands registered.')
         ->assertSuccessful();
+
+    $bot->assertCalled('setMyCommands');
 
     $bot->assertReply('setWebhook', [
         'url' => 'https://kissing-promo-fall-hitting.trycloudflare.com/telegram/webhook',
