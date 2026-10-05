@@ -110,5 +110,6 @@ Shared-хостинг nic.ua (cPanel, LiteSpeed, PHP 8.4, MariaDB 11.4). Cron р
 - [docs/sources/](docs/sources/) — разведка площадок: как получать данные, поля, риски
 - [docs/hosting.md](docs/hosting.md) — проверенные факты о хостинге nic.ua
 - [docs/COMMANDS.md](docs/COMMANDS.md) — полезные команды: что хочу получить → команда
+- [docs/LIFECYCLE.md](docs/LIFECYCLE.md) — жизненный цикл: путь объявления от площадки до карточки, расписание, алерты, сбои
 - [docs/LOG.md](docs/LOG.md) — журнал изменений и текущий статус
 - [CLAUDE.md](CLAUDE.md) — принятые решения и правила работы с Claude
