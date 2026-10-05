@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use App\Filament\Resources\Sources\SourceResource;
 use App\Models\Source;
 use App\Sources\SourceName;
+use App\Sources\SourceState;
 use Filament\Support\Icons\Heroicon;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -31,25 +32,22 @@ class SourcesStatus extends StatsOverviewWidget
 
     private function tile(Source $source): Stat
     {
+        $state = SourceState::of($source);
         $lastRun = $source->last_run_at?->setTimezone('Europe/Kyiv')->format('d.m H:i');
-        $summary = SourceResource::reportSummary($source->last_report);
-        $failures = $source->consecutive_failures;
-        // Three missed windows in a row mean the scheduler itself stopped
-        $stale = $source->last_run_at !== null
-            && $source->last_run_at->lt(now()->subMinutes($source->interval_max_minutes * 3));
 
-        [$value, $color, $icon] = match (true) {
-            ! $source->enabled => ['выключена', 'gray', Heroicon::OutlinedPauseCircle],
-            $source->last_run_at === null => ['ещё не запускалась', 'gray', Heroicon::OutlinedClock],
-            $stale => ['давно не запускалась', 'danger', Heroicon::OutlinedExclamationTriangle],
-            $failures >= (int) config('sources.alert_after_failures') => ["ошибок подряд: {$failures}", 'danger', Heroicon::OutlinedXCircle],
-            $failures > 0 => ["ошибок подряд: {$failures}", 'warning', Heroicon::OutlinedExclamationCircle],
-            default => ['работает', 'success', Heroicon::OutlinedCheckCircle],
-        };
-
-        return Stat::make($source->name->getLabel(), $value)
-            ->color($color)
-            ->descriptionIcon($icon)
-            ->description(implode(' · ', array_filter([$lastRun ? "запуск {$lastRun}" : null, $summary])));
+        return Stat::make($source->name->getLabel(), $state->label($source))
+            ->color($state->color())
+            ->descriptionIcon(match ($state) {
+                SourceState::Off => Heroicon::OutlinedPauseCircle,
+                SourceState::NeverRun => Heroicon::OutlinedClock,
+                SourceState::Stalled => Heroicon::OutlinedExclamationTriangle,
+                SourceState::Failing => Heroicon::OutlinedXCircle,
+                SourceState::Erring => Heroicon::OutlinedExclamationCircle,
+                SourceState::Ok => Heroicon::OutlinedCheckCircle,
+            })
+            ->description(implode(' · ', array_filter([
+                $lastRun ? "запуск {$lastRun}" : null,
+                SourceResource::reportSummary($source->last_report),
+            ])));
     }
 }

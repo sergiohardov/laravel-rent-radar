@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Pipeline\PipelineStats;
+use App\Support\Minutes;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -29,22 +30,13 @@ class Latency extends StatsOverviewWidget
         $card = $stats->medianCardMinutes(now()->subDays(30));
 
         return [
-            Stat::make('От публикации до бота', self::minutes($detection))
+            Stat::make('От публикации до бота', Minutes::human($detection))
                 ->description('медиана по опубликованным за 24 часа')
                 ->color(self::color($detection)),
-            Stat::make('От публикации до карточки', self::minutes($card))
+            Stat::make('От публикации до карточки', Minutes::human($card))
                 ->description('медиана за 30 дней, по отправленным')
                 ->color(self::color($card)),
         ];
-    }
-
-    private static function minutes(?float $minutes): string
-    {
-        return match (true) {
-            $minutes === null => 'нет данных',
-            $minutes < 90 => rtrim(rtrim(number_format($minutes, 1, ',', ' '), '0'), ',').' мин',
-            default => rtrim(rtrim(number_format($minutes / 60, 1, ',', ' '), '0'), ',').' ч',
-        };
     }
 
     private static function color(?float $minutes): string

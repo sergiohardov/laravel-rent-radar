@@ -29,6 +29,10 @@ class SetTelegramWebhookCommand extends Command
         $info = $bot->getWebhookInfo();
         $this->info("Webhook: {$info->url}");
 
+        // The "/" menu in chats: commands with their descriptions from routes/telegram.php
+        $bot->registerMyCommands();
+        $this->info('Commands registered.');
+
         return self::SUCCESS;
     }
 

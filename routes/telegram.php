@@ -2,7 +2,10 @@
 
 /** @var Nutgram $bot */
 
+use App\Telegram\GroupReports;
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Telegram\Properties\ParseMode;
+use SergiX44\Nutgram\Telegram\Types\Message\LinkPreviewOptions;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +25,29 @@ $bot->onException(function (Nutgram $bot, Throwable $e) {
     report($e);
 });
 
-// Connection check; the chat id goes to TELEGRAM_CHAT_ID
+// Connection check, in any chat: the chat id goes to TELEGRAM_CHAT_ID
 $bot->onCommand('ping', function (Nutgram $bot) {
     $bot->sendMessage("pong · chat_id {$bot->chatId()}");
-})->description('Check the bot is connected');
+})->description('Проверить связь и узнать chat_id');
+
+// Reports, only in the working group: anyone could add the bot to another chat
+$bot->group(function (Nutgram $bot) {
+    $reply = fn (Nutgram $bot, string $text) => $bot->sendMessage(
+        text: $text,
+        parse_mode: ParseMode::HTML,
+        link_preview_options: LinkPreviewOptions::make(is_disabled: true),
+    );
+
+    $bot->onCommand('status', fn (Nutgram $bot) => $reply($bot, app(GroupReports::class)->status()))
+        ->description('Состояние площадок');
+    $bot->onCommand('funnel', fn (Nutgram $bot) => $reply($bot, app(GroupReports::class)->funnel()))
+        ->description('Воронка за 24 часа и скорость');
+    $bot->onCommand('reasons', fn (Nutgram $bot) => $reply($bot, app(GroupReports::class)->reasons()))
+        ->description('Причины отсева за 7 дней');
+    $bot->onCommand('help', fn (Nutgram $bot) => $reply($bot, app(GroupReports::class)->help()))
+        ->description('Список команд');
+})->middleware(function (Nutgram $bot, $next) {
+    if ((string) $bot->chatId() === (string) config('services.telegram.chat_id')) {
+        $next($bot);
+    }
+});
