@@ -48,3 +48,6 @@ Thumbs.db
 
 # Local one-off probes with tokens and secrets
 /hosting-check
+
+# Relay key on the relay hosting; never in git
+/relay/relay-config.php

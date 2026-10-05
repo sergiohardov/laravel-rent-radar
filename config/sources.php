@@ -43,9 +43,10 @@ return [
     |--------------------------------------------------------------------------
     |
     | LUN and OLX answer 403 to the hosting IP (Hetzner, Finland), so in
-    | production they go through a Ukrainian datacenter proxy, e.g.
-    | http://login:password@203.0.113.10:8080. Each source turns it on with
-    | its "use proxy" switch; in dev the proxy is not needed.
+    | production they go through a Ukrainian IP: our relay on a Ukrainian
+    | hosting (relay/relay.php), https://relay.creastep.com/relay.php?key=…,
+    | or a proxy http://login:password@host:port. Each source turns it on
+    | with its "use proxy" switch; in dev it is not needed.
     |
     */
 

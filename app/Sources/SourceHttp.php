@@ -13,15 +13,14 @@ use RuntimeException;
  * HTTP client for source adapters: the configured HTTP version, a timeout, and
  * the proxy when the source's "use proxy" switch is on.
  *
- * SOURCES_PROXY_URL is either a proxy (http://login:password@host:port) or the
- * Scrape.do API (https://api.scrape.do/?token=…&geoCode=ua): the hosting lets
- * out only ports 80 and 443, so the request goes to the API with the target in
- * its url parameter.
+ * SOURCES_PROXY_URL is either a proxy (http://login:password@host:port) or a
+ * relay: an https address with a query and no credentials, such as our own
+ * relay/relay.php on a Ukrainian hosting (https://relay.…/relay.php?key=…) or
+ * the Scrape.do API (https://api.scrape.do/?token=…&geoCode=ua). The hosting
+ * lets out only ports 80 and 443, so a relay gets the target in its url parameter.
  */
 final class SourceHttp
 {
-    private const SCRAPE_DO_API = 'https://api.scrape.do/';
-
     public function __construct(
         private readonly Http $http,
     ) {}
@@ -44,7 +43,7 @@ final class SourceHttp
             throw new RuntimeException("Source [{$name->value}] uses a proxy, but SOURCES_PROXY_URL is empty.");
         }
 
-        if (str_starts_with($proxy, self::SCRAPE_DO_API)) {
+        if (self::isRelay($proxy)) {
             return $request->withRequestMiddleware(fn (RequestInterface $target) => $target->withUri(
                 new Uri($proxy.'&url='.rawurlencode((string) $target->getUri())),
             ));
@@ -57,14 +56,25 @@ final class SourceHttp
     }
 
     /**
-     * Hides proxy credentials and API tokens in an error text before it is
+     * An https address with a query and no credentials takes the target as a
+     * parameter; anything else is a proxy.
+     */
+    private static function isRelay(string $proxy): bool
+    {
+        $parts = parse_url($proxy);
+
+        return ($parts['scheme'] ?? null) === 'https' && isset($parts['query']) && ! isset($parts['user']);
+    }
+
+    /**
+     * Hides proxy credentials and relay keys in an error text before it is
      *
-     * stored or sent: "…?token=***&…", "http://***@proxy…".
+     * stored or sent: "…?key=***&…", "…?token=***&…", "http://***@proxy…".
      */
     public static function redact(string $message): string
     {
         return preg_replace(
-            ['/([?&]token=)[^&\s"\']+/i', '#//[^/@\s"\']+@#'],
+            ['/([?&](?:token|key)=)[^&\s"\']+/i', '#//[^/@\s"\']+@#'],
             ['$1***', '//***@'],
             $message,
         );
