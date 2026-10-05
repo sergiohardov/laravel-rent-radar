@@ -96,3 +96,31 @@ it('hides tokens and proxy credentials in error texts', function (string $messag
     ],
     'nothing secret' => ['RequestException: HTTP request returned status code 403', 'RequestException: HTTP request returned status code 403'],
 ]);
+
+it('sends the request through our relay with the target in its url parameter', function () {
+    config(['sources.proxy_url' => 'https://relay.creastep.com/relay.php?key=s3cret']);
+    Source::for(SourceName::Olx)->update(['use_proxy' => true]);
+    $sent = null;
+    Http::fake(function (Request $request, array $options) use (&$sent) {
+        $sent = ['url' => $request->url(), 'proxy' => $options['proxy'] ?? null];
+
+        return Http::response(['data' => []]);
+    });
+
+    app(SourceHttp::class)->for(SourceName::Olx)->get('https://www.olx.ua/api/v1/offers/', ['city_id' => 62, 'limit' => 50]);
+
+    expect($sent['url'])->toBe('https://relay.creastep.com/relay.php?key=s3cret&url='.rawurlencode('https://www.olx.ua/api/v1/offers/?city_id=62&limit=50'))
+        ->and($sent['proxy'])->toBeNull();
+});
+
+it('treats an https proxy with credentials as a proxy, not a relay', function () {
+    config(['sources.proxy_url' => 'https://login:pass@proxy.example.test:443']);
+    Source::for(SourceName::Lun)->update(['use_proxy' => true]);
+
+    expect(sentOptions(SourceName::Lun)['proxy'])->toBe('https://login:pass@proxy.example.test:443');
+});
+
+it('hides the relay key in error texts', function () {
+    expect(SourceHttp::redact('cURL error 28 for https://relay.creastep.com/relay.php?key=s3cret&url=https%3A%2F%2Fflatfy.ua'))
+        ->toBe('cURL error 28 for https://relay.creastep.com/relay.php?key=***&url=https%3A%2F%2Fflatfy.ua');
+});
